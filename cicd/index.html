@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps & CI/CD Terms — Learn the Lingo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">⚡ DevOps Lingo</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Terms</a>
+    <a href="game.html">Match Game</a>
+    <a href="quiz.html">Quiz</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Software Engineering<br><span>Best Practices & CI/CD</span></h1>
+  <p>Learn the terms that top engineers at Google, Netflix, Amazon, and Meta use every day. Click any card to dig deeper.</p>
+  <div class="hero-btns">
+    <a href="game.html" class="btn btn-primary">Play Match Game</a>
+    <a href="quiz.html" class="btn btn-secondary">Take the Quiz</a>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">18</div>
+    <div class="stat-label">Key Terms</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">6</div>
+    <div class="stat-label">Categories</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">5</div>
+    <div class="stat-label">Companies Featured</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">12</div>
+    <div class="stat-label">Quiz Questions</div>
+  </div>
+</div>
+
+<section>
+  <div class="section-title">All Terms</div>
+  <div class="section-sub">Click a card to expand the full explanation + real company examples.</div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="cicd">CI/CD</button>
+    <button class="filter-btn" data-cat="code-quality">Code Quality</button>
+    <button class="filter-btn" data-cat="testing">Testing</button>
+    <button class="filter-btn" data-cat="deployment">Deployment</button>
+    <button class="filter-btn" data-cat="version-control">Version Control</button>
+    <button class="filter-btn" data-cat="infrastructure">Infrastructure</button>
+    <button class="filter-btn" data-cat="metrics">Metrics</button>
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+</section>
+
+<footer>Built to make DevOps concepts approachable. Inspired by Google, Netflix, Amazon, Meta &amp; Microsoft engineering blogs.</footer>
+
+<script src="data.js"></script>
+<script>
+const COLORS = {
+  'cicd': '#6c63ff',
+  'code-quality': '#00d4aa',
+  'testing': '#ff9f43',
+  'deployment': '#ff6b6b',
+  'version-control': '#a29bfe',
+  'infrastructure': '#fd79a8',
+  'metrics': '#74b9ff'
+};
+
+function renderCards(filter) {
+  const grid = document.getElementById('cards-grid');
+  const filtered = filter === 'all' ? TERMS : TERMS.filter(t => t.category === filter);
+  grid.innerHTML = filtered.map(t => `
+    <div class="term-card" style="--card-color:${COLORS[t.category]}" data-id="${t.id}">
+      <div class="card-header">
+        <span class="card-emoji">${t.emoji}</span>
+        <span class="card-badge">${t.categoryLabel}</span>
+      </div>
+      <h3>${t.term}</h3>
+      <p>${t.short}</p>
+      <div class="card-expanded">
+        <p>${t.detail}</p>
+        <p><strong style="color:var(--text)">Tools/Examples:</strong></p>
+        <ul>${t.examples.map(e => `<li>${e}</li>`).join('')}</ul>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">Used at:</strong></p>
+        <div>${t.companies.map(c => `<span class="company-tag ${c.cls}" title="${c.note}">${c.name}</span>`).join('')}</div>
+        <p style="margin-top:0.6rem;font-size:0.8rem;color:var(--text-dim)">${t.companies[0]?.note}</p>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.term-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('open'));
+  });
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.cat);
+  });
+});
+
+renderCards('all');
+</script>
+</body>
+</html>

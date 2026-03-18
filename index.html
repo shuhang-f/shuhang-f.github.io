@@ -23,6 +23,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    .iframe-preview-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      border-radius: 8px;
+    }
+    .iframe-preview-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1400px;
+      border: none;
+      pointer-events: none;
+      transform-origin: top left;
+    }
+  </style>
 </head>
 
 <body>
@@ -723,15 +742,11 @@
             </li>
 
             <li class="filter-item">
-              <button data-filter-btn>Web design</button>
+              <button data-filter-btn>Web development</button>
             </li>
 
             <li class="filter-item">
               <button data-filter-btn>Applications</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Web development</button>
             </li>
 
           </ul>
@@ -755,15 +770,11 @@
               </li>
 
               <li class="select-item">
-                <button data-select-item>Web design</button>
+                <button data-select-item>Web development</button>
               </li>
 
               <li class="select-item">
                 <button data-select-item>Applications</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web development</button>
               </li>
 
             </ul>
@@ -773,17 +784,19 @@
           <ul class="project-list">
 
             <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
+              <a href="./cicd/index.html" target="_blank">
 
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
 
-                  <img src="./assets/images/project-1.jpg" alt="finance" loading="lazy">
+                  <div class="iframe-preview-wrap" data-iframe-height="820">
+                    <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+                  </div>
                 </figure>
 
-                <h3 class="project-title">Finance</h3>
+                <h3 class="project-title">DevOps CI/CD Quiz</h3>
 
                 <p class="project-category">Web development</p>
 
@@ -791,107 +804,19 @@
             </li>
 
             <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
+              <a href="./cli-vs-api.html" target="_blank">
 
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
 
-                  <img src="./assets/images/project-2.png" alt="orizon" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Orizon</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
+                  <div class="iframe-preview-wrap" data-iframe-height="820">
+                    <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
                   </div>
-
-                  <img src="./assets/images/project-3.jpg" alt="fundo" loading="lazy">
                 </figure>
 
-                <h3 class="project-title">Fundo</h3>
-
-                <p class="project-category">Web design</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-4.png" alt="brawlhalla" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Brawlhalla</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-5.png" alt="dsm." loading="lazy">
-                </figure>
-
-                <h3 class="project-title">DSM.</h3>
-
-                <p class="project-category">Web design</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-6.png" alt="metaspark" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">MetaSpark</h3>
-
-                <p class="project-category">Web design</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-7.png" alt="summary" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Summary</h3>
+                <h3 class="project-title">CLI vs API Explorer</h3>
 
                 <p class="project-category">Web development</p>
 
@@ -899,37 +824,21 @@
             </li>
 
             <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
+              <a href="./tft-optima.html" target="_blank">
 
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
 
-                  <img src="./assets/images/project-8.jpg" alt="task manager" loading="lazy">
+                  <div class="iframe-preview-wrap" data-iframe-height="820">
+                    <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+                  </div>
                 </figure>
 
-                <h3 class="project-title">Task Manager</h3>
+                <h3 class="project-title">TFT Decision Lab</h3>
 
                 <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-9.png" alt="arrival" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Arrival</h3>
-
-                <p class="project-category">Web development</p>
 
               </a>
             </li>
@@ -1192,6 +1101,22 @@
     - custom js link
   -->
   <script src="./assets/js/script.js"></script>
+
+  <script>
+    function scaleIframePreviews() {
+      document.querySelectorAll('.iframe-preview-wrap').forEach(function (wrap) {
+        var iframe = wrap.querySelector('iframe');
+        if (!iframe) return;
+        var scale = wrap.offsetWidth / 1400;
+        var iframeH = parseFloat(wrap.getAttribute('data-iframe-height') || 820);
+        iframe.style.transform = 'scale(' + scale + ')';
+        iframe.style.height = iframeH + 'px';
+        wrap.style.height = Math.round(iframeH * scale) + 'px';
+      });
+    }
+    window.addEventListener('load', scaleIframePreviews);
+    window.addEventListener('resize', scaleIframePreviews);
+  </script>
 
   <!--
     - ionicon link

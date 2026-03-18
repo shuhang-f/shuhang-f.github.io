@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TFT 决策优化实验室</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --gold:#C89B3C;--gold-light:#F0E6B2;--gold-dark:#7A5C10;
+      --bg:#08090F;--panel:#111520;--panel2:#181D2B;--border:#252A3A;
+      --text:#C0A96A;--dim:#5A5A70;
+      --mage:#A855F7;--warrior:#EF4444;--archer:#22C55E;
+      --assassin:#F97316;--berserker:#3B82F6;--knight:#EAB308;
+    }
+    body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+    /* ── HEADER ── */
+    .hero-header{
+      text-align:center;padding:55px 20px 35px;
+      background:linear-gradient(160deg,#050709 0%,#111520 100%);
+      border-bottom:2px solid var(--gold);position:relative;overflow:hidden;
+    }
+    .hero-header::before{
+      content:'';position:absolute;inset:0;
+      background-image:
+        repeating-linear-gradient(60deg,transparent,transparent 34px,rgba(200,155,60,.04) 34px,rgba(200,155,60,.04) 35px),
+        repeating-linear-gradient(-60deg,transparent,transparent 34px,rgba(200,155,60,.04) 34px,rgba(200,155,60,.04) 35px);
+    }
+    .hero-header h1{font-size:clamp(1.7em,5vw,2.8em);color:var(--gold);text-shadow:0 0 28px rgba(200,155,60,.65);position:relative;margin-bottom:8px}
+    .hero-header p{color:var(--dim);font-size:1.05em;position:relative}
+    .hero-header p strong{color:var(--text)}
+
+    /* ── CONTAINER ── */
+    .wrap{max-width:880px;margin:0 auto;padding:20px}
+
+    /* ── CARD SECTION ── */
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin:28px 0;overflow:hidden}
+    .card-head{
+      padding:18px 24px;display:flex;align-items:center;gap:12px;
+      background:linear-gradient(90deg,rgba(200,155,60,.13),transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .card-head .icon{font-size:1.4em}
+    .card-head h2{font-size:1.2em;color:var(--gold-light)}
+    .card-body{padding:24px}
+
+    /* ── LANDSCAPE CANVAS ── */
+    #cvs{width:100%;height:200px;border-radius:8px;cursor:pointer;display:block;background:var(--panel2)}
+    .cvs-hint{text-align:center;font-size:.78em;color:var(--dim);margin-top:6px}
+
+    /* concept pair */
+    .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+    .duo-card{padding:14px;border-radius:8px;border:1px solid}
+    .duo-card.red{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.3)}
+    .duo-card.green{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.3)}
+    .duo-card h3{font-size:.95em;margin-bottom:6px}
+    .duo-card.red h3{color:#EF4444}.duo-card.green h3{color:#22C55E}
+    .duo-card p{font-size:.85em;color:var(--dim)}
+
+    /* tip box */
+    .tip{padding:12px 15px;background:rgba(200,155,60,.07);border:1px solid rgba(200,155,60,.2);border-radius:8px;font-size:.85em;color:var(--dim);margin-top:16px}
+    .tip strong{color:var(--gold)}
+
+    /* steps */
+    .steps{display:flex;flex-direction:column;gap:10px}
+    .step{display:flex;align-items:flex-start;gap:14px;padding:12px;background:var(--panel2);border-radius:8px;border-left:3px solid var(--gold)}
+    .step-num{width:28px;height:28px;background:var(--gold);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
+    .step-body{font-size:.9em}
+    .step-body strong{color:var(--gold-light)}
+    .step-body span{color:var(--dim)}
+
+    /* ── GAME ── */
+    /* progress bar */
+    .prog{display:flex;justify-content:center;gap:0;margin-bottom:22px}
+    .prog-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+    .prog-step::before{content:'';position:absolute;top:13px;left:50%;right:-50%;height:2px;background:var(--border);z-index:0}
+    .prog-step:last-child::before{display:none}
+    .prog-circle{
+      width:28px;height:28px;border-radius:50%;border:2px solid var(--border);
+      background:var(--panel2);display:flex;align-items:center;justify-content:center;
+      font-size:.78em;position:relative;z-index:1;transition:all .3s;
+    }
+    .prog-circle.active{border-color:var(--gold);background:var(--gold);color:var(--bg);font-weight:700}
+    .prog-circle.done{border-color:#22C55E;background:#22C55E;color:#fff}
+    .prog-label{font-size:.68em;color:var(--dim);margin-top:3px}
+
+    /* status bar */
+    .status-bar{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--panel2);border-radius:8px;margin-bottom:16px}
+    .round-lbl{font-size:1em;color:var(--gold-light)}
+    .pow-wrap{display:flex;align-items:center;gap:8px}
+    .pow-lbl{font-size:.85em;color:var(--dim)}
+    .pow-val{font-size:1.5em;font-weight:700;color:var(--gold);min-width:36px}
+
+    /* team slots */
+    .team-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+    .slot{
+      width:72px;height:84px;background:var(--panel2);border:1px dashed var(--border);
+      border-radius:8px;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;font-size:.7em;color:var(--dim);transition:all .3s;
+    }
+    .slot.filled{border-style:solid}
+    .slot .hero-emoji{font-size:1.8em;margin-bottom:2px}
+    .slot .hero-lbl{font-size:.7em;color:var(--gold-light);text-align:center;padding:0 3px;line-height:1.2}
+    .slot .hero-pow{font-size:.75em;color:var(--gold)}
+
+    /* synergy tracker */
+    .syn-wrap{display:none;margin-bottom:14px}
+    .syn-title{font-size:.82em;color:var(--dim);margin-bottom:6px}
+    .syn-row{display:flex;gap:8px;flex-wrap:wrap}
+    .syn-badge{padding:3px 10px;border-radius:14px;font-size:.78em;display:flex;align-items:center;gap:4px}
+
+    /* shop */
+    .shop-lbl{font-size:.9em;color:var(--gold);margin-bottom:10px}
+    .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .hero-card{
+      background:var(--panel2);border:2px solid var(--border);border-radius:10px;
+      padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;position:relative;
+    }
+    .hero-card:hover:not(.disabled){border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 22px rgba(200,155,60,.22)}
+    .hero-card.selected{border-color:#22C55E;background:rgba(34,197,94,.1)}
+    .hero-card.disabled{opacity:.45;cursor:not-allowed}
+    .hc-emoji{font-size:2.3em;display:block;margin-bottom:7px}
+    .hc-name{font-size:.82em;color:var(--gold-light);margin-bottom:4px}
+    .hc-class{font-size:.73em;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px}
+    .cls-mage{background:rgba(168,85,247,.2);color:#A855F7}
+    .cls-warrior{background:rgba(239,68,68,.2);color:#EF4444}
+    .cls-archer{background:rgba(34,197,94,.2);color:#22C55E}
+    .cls-assassin{background:rgba(249,115,22,.2);color:#F97316}
+    .cls-berserker{background:rgba(59,130,246,.2);color:#3B82F6}
+    .cls-knight{background:rgba(234,179,8,.2);color:#EAB308}
+    .hc-pow{font-size:.8em;color:var(--dim)}
+    .hc-pow span{color:var(--gold);font-weight:700;font-size:1.1em}
+
+    /* synergy hint */
+    .syn-hint{display:none;margin-top:16px;padding:11px 14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.3);border-radius:8px;font-size:.84em;color:#A855F7}
+
+    /* ── RESULTS ── */
+    #results{display:none}
+    .winner-box{text-align:center;padding:18px;background:var(--panel2);border-radius:8px;margin-bottom:20px}
+    .winner-big{font-size:1.45em;color:var(--gold);margin-bottom:4px}
+    .winner-sub{font-size:.88em;color:var(--dim)}
+
+    /* bar chart */
+    .bar-chart{margin:18px 0}
+    .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+    .bar-lbl{width:120px;font-size:.82em;color:var(--dim);text-align:right;flex-shrink:0}
+    .bar-track{flex:1;height:28px;background:var(--panel2);border-radius:4px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:.82em;font-weight:700;color:var(--bg);transition:width 1.1s cubic-bezier(.22,1,.36,1);width:0}
+    .bar-fill.p{background:linear-gradient(90deg,#2563EB,#60A5FA)}
+    .bar-fill.l{background:linear-gradient(90deg,#B91C1C,#F87171)}
+    .bar-fill.g{background:linear-gradient(90deg,#15803D,#22C55E)}
+
+    /* path cards */
+    .paths{display:flex;flex-direction:column;gap:13px;margin-bottom:20px}
+    .path-card{padding:14px;border-radius:8px;border:1px solid;position:relative}
+    .path-card.player-c{background:rgba(59,130,246,.07);border-color:rgba(59,130,246,.3)}
+    .path-card.local-c{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.3)}
+    .path-card.global-c{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.3)}
+    .path-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+    .path-name{font-weight:700;font-size:.92em}
+    .player-c .path-name{color:#60A5FA}.local-c .path-name{color:#F87171}.global-c .path-name{color:#22C55E}
+    .path-score{font-size:1.4em;font-weight:700}
+    .player-c .path-score{color:#60A5FA}.local-c .path-score{color:#F87171}.global-c .path-score{color:#22C55E}
+    .path-units{display:flex;gap:7px;flex-wrap:wrap}
+    .punit{padding:3px 9px;border-radius:13px;font-size:.78em;background:var(--panel2)}
+    .crown{position:absolute;top:-10px;right:-8px;font-size:1.5em}
+
+    /* conclusion */
+    .concl-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .concl-item{padding:14px;background:var(--panel2);border-radius:8px;border-left:3px solid var(--gold)}
+    .concl-item h4{color:var(--gold-light);margin-bottom:5px;font-size:.92em}
+    .concl-item p{font-size:.82em;color:var(--dim)}
+
+    /* buttons */
+    .btn{padding:11px 22px;border:none;border-radius:8px;cursor:pointer;font-size:.92em;font-weight:700;transition:all .2s}
+    .btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--bg)}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(200,155,60,.4)}
+
+    /* toast */
+    .toast{position:fixed;top:18px;right:18px;padding:11px 18px;background:var(--panel);border:1px solid var(--gold);border-radius:8px;color:var(--gold-light);font-size:.88em;transform:translateX(220%);transition:transform .3s;z-index:999}
+    .toast.show{transform:translateX(0)}
+
+    /* fade-in */
+    @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .fi{animation:fi .3s ease forwards}
+
+    /* responsive */
+    @media(max-width:560px){
+      .duo{grid-template-columns:1fr}
+      .concl-grid{grid-template-columns:1fr}
+      .shop-grid{grid-template-columns:repeat(3,1fr)}
+      .bar-lbl{width:80px;font-size:.75em}
+    }
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="hero-header">
+  <h1>🏆 TFT 决策优化实验室</h1>
+  <p>用 <strong>云顶之弈</strong> 理解算法中的 <strong>本地最优解</strong> 与 <strong>全局最优解</strong></p>
+</div>
+
+<div class="wrap">
+
+  <!-- ① CONCEPT -->
+  <div class="card">
+    <div class="card-head"><span class="icon">📊</span><h2>什么是本地最优 vs 全局最优？</h2></div>
+    <div class="card-body">
+      <p style="color:var(--dim);margin-bottom:14px">
+        想象你在一片崎岖的山地里爬山，但每次只能看到脚下一步。
+        <strong style="color:var(--text)">本地最优</strong> 是你踩到的第一个山顶——你以为登顶了，但旁边有更高的峰。
+        <strong style="color:var(--text)">全局最优</strong> 才是真正的最高点，需要你愿意先走下坡。
+      </p>
+
+      <canvas id="cvs"></canvas>
+      <p class="cvs-hint">👆 点击画布 — 第1次看「贪心」如何困在本地最优，第2次看「策略」如何到达全局最优，第3次重置</p>
+
+      <div class="duo">
+        <div class="duo-card red">
+          <h3>🔴 本地最优解（Local Optimum）</h3>
+          <p>在当前视野内的最好解。贪心算法每步选「眼前最优」，容易在此驻足，无法看到更高的全局方案。</p>
+        </div>
+        <div class="duo-card green">
+          <h3>🟢 全局最优解（Global Optimum）</h3>
+          <p>所有方案中真正最好的解。往往需要牺牲短期利益、甚至先变差，才能到达真正的最高峰。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② TFT ANALOGY -->
+  <div class="card">
+    <div class="card-head"><span class="icon">🎮</span><h2>在 TFT 中是什么样的？</h2></div>
+    <div class="card-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>每轮商店刷出英雄</strong><br>
+            <span>每个英雄都有「单体战力」值。<b>贪心策略</b>是每轮都选战力最高的那个——追求的是本地最优。</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>羁绊带来全局增益</strong><br>
+            <span>集齐同一职业的英雄可激活羁绊，获得巨大团队加成。牺牲短期单体战力，换取全局最优组合。</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>陷阱：散装强者 vs 羁绊协同</strong><br>
+            <span>3个顶级散装英雄（5+6+7=<b>18战力</b>，无羁绊），往往输给3个普通法师（2+3+2=7 + 法师羁绊+16 = <b style="color:var(--mage)">23战力</b>）！</span>
+          </div>
+        </div>
+      </div>
+      <div class="tip">
+        💡 <strong>类比算法：</strong>
+        贪心算法（Greedy）= 每轮抢最强英雄，快但不保证全局最优。
+        动态规划（DP）= 有计划地攒羁绊，考虑全局才找到真正最优解。
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ GAME -->
+  <div class="card">
+    <div class="card-head"><span class="icon">⚔️</span><h2>亲身体验：3轮英雄选择</h2></div>
+    <div class="card-body">
+      <p style="color:var(--dim);margin-bottom:20px">
+        每轮从商店选 1 个英雄。<strong style="color:var(--text)">提示：</strong>
+        集齐 3 个 <span style="color:var(--mage)">法师</span> 可激活羁绊，获得 <span style="color:var(--mage)">+16 战力</span> 加成！
+      </p>
+
+      <!-- progress -->
+      <div class="prog" id="prog">
+        <div class="prog-step"><div class="prog-circle active" id="pc1">1</div><div class="prog-label">第1轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc2">2</div><div class="prog-label">第2轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc3">3</div><div class="prog-label">第3轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc4">✓</div><div class="prog-label">结算</div></div>
+      </div>
+
+      <!-- status -->
+      <div class="status-bar">
+        <span class="round-lbl" id="round-lbl">第 1 / 3 轮</span>
+        <div class="pow-wrap"><span class="pow-lbl">当前战力</span><span class="pow-val" id="pow-val">0</span></div>
+      </div>
+
+      <!-- team -->
+      <div style="margin-bottom:12px">
+        <div style="font-size:.82em;color:var(--dim);margin-bottom:7px">当前队伍：</div>
+        <div class="team-row">
+          <div class="slot" id="s0">空位</div>
+          <div class="slot" id="s1">空位</div>
+          <div class="slot" id="s2">空位</div>
+        </div>
+      </div>
+
+      <!-- synergy tracker -->
+      <div class="syn-wrap" id="syn-wrap">
+        <div class="syn-title">激活的羁绊：</div>
+        <div class="syn-row" id="syn-row"></div>
+      </div>
+
+      <!-- shop -->
+      <div id="shop">
+        <div class="shop-lbl">🏪 英雄商店（选择 1 个）</div>
+        <div class="shop-grid" id="shop-grid"></div>
+      </div>
+
+      <div class="syn-hint" id="syn-hint">
+        🔮 提示：选择 <strong>法师</strong> 英雄可积累法师羁绊——集齐 3 个获得巨大战力加成！
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ RESULTS -->
+  <div class="card" id="results">
+    <div class="card-head"><span class="icon">📈</span><h2>结算：三条路径的对比</h2></div>
+    <div class="card-body">
+      <div class="winner-box" id="winner-box"></div>
+
+      <div class="bar-chart">
+        <div class="bar-row"><div class="bar-lbl">你的路径</div><div class="bar-track"><div class="bar-fill p" id="bp">0</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">🔴 本地最优</div><div class="bar-track"><div class="bar-fill l" id="bl">18</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">🟢 全局最优</div><div class="bar-track"><div class="bar-fill g" id="bg2">23</div></div></div>
+      </div>
+
+      <div class="paths">
+        <div class="path-card player-c">
+          <div class="path-head">
+            <span class="path-name">🎯 你的路径</span>
+            <span class="path-score" id="ps-player">—</span>
+          </div>
+          <div class="path-units" id="pu-player"></div>
+        </div>
+        <div class="path-card local-c">
+          <div class="path-head">
+            <span class="path-name">🔴 本地最优路径（每轮选单体最强）</span>
+            <span class="path-score">18</span>
+          </div>
+          <div class="path-units">
+            <div class="punit">⚔️ 战士·盖伦 (+5)</div>
+            <div class="punit">🗡️ 刺客·阿卡丽 (+6)</div>
+            <div class="punit">💪 蛮力·蔚 (+7)</div>
+            <div class="punit" style="background:rgba(239,68,68,.15);color:#EF4444">无羁绊 +0</div>
+          </div>
+        </div>
+        <div class="path-card global-c">
+          <div class="crown">👑</div>
+          <div class="path-head">
+            <span class="path-name">🟢 全局最优路径（积累法师羁绊）</span>
+            <span class="path-score">23</span>
+          </div>
+          <div class="path-units">
+            <div class="punit">🔮 法师·卡西奥佩娅 (+2)</div>
+            <div class="punit">🔮 法师·辛德拉 (+3)</div>
+            <div class="punit">🔮 法师·维迦 (+2)</div>
+            <div class="punit" style="background:rgba(168,85,247,.2);color:#A855F7">法师羁绊(3) +16</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:18px">
+        <button class="btn btn-gold" onclick="resetGame()">🔄 重新体验</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ TAKEAWAYS -->
+  <div class="card">
+    <div class="card-head"><span class="icon">🧠</span><h2>算法启示：TFT 教会我们什么？</h2></div>
+    <div class="card-body">
+      <div class="concl-grid">
+        <div class="concl-item">
+          <h4>🔴 贪心算法的局限</h4>
+          <p>像每轮选最强英雄——快速、简单，但可能陷入本地最优。仅在问题具有「贪心选择性质」时保证全局最优（如 Dijkstra 最短路）。</p>
+        </div>
+        <div class="concl-item">
+          <h4>🟢 动态规划的优势</h4>
+          <p>像有计划地凑羁绊——枚举所有子问题并记忆结果，保证找到全局最优。代价是更高的计算量。</p>
+        </div>
+        <div class="concl-item">
+          <h4>🔵 模拟退火的思路</h4>
+          <p>像偶尔「主动选差的英雄」来探索新方向——允许暂时变差，以一定概率跳出本地最优，寻找更高峰。</p>
+        </div>
+        <div class="concl-item">
+          <h4>🟡 遗传算法的思路</h4>
+          <p>像同时模拟多位玩家跑不同阵容——多个解并行进化，通过「选择+变异」逐渐逼近全局最优。</p>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:16px">
+        🎯 <strong>核心洞察：</strong>
+        TFT 的最强路线不是每轮抢最强英雄，而是有预见性地构建最强整体阵容——
+        这正是优化算法设计的精髓：<strong>全局视野</strong>往往胜过<strong>贪心冲动</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:28px;color:var(--dim);font-size:.82em">
+    Local Optimum vs Global Optimum · Powered by TFT 🎮
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   LANDSCAPE CANVAS
+═══════════════════════════════════════ */
+const cvs = document.getElementById('cvs')
+const ctx = cvs.getContext('2d')
+
+function resizeCvs() {
+  cvs.width = cvs.offsetWidth
+  cvs.height = 200
+}
+
+function landscape(x) {
+  // local peak ~0.22 (height ~0.44), global peak ~0.72 (height ~0.82)
+  return 0.05
+    + 0.44 * Math.exp(-((x - 0.22) ** 2) / 0.006)
+    + 0.82 * Math.exp(-((x - 0.72) ** 2) / 0.011)
+    - 0.12 * Math.exp(-((x - 0.47) ** 2) / 0.025)   // valley between peaks
+}
+
+function drawScene(ballX, ballColor, ballLabel) {
+  const W = cvs.width, H = cvs.height
+  ctx.clearRect(0, 0, W, H)
+
+  // background
+  const gbg = ctx.createLinearGradient(0, 0, 0, H)
+  gbg.addColorStop(0, '#090C14'); gbg.addColorStop(1, '#111520')
+  ctx.fillStyle = gbg; ctx.fillRect(0, 0, W, H)
+
+  // grid lines
+  ctx.strokeStyle = 'rgba(200,155,60,.06)'; ctx.lineWidth = 1
+  for (let i = 1; i < 4; i++) {
+    ctx.beginPath(); ctx.moveTo(0, H * i / 4); ctx.lineTo(W, H * i / 4); ctx.stroke()
+  }
+
+  // landscape path
+  ctx.beginPath(); ctx.moveTo(0, H)
+  for (let i = 0; i <= W; i++) {
+    const y = landscape(i / W)
+    ctx.lineTo(i, H - y * (H - 35) - 18)
+  }
+  ctx.lineTo(W, H); ctx.closePath()
+  const gfill = ctx.createLinearGradient(0, 0, 0, H)
+  gfill.addColorStop(0, 'rgba(200,155,60,.35)')
+  gfill.addColorStop(1, 'rgba(200,155,60,.05)')
+  ctx.fillStyle = gfill; ctx.fill()
+
+  // outline
+  ctx.beginPath(); ctx.moveTo(0, H)
+  for (let i = 0; i <= W; i++) ctx.lineTo(i, H - landscape(i / W) * (H - 35) - 18)
+  ctx.strokeStyle = 'rgba(200,155,60,.85)'; ctx.lineWidth = 2; ctx.stroke()
+
+  // local peak marker
+  const lx = 0.22 * W, ly = H - landscape(0.22) * (H - 35) - 18
+  ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI * 2)
+  ctx.fillStyle = '#EF4444'; ctx.fill()
+  ctx.fillStyle = '#EF4444'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'
+  ctx.fillText('本地最优', lx, ly - 13)
+
+  // global peak marker
+  const gx = 0.72 * W, gy = H - landscape(0.72) * (H - 35) - 18
+  ctx.beginPath(); ctx.arc(gx, gy, 5, 0, Math.PI * 2)
+  ctx.fillStyle = '#22C55E'; ctx.fill()
+  ctx.fillStyle = '#22C55E'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'
+  ctx.fillText('全局最优', gx, gy - 13)
+
+  // ball
+  if (ballX >= 0) {
+    const bx = ballX * W
+    const by = H - landscape(ballX) * (H - 35) - 18
+
+    // glow
+    const gr = ctx.createRadialGradient(bx, by, 0, bx, by, 22)
+    gr.addColorStop(0, ballColor + '55'); gr.addColorStop(1, 'transparent')
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(bx, by, 22, 0, Math.PI * 2); ctx.fill()
+
+    // ball circle (sitting on surface)
+    ctx.beginPath(); ctx.arc(bx, by - 11, 11, 0, Math.PI * 2)
+    ctx.fillStyle = ballColor; ctx.fill()
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke()
+
+    // label on ball
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Arial'; ctx.textAlign = 'center'
+    ctx.fillText(ballLabel, bx, by - 7)
+  }
+
+  // hint text
+  ctx.fillStyle = 'rgba(200,155,60,.45)'; ctx.font = '11px Arial'; ctx.textAlign = 'right'
+  ctx.fillText('点击模拟', W - 10, H - 8)
+}
+
+let clickState = 0, animLock = false
+
+function animBall(fromX, toX, color, label, cb) {
+  const t0 = performance.now(), dur = 1400
+  function frame(now) {
+    const t = Math.min((now - t0) / dur, 1)
+    const e = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    drawScene(fromX + (toX - fromX) * e, color, label)
+    if (t < 1) requestAnimationFrame(frame)
+    else { animLock = false; cb && cb() }
+  }
+  requestAnimationFrame(frame)
+}
+
+cvs.addEventListener('click', () => {
+  if (animLock) return
+  animLock = true
+  if (clickState === 0) {
+    // greedy → local max
+    animBall(0, 0.22, '#EF4444', '贪心', () => {
+      toast('🔴 贪心策略：困在了本地最优！再点一次看全局最优')
+    })
+    clickState = 1
+  } else if (clickState === 1) {
+    // strategic → global max
+    animBall(0, 0.72, '#22C55E', '策略', () => {
+      toast('🟢 策略视野：到达全局最优！再点一次重置')
+    })
+    clickState = 2
+  } else {
+    drawScene(-1, '', '')
+    clickState = 0
+    animLock = false
+  }
+})
+
+/* ═══════════════════════════════════════
+   GAME DATA
+═══════════════════════════════════════ */
+const ROUNDS = [
+  [
+    { name: '法师·卡西奥佩娅', cls: 'mage',     emoji: '🔮', pow: 2, syn: '法师' },
+    { name: '战士·盖伦',       cls: 'warrior',  emoji: '⚔️',  pow: 5, syn: '战士' },
+    { name: '射手·凯特琳',     cls: 'archer',   emoji: '🏹', pow: 4, syn: '射手' },
+  ],
+  [
+    { name: '法师·辛德拉',     cls: 'mage',     emoji: '🔮', pow: 3, syn: '法师' },
+    { name: '刺客·阿卡丽',     cls: 'assassin', emoji: '🗡️',  pow: 6, syn: '刺客' },
+    { name: '骑士·盖伦二星',   cls: 'knight',   emoji: '🛡️',  pow: 3, syn: '骑士' },
+  ],
+  [
+    { name: '法师·维迦',       cls: 'mage',     emoji: '🔮', pow: 2, syn: '法师' },
+    { name: '蛮力·蔚',         cls: 'berserker',emoji: '💪', pow: 7, syn: '蛮力' },
+    { name: '射手·金克丝',     cls: 'archer',   emoji: '🏹', pow: 3, syn: '射手' },
+  ],
+]
+
+const SYNERGY = {
+  '法师': { need: 3, bonus: 16, desc: '法术爆发' },
+  '战士': { need: 2, bonus: 4,  desc: '物理强化' },
+}
+
+let G = { round: 0, team: [] }
+
+function calcPow(team) {
+  const base = team.reduce((s, h) => s + h.pow, 0)
+  const counts = {}
+  team.forEach(h => counts[h.syn] = (counts[h.syn] || 0) + 1)
+  let bonus = 0, active = []
+  for (const [syn, cnt] of Object.entries(counts)) {
+    if (SYNERGY[syn] && cnt >= SYNERGY[syn].need) {
+      bonus += SYNERGY[syn].bonus
+      active.push({ syn, cnt, bonus: SYNERGY[syn].bonus })
+    }
+  }
+  return { total: base + bonus, base, bonus, active }
+}
+
+function renderShop() {
+  const grid = document.getElementById('shop-grid')
+  grid.innerHTML = ''
+  ROUNDS[G.round].forEach((h, i) => {
+    const card = document.createElement('div')
+    card.className = 'hero-card fi'
+    card.style.animationDelay = `${i * 0.09}s`
+    card.innerHTML = `
+      <span class="hc-emoji">${h.emoji}</span>
+      <div class="hc-name">${h.name}</div>
+      <div class="hc-class cls-${h.cls}">${h.syn}</div>
+      <div class="hc-pow">战力 <span>+${h.pow}</span></div>
+    `
+    card.addEventListener('click', () => pick(h, card))
+    grid.appendChild(card)
+  })
+
+  // progress circles
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById('pc' + i)
+    if (i < G.round + 1) { el.className = 'prog-circle done'; el.textContent = '✓' }
+    else if (i === G.round + 1) { el.className = 'prog-circle active'; el.textContent = i }
+    else { el.className = 'prog-circle'; el.textContent = i }
+  }
+  document.getElementById('round-lbl').textContent = `第 ${G.round + 1} / 3 轮`
+  if (G.round === 0) document.getElementById('syn-hint').style.display = 'block'
+}
+
+function pick(hero, card) {
+  document.querySelectorAll('.hero-card').forEach(c => { c.classList.add('disabled'); c.onclick = null })
+  card.classList.remove('disabled'); card.classList.add('selected')
+
+  G.team.push(hero)
+  const slot = document.getElementById('s' + G.round)
+  const borderColor = hero.cls === 'mage' ? '#A855F7'
+    : hero.cls === 'warrior' ? '#EF4444'
+    : hero.cls === 'archer' ? '#22C55E'
+    : hero.cls === 'assassin' ? '#F97316'
+    : hero.cls === 'berserker' ? '#3B82F6' : '#EAB308'
+  slot.className = 'slot filled'
+  slot.style.borderColor = borderColor
+  slot.innerHTML = `<div class="hero-emoji">${hero.emoji}</div><div class="hero-lbl">${hero.name.split('·')[1] || hero.name}</div><div class="hero-pow">+${hero.pow}</div>`
+
+  const { total, active } = calcPow(G.team)
+  document.getElementById('pow-val').textContent = total
+  renderSynTracker()
+
+  G.round++
+  if (G.round >= 3) {
+    setTimeout(showResults, 750)
+    document.getElementById('shop').style.display = 'none'
+    document.getElementById('syn-hint').style.display = 'none'
+    document.getElementById('pc4').className = 'prog-circle active'
+    document.getElementById('pc3').className = 'prog-circle done'
+    document.getElementById('pc3').textContent = '✓'
+    document.getElementById('round-lbl').textContent = '结算中…'
+  } else {
+    setTimeout(renderShop, 620)
+  }
+}
+
+function renderSynTracker() {
+  const counts = {}
+  G.team.forEach(h => counts[h.syn] = (counts[h.syn] || 0) + 1)
+  const row = document.getElementById('syn-row'); row.innerHTML = ''
+  let any = false
+  for (const [syn, cnt] of Object.entries(counts)) {
+    any = true
+    const isMage = syn === '法师'
+    const thr = SYNERGY[syn]?.need || 99
+    const activated = cnt >= thr
+    const badge = document.createElement('div')
+    badge.className = 'syn-badge'
+    badge.style.background = isMage ? 'rgba(168,85,247,.2)' : 'rgba(239,68,68,.12)'
+    badge.style.color = isMage ? '#A855F7' : '#EF4444'
+    badge.style.border = `1px solid ${isMage ? 'rgba(168,85,247,.4)' : 'rgba(239,68,68,.3)'}`
+    badge.innerHTML = `${isMage ? '🔮' : '⚔️'} ${syn} ${cnt}/${thr}${activated ? ' <span style="color:#22C55E">✓ 激活！</span>' : ''}`
+    row.appendChild(badge)
+  }
+  if (any) document.getElementById('syn-wrap').style.display = 'block'
+}
+
+function showResults() {
+  const res = document.getElementById('results')
+  res.style.display = 'block'
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  const { total, active } = calcPow(G.team)
+  document.getElementById('ps-player').textContent = total
+
+  const pu = document.getElementById('pu-player'); pu.innerHTML = ''
+  G.team.forEach(h => {
+    const d = document.createElement('div'); d.className = 'punit'
+    d.textContent = `${h.emoji} ${h.name} (+${h.pow})`; pu.appendChild(d)
+  })
+  if (active.length) {
+    active.forEach(a => {
+      const d = document.createElement('div'); d.className = 'punit'
+      d.style.background = 'rgba(168,85,247,.2)'; d.style.color = '#A855F7'
+      d.textContent = `${a.syn}羁绊(${a.cnt}) +${a.bonus}`; pu.appendChild(d)
+    })
+  } else {
+    const d = document.createElement('div'); d.className = 'punit'
+    d.style.background = 'rgba(239,68,68,.15)'; d.style.color = '#EF4444'
+    d.textContent = '无羁绊加成 +0'; pu.appendChild(d)
+  }
+
+  const wb = document.getElementById('winner-box')
+  if (total >= 23) {
+    wb.innerHTML = `<div class="winner-big">🏆 你找到了全局最优解！</div><div class="winner-sub">完美！你在牺牲短期战力后获得了最强阵容</div>`
+  } else if (total > 18) {
+    wb.innerHTML = `<div class="winner-big">✨ 不错！你超越了本地最优！</div><div class="winner-sub">战略眼光比贪心更好，但还可以更优</div>`
+  } else if (total === 18) {
+    wb.innerHTML = `<div class="winner-big">🔴 你走上了本地最优路径</div><div class="winner-sub">每轮都选最强单体——错过了羁绊的力量</div>`
+  } else {
+    wb.innerHTML = `<div class="winner-big">🤔 独特路径！</div><div class="winner-sub">既没贪心抢单体，也没攒齐羁绊——勇于探索！</div>`
+  }
+
+  const maxS = Math.max(total, 18, 23)
+  setTimeout(() => {
+    setBar('bp', total, maxS)
+    setBar('bl', 18, maxS)
+    setBar('bg2', 23, maxS)
+  }, 300)
+}
+
+function setBar(id, val, maxV) {
+  const el = document.getElementById(id)
+  el.style.width = `${(val / maxV) * 100}%`
+  el.textContent = val
+}
+
+function resetGame() {
+  G = { round: 0, team: [] }
+  document.getElementById('results').style.display = 'none'
+  document.getElementById('shop').style.display = 'block'
+  document.getElementById('syn-wrap').style.display = 'none'
+  document.getElementById('pow-val').textContent = '0'
+  for (let i = 0; i < 3; i++) {
+    const s = document.getElementById('s' + i)
+    s.className = 'slot'; s.style.borderColor = ''; s.textContent = '空位'
+  }
+  ;['pc1','pc2','pc3','pc4'].forEach(id => {
+    const el = document.getElementById(id)
+    el.className = 'prog-circle'; el.textContent = id.slice(2)
+  })
+  renderShop()
+  document.querySelector('.card:nth-child(3)').scrollIntoView({ behavior: 'smooth' })
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg; t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 3200)
+}
+
+/* init */
+window.addEventListener('load', () => { resizeCvs(); drawScene(-1, '', ''); renderShop() })
+window.addEventListener('resize', () => { resizeCvs(); drawScene(-1, '', '') })
+</script>
+</body>
+</html>

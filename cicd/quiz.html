@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz — DevOps Lingo</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .quiz-intro {
+      text-align: center;
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+    .quiz-intro h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .quiz-intro p {
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .difficulty-grid {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .diff-btn {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      color: var(--text);
+      min-width: 130px;
+    }
+    .diff-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .diff-btn.selected { border-color: var(--accent); background: rgba(108,99,255,0.15); }
+    .diff-emoji { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
+    .diff-name { font-weight: 700; font-size: 0.95rem; }
+    .diff-desc { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.25rem; }
+
+    .review-list {
+      margin-top: 2rem;
+    }
+    .review-item {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      text-align: left;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .review-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .review-q { color: var(--text); margin-bottom: 0.25rem; font-weight: 600; }
+    .review-correct { color: var(--accent2); }
+    .review-wrong { color: var(--accent3); }
+
+    .xp-bar-wrap {
+      background: var(--surface2);
+      border-radius: 999px;
+      height: 12px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .xp-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width 1s ease;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">⚡ DevOps Lingo</a>
+  <div class="nav-links">
+    <a href="index.html">Terms</a>
+    <a href="game.html">Match Game</a>
+    <a href="quiz.html" class="active">Quiz</a>
+  </div>
+</nav>
+
+<!-- INTRO SCREEN -->
+<div id="intro-screen" class="quiz-intro">
+  <div style="font-size:3rem;margin-bottom:1rem">🧠</div>
+  <h1>DevOps Knowledge Quiz</h1>
+  <p>Test how well you know CI/CD, linting, deployment strategies, and practices from top engineering teams. 12 questions, one chance to get each right.</p>
+
+  <div style="color:var(--text-dim);font-size:0.9rem;margin-bottom:1rem">Choose difficulty:</div>
+  <div class="difficulty-grid">
+    <div class="diff-btn selected" data-mode="all" onclick="selectDiff(this,'all')">
+      <span class="diff-emoji">🎯</span>
+      <div class="diff-name">All 12</div>
+      <div class="diff-desc">Full quiz</div>
+    </div>
+    <div class="diff-btn" data-mode="5" onclick="selectDiff(this,'5')">
+      <span class="diff-emoji">⚡</span>
+      <div class="diff-name">Quick 5</div>
+      <div class="diff-desc">5 questions</div>
+    </div>
+    <div class="diff-btn" data-mode="random" onclick="selectDiff(this,'random')">
+      <span class="diff-emoji">🎲</span>
+      <div class="diff-name">Random 8</div>
+      <div class="diff-desc">Shuffled selection</div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" style="font-size:1rem;padding:1rem 2.5rem" onclick="startQuiz()">Start Quiz →</button>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="quiz-screen" class="quiz-container" style="display:none">
+  <div class="quiz-progress" id="quiz-progress"></div>
+
+  <div class="quiz-card">
+    <div class="quiz-meta">
+      <span id="q-counter">Question 1 of 12</span>
+      <span id="q-category" style="color:var(--accent)">CI/CD</span>
+    </div>
+    <div class="quiz-q" id="q-text">Question goes here</div>
+    <div class="quiz-options" id="q-options"></div>
+    <div class="quiz-feedback" id="q-feedback"></div>
+  </div>
+
+  <div class="quiz-nav">
+    <div class="quiz-counter" id="q-score-live">Score: 0</div>
+    <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextQuestion()">Next →</button>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="results-screen" style="display:none; padding: 0 2rem;">
+  <div class="results-card">
+    <div class="results-emoji" id="res-emoji">🏆</div>
+    <div class="results-score" id="res-score">10/12</div>
+    <div style="color:var(--text-dim);margin-bottom:0.5rem;font-size:1rem;font-weight:600" id="res-grade">Expert!</div>
+    <div class="results-msg" id="res-msg">Great job!</div>
+
+    <div class="xp-bar-wrap">
+      <div class="xp-bar" id="xp-bar" style="width:0%"></div>
+    </div>
+    <div style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1.5rem" id="xp-label">0 XP earned</div>
+
+    <div class="results-breakdown">
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-correct" style="color:var(--accent2)">0</div>
+        <div class="result-stat-label">Correct</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-wrong" style="color:var(--accent3)">0</div>
+        <div class="result-stat-label">Wrong</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-pct" style="color:var(--accent)">0%</div>
+        <div class="result-stat-label">Accuracy</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">
+      <button class="btn btn-primary" onclick="startQuiz()">Retake Quiz</button>
+      <a href="game.html" class="btn btn-secondary">Play Match Game</a>
+      <a href="index.html" class="btn btn-secondary">Review Terms</a>
+    </div>
+  </div>
+
+  <div class="results-card" style="margin-top:1rem;max-width:700px">
+    <h3 style="margin-bottom:1rem;font-size:1.1rem">Answer Review</h3>
+    <div class="review-list" id="review-list"></div>
+  </div>
+</div>
+
+<footer>Quiz covers 12 key DevOps & CI/CD concepts from top engineering teams.</footer>
+
+<script src="data.js"></script>
+<script>
+let quizMode = 'all';
+let questions = [];
+let current = 0;
+let correctCount = 0;
+let userAnswers = [];
+
+const CATEGORIES = {
+  0: 'CI/CD', 1: 'CI/CD', 2: 'CI/CD', 3: 'Metrics',
+  4: 'Deployment', 5: 'Deployment', 6: 'Deployment', 7: 'Infrastructure',
+  8: 'Code Quality', 9: 'Testing', 10: 'Version Control', 11: 'Testing'
+};
+
+function selectDiff(el, mode) {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  quizMode = mode;
+}
+
+function startQuiz() {
+  let pool = [...QUIZ_QUESTIONS];
+  if (quizMode === '5') {
+    pool = shuffle(pool).slice(0, 5);
+  } else if (quizMode === 'random') {
+    pool = shuffle(pool).slice(0, 8);
+  } else {
+    pool = shuffle(pool);
+  }
+  questions = pool;
+  current = 0;
+  correctCount = 0;
+  userAnswers = [];
+
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+
+  renderProgress();
+  renderQuestion();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderProgress() {
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = questions.map((_, i) =>
+    `<div class="progress-dot ${i < current ? 'done' : i === current ? 'current' : ''}"></div>`
+  ).join('');
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('q-counter').textContent = `Question ${current + 1} of ${questions.length}`;
+  document.getElementById('q-category').textContent = CATEGORIES[QUIZ_QUESTIONS.indexOf(q)] || 'CI/CD';
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-score-live').textContent = `Score: ${correctCount}/${current}`;
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = q.options.map((o, i) =>
+    `<button class="quiz-option" data-idx="${i}" onclick="selectAnswer(this, ${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
+
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-feedback').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+  renderProgress();
+}
+
+function selectAnswer(btn, idx) {
+  const q = questions[current];
+  const correct = idx === q.answer;
+
+  // Disable all options
+  document.querySelectorAll('.quiz-option').forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.dataset.idx) === q.answer) b.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
+
+  const feedback = document.getElementById('q-feedback');
+  feedback.className = `quiz-feedback show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  feedback.innerHTML = `${correct ? '✅ Correct!' : `❌ Not quite — the answer is: <strong>${q.options[q.answer]}</strong>`}<br><span style="color:var(--text-dim)">${q.explanation}</span>`;
+
+  if (correct) correctCount++;
+  userAnswers.push({ q: q.q, chosen: q.options[idx], correct: q.options[q.answer], isCorrect: correct });
+
+  document.getElementById('q-score-live').textContent = `Score: ${correctCount}/${current + 1}`;
+  document.getElementById('next-btn').style.display = 'block';
+  document.getElementById('next-btn').textContent = current < questions.length - 1 ? 'Next →' : 'See Results →';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+
+  const total = questions.length;
+  const pct = Math.round((correctCount / total) * 100);
+  const xp = correctCount * 25;
+
+  document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+  document.getElementById('res-correct').textContent = correctCount;
+  document.getElementById('res-wrong').textContent = total - correctCount;
+  document.getElementById('res-pct').textContent = pct + '%';
+  document.getElementById('xp-label').textContent = `${xp} XP earned`;
+
+  let emoji, grade, msg;
+  if (pct >= 90) { emoji = '🏆'; grade = 'Expert Level!'; msg = 'Outstanding! You have deep knowledge of DevOps practices used at top engineering teams.'; }
+  else if (pct >= 75) { emoji = '⭐'; grade = 'Solid Knowledge!'; msg = 'Great work! You understand the core concepts. Review the terms you missed to level up further.'; }
+  else if (pct >= 50) { emoji = '📚'; grade = 'Good Foundation!'; msg = 'You\'re getting there! Check out the Terms page and try the matching game to reinforce the concepts.'; }
+  else { emoji = '🌱'; grade = 'Keep Learning!'; msg = 'DevOps takes time to master. Head back to the Terms page and explore each concept in depth.'; }
+
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-grade').textContent = grade;
+  document.getElementById('res-msg').textContent = msg;
+
+  // Animate XP bar
+  setTimeout(() => {
+    document.getElementById('xp-bar').style.width = pct + '%';
+  }, 100);
+
+  // Review list
+  const review = document.getElementById('review-list');
+  review.innerHTML = userAnswers.map(a => `
+    <div class="review-item">
+      <div class="review-icon">${a.isCorrect ? '✅' : '❌'}</div>
+      <div>
+        <div class="review-q">${a.q}</div>
+        ${a.isCorrect
+          ? `<div class="review-correct">Your answer: ${a.chosen}</div>`
+          : `<div class="review-wrong">Your answer: ${a.chosen}</div>
+             <div class="review-correct">Correct: ${a.correct}</div>`
+        }
+      </div>
+    </div>
+  `).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

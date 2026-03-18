@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CLI vs API 开发者冒险</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0B0D14;--panel:#111520;--panel2:#181D2B;--border:#252A3A;
+  --text:#C0B090;--dim:#555870;
+  --cli:#00FF88;--cli-dim:#00AA55;--cli-bg:#050A08;
+  --api:#4A9EFF;--api-dim:#2060A0;--api-bg:#050810;
+  --get:#22C55E;--post:#3B82F6;--put:#F97316;--del:#EF4444;
+  --gold:#C89B3C;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* HEADER */
+.hdr{
+  text-align:center;padding:50px 20px 36px;
+  background:linear-gradient(160deg,#060810,#111828);
+  border-bottom:1px solid var(--border);position:relative;overflow:hidden;
+}
+.hdr::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(0,255,136,.04),transparent 60%),
+             radial-gradient(ellipse at 70% 50%,rgba(74,158,255,.04),transparent 60%);
+}
+.hdr h1{font-size:clamp(1.7em,5vw,2.8em);position:relative;margin-bottom:10px}
+.hdr h1 .cli-color{color:var(--cli);text-shadow:0 0 20px rgba(0,255,136,.5)}
+.hdr h1 .api-color{color:var(--api);text-shadow:0 0 20px rgba(74,158,255,.5)}
+.hdr p{color:var(--dim);position:relative;font-size:1em}
+
+/* WRAP */
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px}
+
+/* CONCEPT CARDS */
+.concept-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.concept-card{padding:20px;border-radius:12px;border:1px solid}
+.concept-card.cli-c{background:rgba(0,255,136,.05);border-color:rgba(0,255,136,.2)}
+.concept-card.api-c{background:rgba(74,158,255,.05);border-color:rgba(74,158,255,.2)}
+.concept-card .icon{font-size:2em;margin-bottom:10px}
+.concept-card h3{font-size:1.05em;margin-bottom:8px}
+.cli-c h3{color:var(--cli)}.api-c h3{color:var(--api)}
+.concept-card p{font-size:.86em;color:var(--dim);margin-bottom:10px}
+.concept-card ul{font-size:.82em;color:var(--dim);padding-left:18px}
+.concept-card ul li{margin-bottom:3px}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75em;font-weight:700;margin-top:8px}
+.tag.cli-tag{background:rgba(0,255,136,.15);color:var(--cli)}
+.tag.api-tag{background:rgba(74,158,255,.15);color:var(--api)}
+
+/* ANALOGY */
+.analogy{display:flex;align-items:stretch;gap:0;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:32px}
+.analogy-half{flex:1;padding:20px}
+.analogy-half.cli-h{background:rgba(0,255,136,.03);border-right:1px solid var(--border)}
+.analogy-half h4{font-size:.92em;margin-bottom:8px}
+.cli-h h4{color:var(--cli)}.api-h h4{color:var(--api)}
+.analogy-half .scene{font-size:1.3em;margin:10px 0}
+.analogy-half p{font-size:.83em;color:var(--dim)}
+.analogy-vs{width:40px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dim);font-size:.85em;flex-shrink:0}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--border)}
+.sec-hdr .badge{font-size:.78em;padding:3px 10px;border-radius:10px;font-weight:700}
+.sec-hdr .cli-badge{background:rgba(0,255,136,.15);color:var(--cli)}
+.sec-hdr .api-badge{background:rgba(74,158,255,.15);color:var(--api)}
+.sec-hdr h2{font-size:1.1em}
+.sec-hdr .mission-txt{font-size:.82em;color:var(--dim);flex:1}
+.done-badge{display:none;font-size:.78em;padding:3px 10px;border-radius:10px;background:rgba(34,197,94,.2);color:#22C55E;border:1px solid rgba(34,197,94,.3)}
+
+/* ──────────────────────────────
+   CLI TERMINAL
+────────────────────────────── */
+.terminal-wrap{background:var(--cli-bg);border:1px solid rgba(0,255,136,.2);border-radius:12px;overflow:hidden;margin-bottom:32px;font-family:'Courier New',monospace}
+.term-titlebar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(0,255,136,.05);border-bottom:1px solid rgba(0,255,136,.1)}
+.term-dot{width:12px;height:12px;border-radius:50%}
+.term-title{font-size:.8em;color:var(--cli-dim);flex:1;text-align:center}
+.term-output{padding:16px;min-height:260px;max-height:340px;overflow-y:auto;font-size:.88em;line-height:1.6}
+.term-output::-webkit-scrollbar{width:4px}.term-output::-webkit-scrollbar-track{background:transparent}.term-output::-webkit-scrollbar-thumb{background:var(--cli-dim);border-radius:2px}
+.t-line{color:var(--cli);white-space:pre-wrap;word-break:break-all}
+.t-cmd{color:#FFF;opacity:.9}
+.t-prompt{color:var(--cli);font-weight:700}
+.t-err{color:#FF6B6B}
+.t-success{color:#FFD700}
+.t-dim{color:var(--cli-dim)}
+.term-input-row{display:flex;align-items:center;padding:8px 16px 14px;gap:8px;border-top:1px solid rgba(0,255,136,.1)}
+.term-prompt-label{color:var(--cli);font-size:.88em;font-family:'Courier New',monospace;white-space:nowrap;flex-shrink:0}
+.term-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#FFF;font-size:.88em;font-family:'Courier New',monospace;caret-color:var(--cli);
+}
+.term-hint{padding:8px 16px;background:rgba(0,255,136,.04);border-top:1px solid rgba(0,255,136,.07);font-size:.78em;color:var(--cli-dim);display:flex;gap:16px;flex-wrap:wrap}
+.term-hint span{cursor:pointer;padding:2px 6px;border-radius:4px;border:1px solid rgba(0,255,136,.2);transition:all .15s}
+.term-hint span:hover{background:rgba(0,255,136,.1);color:var(--cli)}
+
+/* ──────────────────────────────
+   API PLAYGROUND
+────────────────────────────── */
+.api-wrap{background:var(--api-bg);border:1px solid rgba(74,158,255,.2);border-radius:12px;overflow:hidden;margin-bottom:32px}
+
+/* mission steps */
+.mission-steps{display:flex;gap:0;padding:16px 20px;border-bottom:1px solid rgba(74,158,255,.1);overflow-x:auto}
+.ms{
+  display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;
+  font-size:.8em;cursor:pointer;transition:all .2s;white-space:nowrap;
+  border:1px solid var(--border);color:var(--dim);background:var(--panel2);margin-right:6px;
+}
+.ms.active{border-color:var(--api);color:var(--api);background:rgba(74,158,255,.1)}
+.ms.done{border-color:#22C55E;color:#22C55E;background:rgba(34,197,94,.08)}
+.ms-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--border);flex-shrink:0}
+.ms.active .ms-num{background:var(--api);color:var(--bg)}
+.ms.done .ms-num{background:#22C55E;color:#fff}
+
+/* request builder */
+.req-builder{padding:18px 20px}
+.req-builder h4{font-size:.88em;color:var(--dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+.method-url{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+.method-sel{
+  padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--panel2);color:var(--text);font-size:.88em;font-weight:700;cursor:pointer;
+  min-width:90px;outline:none;
+}
+.method-sel option{background:var(--panel)}
+.url-input{
+  flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--panel2);color:var(--text);font-size:.88em;font-family:'Courier New',monospace;outline:none;
+}
+.url-input:focus{border-color:var(--api)}
+.send-btn{
+  padding:8px 20px;background:linear-gradient(135deg,#1A4080,var(--api));
+  border:none;border-radius:8px;color:#fff;font-size:.88em;font-weight:700;cursor:pointer;
+  white-space:nowrap;transition:all .2s;
+}
+.send-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(74,158,255,.35)}
+.send-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* tabs */
+.req-tabs{display:flex;gap:4px;margin-bottom:12px}
+.req-tab{padding:5px 12px;border-radius:6px;font-size:.8em;cursor:pointer;color:var(--dim);border:1px solid transparent;transition:all .15s}
+.req-tab.active{background:rgba(74,158,255,.12);border-color:rgba(74,158,255,.3);color:var(--api)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.headers-grid{display:flex;flex-direction:column;gap:6px}
+.hdr-row{display:flex;gap:8px}
+.hdr-key,.hdr-val{
+  flex:1;padding:6px 10px;border-radius:6px;border:1px solid var(--border);
+  background:var(--panel2);color:var(--text);font-size:.82em;font-family:'Courier New',monospace;outline:none;
+}
+.hdr-key:focus,.hdr-val:focus{border-color:var(--api)}
+.hdr-add{padding:5px 12px;background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.2);border-radius:6px;color:var(--api);font-size:.78em;cursor:pointer;transition:all .15s}
+.hdr-add:hover{background:rgba(74,158,255,.2)}
+.body-input{
+  width:100%;min-height:80px;padding:10px;border-radius:6px;
+  border:1px solid var(--border);background:var(--panel2);
+  color:var(--text);font-size:.84em;font-family:'Courier New',monospace;
+  outline:none;resize:vertical;
+}
+.body-input:focus{border-color:var(--api)}
+
+/* network anim */
+.network-anim{padding:14px 20px;border-top:1px solid rgba(74,158,255,.08);border-bottom:1px solid rgba(74,158,255,.08);display:none}
+.net-track{display:flex;align-items:center;gap:10px;font-size:.82em}
+.net-node{padding:6px 12px;border-radius:8px;font-weight:700;white-space:nowrap}
+.net-client{background:rgba(74,158,255,.15);color:var(--api);border:1px solid rgba(74,158,255,.3)}
+.net-server{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.3)}
+.net-line{flex:1;height:4px;background:var(--border);border-radius:2px;position:relative;overflow:hidden}
+.net-packet{
+  position:absolute;top:0;left:-20%;width:20%;height:100%;
+  background:linear-gradient(90deg,transparent,var(--api),transparent);
+  border-radius:2px;animation:none;
+}
+.net-packet.go{animation:packetGo .8s ease forwards}
+.net-packet.back{animation:packetBack .8s ease forwards;background:linear-gradient(90deg,transparent,#22C55E,transparent)}
+@keyframes packetGo{from{left:-20%}to{left:100%}}
+@keyframes packetBack{from{left:100%}to{left:-20%}}
+.net-status{font-size:.8em;color:var(--dim);margin-left:auto;min-width:60px;text-align:right}
+
+/* response */
+.response-panel{padding:16px 20px}
+.response-panel h4{font-size:.88em;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+.resp-empty{color:var(--dim);font-size:.85em;font-style:italic;padding:16px 0}
+.resp-box{background:var(--panel2);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.resp-status-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.status-badge{padding:2px 10px;border-radius:10px;font-size:.82em;font-weight:700}
+.s2{background:rgba(34,197,94,.15);color:#22C55E}
+.s4{background:rgba(239,68,68,.15);color:#EF4444}
+.s5{background:rgba(249,115,22,.15);color:#F97316}
+.resp-time{font-size:.78em;color:var(--dim);margin-left:auto}
+.resp-body{padding:14px;font-size:.84em;font-family:'Courier New',monospace;line-height:1.7;max-height:200px;overflow-y:auto;white-space:pre-wrap}
+.resp-body::-webkit-scrollbar{width:4px}.resp-body::-webkit-scrollbar-thumb{background:var(--api-dim);border-radius:2px}
+/* JSON syntax */
+.j-k{color:#9CD8FF}.j-s{color:#CE9178}.j-n{color:#B5CEA8}.j-b{color:#569CD6}.j-p{color:var(--text)}
+
+/* endpoint guide */
+.ep-guide{padding:14px 20px;background:rgba(74,158,255,.03);border-top:1px solid rgba(74,158,255,.08)}
+.ep-guide h4{font-size:.82em;color:var(--dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.ep-list{display:flex;flex-direction:column;gap:6px}
+.ep-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.ep-item:hover{background:rgba(74,158,255,.07);border-color:rgba(74,158,255,.15)}
+.ep-item.ep-active{background:rgba(74,158,255,.1);border-color:rgba(74,158,255,.3)}
+.method-pill{font-size:.72em;font-weight:700;padding:2px 7px;border-radius:6px;min-width:42px;text-align:center}
+.m-get{background:rgba(34,197,94,.15);color:var(--get)}.m-post{background:rgba(59,130,246,.15);color:var(--post)}
+.m-put{background:rgba(249,115,22,.15);color:var(--put)}.m-del{background:rgba(239,68,68,.15);color:var(--del)}
+.ep-path{font-size:.84em;font-family:'Courier New',monospace;color:var(--text)}
+.ep-desc{font-size:.78em;color:var(--dim);margin-left:auto}
+.ep-lock{color:#F97316;font-size:.85em}
+
+/* COMPARISON TABLE */
+.cmp-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:32px}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table th{padding:12px 16px;font-size:.85em;text-align:left;border-bottom:1px solid var(--border)}
+.cmp-table th:first-child{color:var(--dim);width:28%}
+.cmp-table th.cli-th{color:var(--cli)}
+.cmp-table th.api-th{color:var(--api)}
+.cmp-table td{padding:11px 16px;font-size:.84em;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{color:var(--dim);font-size:.8em}
+.cmp-table td.cli-td{color:rgba(0,255,136,.85)}
+.cmp-table td.api-td{color:rgba(74,158,255,.85)}
+
+/* WHEN TO USE */
+.when-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
+.when-card{padding:16px;border-radius:10px;border:1px solid}
+.when-card.cli-w{background:rgba(0,255,136,.04);border-color:rgba(0,255,136,.18)}
+.when-card.api-w{background:rgba(74,158,255,.04);border-color:rgba(74,158,255,.18)}
+.when-card h4{font-size:.92em;margin-bottom:10px}
+.cli-w h4{color:var(--cli)}.api-w h4{color:var(--api)}
+.when-card ul{font-size:.83em;color:var(--dim);padding-left:16px}
+.when-card ul li{margin-bottom:4px}
+
+/* toast */
+.toast{position:fixed;top:18px;right:18px;padding:10px 18px;background:var(--panel);border-radius:8px;font-size:.88em;transform:translateX(220%);transition:transform .3s;z-index:999;border:1px solid var(--border)}
+.toast.show{transform:translateX(0)}
+.toast.cli-toast{border-color:rgba(0,255,136,.4);color:var(--cli)}
+.toast.api-toast{border-color:rgba(74,158,255,.4);color:var(--api)}
+
+/* misc */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:28px}
+.btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:700;transition:all .2s}
+.btn-outline{background:transparent;border:1px solid var(--dim);color:var(--dim)}
+.btn-outline:hover{border-color:var(--text);color:var(--text)}
+
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi .25s ease forwards}
+
+@media(max-width:620px){
+  .concept-row{grid-template-columns:1fr}
+  .when-grid{grid-template-columns:1fr}
+  .analogy{flex-direction:column}
+  .analogy-vs{width:100%;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="cli-color">CLI</span> vs <span class="api-color">API</span> &nbsp;开发者冒险</h1>
+  <p>两个关卡，亲身感受命令行与接口调用的区别</p>
+</div>
+
+<div class="wrap">
+
+<!-- CONCEPT CARDS -->
+<div class="concept-row">
+  <div class="concept-card cli-c">
+    <div class="icon">💻</div>
+    <h3>CLI — 命令行界面</h3>
+    <p>Command Line Interface，你在终端里直接打命令，控制<strong style="color:var(--text)">本地或远程机器</strong>。</p>
+    <ul>
+      <li>直接操作文件、进程、系统</li>
+      <li>必须在目标机器上运行</li>
+      <li>强大、高效、脚本友好</li>
+      <li>输入文本命令 → 文本输出</li>
+    </ul>
+    <span class="tag cli-tag">在机器内部直接操作</span>
+  </div>
+  <div class="concept-card api-c">
+    <div class="icon">🌐</div>
+    <h3>API — 应用程序接口</h3>
+    <p>Application Programming Interface，你通过网络发送<strong style="color:var(--text)">标准化请求</strong>，调用远程服务。</p>
+    <ul>
+      <li>任何地方都能调用（浏览器/手机/服务器）</li>
+      <li>HTTP 方法 + JSON 数据</li>
+      <li>服务可复用、权限可控</li>
+      <li>请求 → 结构化响应（JSON）</li>
+    </ul>
+    <span class="tag api-tag">跨网络通信，随处调用</span>
+  </div>
+</div>
+
+<!-- ANALOGY -->
+<div class="analogy">
+  <div class="analogy-half cli-h">
+    <h4>🍳 CLI = 自己进厨房做饭</h4>
+    <div class="scene">👨‍🍳 → 冰箱 → 炉灶 → 盘子</div>
+    <p>你直接站在厨房里，打开冰箱、拿食材、开火，每步都亲手完成。速度快，权限大，但你得在厨房里才行。</p>
+  </div>
+  <div class="analogy-vs">VS</div>
+  <div class="analogy-half api-h">
+    <h4>🛎️ API = 在餐厅点餐</h4>
+    <div class="scene">📱 → 菜单（API文档）→ 服务员（API）→ 厨房</div>
+    <p>你拿着菜单点餐，服务员传达给厨房，厨房做好端给你。你不用进厨房，从任何地方都能点。</p>
+  </div>
+</div>
+
+<!-- CLI GAME -->
+<div class="card">
+  <div class="sec-hdr">
+    <span class="badge cli-badge">关卡 1</span>
+    <h2 style="color:var(--cli)">CLI 终端冒险</h2>
+    <span class="mission-txt">🎯 任务：导航到隐藏目录，读取宝藏文件</span>
+    <span class="done-badge" id="cli-done">✓ 任务完成！</span>
+  </div>
+
+  <div class="terminal-wrap">
+    <div class="term-titlebar">
+      <div class="term-dot" style="background:#FF5F57"></div>
+      <div class="term-dot" style="background:#FEBC2E"></div>
+      <div class="term-dot" style="background:#28C840"></div>
+      <span class="term-title">developer@kingdom ~ bash</span>
+    </div>
+    <div class="term-output" id="term-out"></div>
+    <div class="term-input-row">
+      <span class="term-prompt-label" id="term-prompt">developer@kingdom:~$</span>
+      <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="输入命令，回车执行…">
+    </div>
+    <div class="term-hint">
+      <span onclick="injectCmd('help')">help</span>
+      <span onclick="injectCmd('ls')">ls</span>
+      <span onclick="injectCmd('pwd')">pwd</span>
+      <span onclick="injectCmd('cd secret')">cd secret</span>
+      <span onclick="injectCmd('cat treasure.txt')">cat treasure.txt</span>
+    </div>
+  </div>
+</div>
+
+<!-- API GAME -->
+<div class="card">
+  <div class="sec-hdr">
+    <span class="badge api-badge">关卡 2</span>
+    <h2 style="color:var(--api)">API 请求冒险</h2>
+    <span class="mission-txt">🎯 任务：登录获取令牌，再用令牌取回宝藏</span>
+    <span class="done-badge" id="api-done">✓ 任务完成！</span>
+  </div>
+
+  <!-- mission steps -->
+  <div class="mission-steps" id="mission-steps">
+    <div class="ms active" id="ms1"><div class="ms-num">1</div>查询状态</div>
+    <div class="ms" id="ms2"><div class="ms-num">2</div>获取英雄列表</div>
+    <div class="ms" id="ms3"><div class="ms-num">3</div>登录拿令牌</div>
+    <div class="ms" id="ms4"><div class="ms-num">4</div>解锁宝藏</div>
+  </div>
+
+  <!-- endpoint guide -->
+  <div class="ep-guide">
+    <h4>📋 可用端点（点击自动填充）</h4>
+    <div class="ep-list" id="ep-list"></div>
+  </div>
+
+  <!-- request builder -->
+  <div class="req-builder">
+    <h4>请求构建器</h4>
+    <div class="method-url">
+      <select class="method-sel" id="api-method">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+      <input class="url-input" id="api-url" type="text" value="/api/status" placeholder="/api/endpoint">
+      <button class="send-btn" id="send-btn" onclick="sendRequest()">发送请求 ▶</button>
+    </div>
+
+    <div class="req-tabs">
+      <div class="req-tab active" onclick="switchTab('headers')">请求头 Headers</div>
+      <div class="req-tab" onclick="switchTab('body')">请求体 Body</div>
+    </div>
+    <div class="tab-panel active" id="tab-headers">
+      <div class="headers-grid" id="headers-grid">
+        <div class="hdr-row">
+          <input class="hdr-key" placeholder="Header 名称" value="Content-Type">
+          <input class="hdr-val" placeholder="值" value="application/json">
+        </div>
+      </div>
+      <button class="hdr-add" onclick="addHeaderRow()" style="margin-top:6px">+ 添加 Header</button>
+    </div>
+    <div class="tab-panel" id="tab-body">
+      <textarea class="body-input" id="req-body" placeholder='{"key": "value"}'></textarea>
+    </div>
+  </div>
+
+  <!-- network animation -->
+  <div class="network-anim" id="net-anim">
+    <div class="net-track">
+      <div class="net-node net-client">CLIENT 客户端</div>
+      <div class="net-line"><div class="net-packet" id="net-packet"></div></div>
+      <div class="net-node net-server">SERVER 服务器</div>
+      <div class="net-status" id="net-status">等待中…</div>
+    </div>
+  </div>
+
+  <!-- response -->
+  <div class="response-panel">
+    <h4>响应 Response</h4>
+    <div id="resp-area"><p class="resp-empty">点击「发送请求」查看响应</p></div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="cmp-wrap">
+  <div class="sec-hdr"><span class="icon" style="font-size:1.2em">📊</span><h2>CLI vs API 全面对比</h2></div>
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>特性</th>
+        <th class="cli-th">💻 CLI</th>
+        <th class="api-th">🌐 API</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>调用方式</td><td class="cli-td">输入文字命令</td><td class="api-td">发送 HTTP 请求</td></tr>
+      <tr><td>运行位置</td><td class="cli-td">必须在目标机器上</td><td class="api-td">任何联网的地方</td></tr>
+      <tr><td>数据格式</td><td class="cli-td">纯文本输入/输出</td><td class="api-td">结构化 JSON/XML</td></tr>
+      <tr><td>权限控制</td><td class="cli-td">系统用户权限</td><td class="api-td">Token / API Key</td></tr>
+      <tr><td>适合场景</td><td class="cli-td">系统管理、自动化脚本、DevOps</td><td class="api-td">Web服务、移动端、跨平台集成</td></tr>
+      <tr><td>学习曲线</td><td class="cli-td">需要记忆命令语法</td><td class="api-td">需要理解 HTTP 协议</td></tr>
+      <tr><td>典型工具</td><td class="cli-td">bash、zsh、PowerShell</td><td class="api-td">Postman、curl、fetch</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- WHEN TO USE -->
+<div class="when-grid">
+  <div class="when-card cli-w">
+    <h4>💻 什么时候用 CLI？</h4>
+    <ul>
+      <li>管理服务器文件和进程</li>
+      <li>自动化部署脚本（CI/CD）</li>
+      <li>安装软件包（npm / pip / apt）</li>
+      <li>Git 操作版本控制</li>
+      <li>数据库本地管理</li>
+      <li>系统监控（top / htop）</li>
+    </ul>
+  </div>
+  <div class="when-card api-w">
+    <h4>🌐 什么时候用 API？</h4>
+    <ul>
+      <li>前端调用后端数据</li>
+      <li>接入第三方服务（支付/地图/AI）</li>
+      <li>手机 App 与服务器通信</li>
+      <li>微服务之间相互调用</li>
+      <li>给外部开发者开放功能</li>
+      <li>Webhook 触发自动化流程</li>
+    </ul>
+  </div>
+</div>
+
+<div style="text-align:center;padding:24px;color:var(--dim);font-size:.82em">
+  CLI × API 开发者冒险 · 亲身体验比一百遍讲解更有效 🚀
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════
+   CLI ENGINE
+═══════════════════════════════════════ */
+const FS = {
+  'home': {
+    type: 'dir',
+    children: {
+      'readme.txt': {
+        type: 'file',
+        content: '📄 欢迎来到开发者王国！\n\n目标：找到隐藏的宝藏文件。\n\n提示：用 ls 查看目录，cd 进入文件夹，cat 读取文件。'
+      },
+      'docs': {
+        type: 'dir',
+        children: {
+          'cli_guide.txt': {
+            type: 'file',
+            content: '📘 CLI 快速指南\n\n常用命令：\n  ls              列出当前目录文件\n  cd <目录>       进入指定目录\n  cd ..           返回上级目录\n  cat <文件>      读取文件内容\n  pwd             显示当前路径\n  mkdir <目录>    创建新目录\n  echo <内容>     打印文字\n  clear           清空终端\n  whoami          显示当前用户'
+          }
+        }
+      },
+      'api_notes.txt': {
+        type: 'file',
+        content: '📝 API 学习笔记\n\n"CLI 在机器内部操作，API 跨网络通信。\nCLI 像走进厨房，API 像对服务员点餐。"\n\n                      —— 一个正在学习的开发者'
+      },
+      'secret': {
+        type: 'dir',
+        children: {
+          'treasure.txt': {
+            type: 'file',
+            isTreasure: true,
+            content: '🏆 恭喜！你通过 CLI 找到了宝藏！\n\n你刚刚体验的就是 CLI 的核心：\n  1. 直接控制文件系统\n  2. 逐条执行命令\n  3. 在本机上运行\n\n✅ 关卡1 完成！去体验 API 关卡吧 ↓'
+          }
+        }
+      }
+    }
+  }
+}
+
+let cliState = {
+  cwd: ['home'],
+  done: false,
+  history: [],
+  histIdx: -1
+}
+
+function cwdPath() {
+  return '~/' + cliState.cwd.slice(1).join('/')
+}
+
+function promptLabel() {
+  const p = cliState.cwd.length === 1 ? '~' : cwdPath()
+  return `developer@kingdom:${p}$`
+}
+
+function getCwdNode() {
+  let node = FS
+  for (const p of cliState.cwd) {
+    if (!node[p]) return null
+    node = node[p].type === 'dir' ? node[p].children : null
+    if (!node) return null
+  }
+  return node
+}
+
+function appendLine(html, cls='t-line') {
+  const out = document.getElementById('term-out')
+  const div = document.createElement('div')
+  div.className = cls
+  div.innerHTML = html
+  out.appendChild(div)
+  out.scrollTop = out.scrollHeight
+}
+
+function appendCmd(cmd) {
+  const lbl = promptLabel()
+  appendLine(`<span class="t-prompt">${lbl}</span> <span class="t-cmd">${escHtml(cmd)}</span>`, 't-line')
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+}
+
+function cliInit() {
+  appendLine('<span class="t-dim">王国终端 v1.0 — 输入 <span style="color:var(--cli)">help</span> 查看命令</span>')
+  appendLine('<span class="t-dim">─────────────────────────────────</span>')
+  appendLine(`<span class="t-prompt">${promptLabel()}</span> <span class="t-cmd">_</span>`, 't-line')
+}
+
+function runCmd(raw) {
+  const input = raw.trim()
+  if (!input) return
+  appendCmd(input)
+  cliState.history.unshift(input)
+  cliState.histIdx = -1
+
+  const parts = input.split(/\s+/)
+  const cmd = parts[0].toLowerCase()
+  const arg = parts.slice(1).join(' ').trim()
+
+  switch(cmd) {
+    case 'help': cmdHelp(); break
+    case 'ls': cmdLs(); break
+    case 'pwd': appendLine(cwdPath()); break
+    case 'cd': cmdCd(arg); break
+    case 'cat': cmdCat(arg); break
+    case 'mkdir': appendLine(`已创建目录: <span style="color:var(--cli)">${escHtml(arg)}</span>（仅演示，不持久化）`); break
+    case 'clear': document.getElementById('term-out').innerHTML=''; break
+    case 'echo': appendLine(escHtml(arg || '')); break
+    case 'whoami': appendLine('developer'); break
+    case 'api': appendLine('<span style="color:var(--api)">提示：滚动页面查看 API 关卡！</span>'); break
+    default: appendLine(`<span class="t-err">bash: ${escHtml(cmd)}: 未找到命令。输入 'help' 查看可用命令。</span>`)
+  }
+  updatePrompt()
+}
+
+function cmdHelp() {
+  const lines = [
+    '<span class="t-dim">可用命令：</span>',
+    '  <span style="color:var(--cli)">ls</span>              列出当前目录内容',
+    '  <span style="color:var(--cli)">cd &lt;目录&gt;</span>       进入目录（cd .. 返回上级）',
+    '  <span style="color:var(--cli)">cat &lt;文件&gt;</span>     读取文件内容',
+    '  <span style="color:var(--cli)">pwd</span>             显示当前路径',
+    '  <span style="color:var(--cli)">mkdir &lt;名称&gt;</span>   创建目录（演示）',
+    '  <span style="color:var(--cli)">echo &lt;内容&gt;</span>    打印文字',
+    '  <span style="color:var(--cli)">whoami</span>          显示当前用户',
+    '  <span style="color:var(--cli)">clear</span>           清空终端',
+  ]
+  lines.forEach(l => appendLine(l))
+}
+
+function cmdLs() {
+  const node = getCwdNode()
+  if (!node) { appendLine('<span class="t-err">错误：无法读取目录</span>'); return }
+  const entries = Object.entries(node)
+  if (!entries.length) { appendLine('<span class="t-dim">（空目录）</span>'); return }
+  const line = entries.map(([name, obj]) =>
+    obj.type === 'dir'
+      ? `<span style="color:#4A9EFF;font-weight:700">${name}/</span>`
+      : `<span style="color:var(--cli)">${name}</span>`
+  ).join('  ')
+  appendLine(line)
+}
+
+function cmdCd(arg) {
+  if (!arg || arg === '~') { cliState.cwd = ['home']; return }
+  if (arg === '..') {
+    if (cliState.cwd.length > 1) cliState.cwd.pop()
+    return
+  }
+  const parts = arg.split('/')
+  const saved = [...cliState.cwd]
+  for (const p of parts) {
+    if (!p || p === '.') continue
+    if (p === '..') { if (cliState.cwd.length > 1) cliState.cwd.pop(); continue }
+    const node = getCwdNode()
+    if (!node || !node[p]) {
+      appendLine(`<span class="t-err">cd: ${escHtml(arg)}: 没有那个目录</span>`)
+      cliState.cwd = saved; return
+    }
+    if (node[p].type !== 'dir') {
+      appendLine(`<span class="t-err">cd: ${escHtml(arg)}: 不是一个目录</span>`)
+      cliState.cwd = saved; return
+    }
+    cliState.cwd.push(p)
+  }
+}
+
+function cmdCat(arg) {
+  if (!arg) { appendLine('<span class="t-err">cat: 缺少文件名</span>'); return }
+  const node = getCwdNode()
+  if (!node) { appendLine('<span class="t-err">cat: 无法读取</span>'); return }
+  const file = node[arg]
+  if (!file) { appendLine(`<span class="t-err">cat: ${escHtml(arg)}: 没有那个文件或目录</span>`); return }
+  if (file.type === 'dir') { appendLine(`<span class="t-err">cat: ${escHtml(arg)}: 是一个目录</span>`); return }
+  const lines = file.content.split('\n')
+  lines.forEach(l => appendLine(escHtml(l) || ' '))
+  if (file.isTreasure && !cliState.done) {
+    cliState.done = true
+    setTimeout(() => {
+      document.getElementById('cli-done').style.display = 'inline-block'
+      showToast('🎉 CLI 关卡完成！', 'cli-toast')
+    }, 300)
+  }
+}
+
+function updatePrompt() {
+  document.getElementById('term-prompt').textContent = promptLabel() + ' '
+}
+
+function injectCmd(cmd) {
+  const inp = document.getElementById('term-input')
+  inp.value = cmd; inp.focus()
+}
+
+document.getElementById('term-input').addEventListener('keydown', e => {
+  const inp = e.target
+  if (e.key === 'Enter') {
+    const v = inp.value; inp.value = ''
+    runCmd(v)
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    if (cliState.histIdx < cliState.history.length - 1) {
+      cliState.histIdx++
+      inp.value = cliState.history[cliState.histIdx]
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    if (cliState.histIdx > 0) { cliState.histIdx--; inp.value = cliState.history[cliState.histIdx] }
+    else { cliState.histIdx = -1; inp.value = '' }
+  } else if (e.key === 'Tab') {
+    e.preventDefault()
+    autoComplete(inp)
+  }
+})
+
+function autoComplete(inp) {
+  const v = inp.value
+  const parts = v.split(/\s+/)
+  if (parts.length < 2) return
+  const partial = parts[parts.length - 1]
+  const node = getCwdNode()
+  if (!node) return
+  const matches = Object.keys(node).filter(k => k.startsWith(partial))
+  if (matches.length === 1) {
+    parts[parts.length - 1] = matches[0] + (node[matches[0]].type === 'dir' ? '/' : '')
+    inp.value = parts.join(' ')
+  }
+}
+
+/* ═══════════════════════════════════════
+   API ENGINE
+═══════════════════════════════════════ */
+const ENDPOINTS = [
+  { method: 'GET',  path: '/api/status',  desc: '查询服务器状态', lock: false,
+    handler: () => ({ status: 200, body: { status: 'online', server: '王国API v2.0', uptime: '99.9%', message: '服务运行正常！' } })
+  },
+  { method: 'GET',  path: '/api/heroes',  desc: '获取英雄列表', lock: false,
+    handler: () => ({ status: 200, body: { heroes: [
+      { id: 1, name: '盖伦', class: '战士', power: 85 },
+      { id: 2, name: '卡西奥佩娅', class: '法师', power: 79 },
+      { id: 3, name: '维迦', class: '法师', power: 91 }
+    ], total: 3 } })
+  },
+  { method: 'POST', path: '/api/login',   desc: '登录获取令牌', lock: false,
+    handler: (body) => {
+      try {
+        const b = JSON.parse(body || '{}')
+        if (b.username === 'dev' && b.password === '123456') {
+          apiState.token = 'Bearer dev-abc123'
+          apiState.loggedIn = true
+          return { status: 200, body: { success: true, token: 'dev-abc123', message: '登录成功！复制 token 填入请求头后调用宝藏接口', hint: '将 token 加入 Authorization 请求头：Bearer dev-abc123' } }
+        }
+        return { status: 401, body: { error: '用户名或密码错误', hint: '试试 username: "dev", password: "123456"' } }
+      } catch {
+        return { status: 400, body: { error: '请求体不是合法 JSON', hint: '示例: {"username":"dev","password":"123456"}' } }
+      }
+    }
+  },
+  { method: 'GET',  path: '/api/treasure', desc: '获取宝藏（需令牌）', lock: true,
+    handler: (body, headers) => {
+      const auth = headers['authorization'] || headers['Authorization'] || ''
+      if (auth.includes('dev-abc123')) {
+        apiState.treasureDone = true
+        return { status: 200, body: { treasure: '🏆 恭喜！宝藏解锁！', message: 'API 关卡完成！你已掌握 HTTP 认证流程', reward: { exp: 500, badge: '🌐 API大师' } } }
+      }
+      return { status: 401, body: { error: 'Unauthorized', message: '需要有效的 Authorization 请求头', hint: '先调用 POST /api/login 获取 token，然后添加请求头: Authorization: Bearer dev-abc123' } }
+    }
+  },
+]
+
+const API_MISSION_MAP = {
+  '/api/status':  'ms1',
+  '/api/heroes':  'ms2',
+  '/api/login':   'ms3',
+  '/api/treasure':'ms4',
+}
+
+let apiState = { token: null, loggedIn: false, treasureDone: false, completedSteps: new Set(), sending: false }
+
+// Render endpoint list
+function renderEndpoints() {
+  const list = document.getElementById('ep-list')
+  ENDPOINTS.forEach((ep, i) => {
+    const div = document.createElement('div')
+    div.className = 'ep-item'
+    div.id = 'ep-' + i
+    div.innerHTML = `
+      <span class="method-pill m-${ep.method.toLowerCase()}">${ep.method}</span>
+      <span class="ep-path">${ep.path}</span>
+      <span class="ep-desc">${ep.desc}</span>
+      ${ep.lock ? '<span class="ep-lock">🔒</span>' : ''}
+    `
+    div.addEventListener('click', () => fillEndpoint(ep, i))
+    list.appendChild(div)
+  })
+}
+
+function fillEndpoint(ep, idx) {
+  document.getElementById('api-method').value = ep.method
+  document.getElementById('api-url').value = ep.path
+  // preset body
+  const body = document.getElementById('req-body')
+  if (ep.path === '/api/login') {
+    body.value = '{\n  "username": "dev",\n  "password": "123456"\n}'
+    switchTab('body')
+  } else {
+    body.value = ''
+  }
+  // preset auth header
+  if (ep.path === '/api/treasure' && apiState.loggedIn) {
+    autoAddAuthHeader()
+  }
+  // highlight active
+  document.querySelectorAll('.ep-item').forEach(e => e.classList.remove('ep-active'))
+  document.getElementById('ep-' + idx).classList.add('ep-active')
+}
+
+function autoAddAuthHeader() {
+  const grid = document.getElementById('headers-grid')
+  const rows = grid.querySelectorAll('.hdr-row')
+  for (const row of rows) {
+    const k = row.querySelector('.hdr-key').value.toLowerCase()
+    if (k === 'authorization') return // already has it
+  }
+  const row = document.createElement('div')
+  row.className = 'hdr-row'
+  row.innerHTML = `
+    <input class="hdr-key" placeholder="Header 名称" value="Authorization">
+    <input class="hdr-val" placeholder="值" value="Bearer dev-abc123">
+  `
+  grid.appendChild(row)
+}
+
+function addHeaderRow() {
+  const grid = document.getElementById('headers-grid')
+  const row = document.createElement('div')
+  row.className = 'hdr-row'
+  row.innerHTML = `
+    <input class="hdr-key" placeholder="Header 名称">
+    <input class="hdr-val" placeholder="值">
+  `
+  grid.appendChild(row)
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.req-tab').forEach((t, i) => {
+    const n = ['headers','body'][i]
+    t.classList.toggle('active', n === name)
+    document.getElementById('tab-' + n).classList.toggle('active', n === name)
+  })
+}
+
+function getHeaders() {
+  const headers = {}
+  document.querySelectorAll('#headers-grid .hdr-row').forEach(row => {
+    const k = row.querySelector('.hdr-key').value.trim()
+    const v = row.querySelector('.hdr-val').value.trim()
+    if (k) headers[k] = v
+  })
+  return headers
+}
+
+async function sendRequest() {
+  if (apiState.sending) return
+  apiState.sending = true
+  const btn = document.getElementById('send-btn')
+  btn.disabled = true; btn.textContent = '发送中…'
+
+  const method = document.getElementById('api-method').value
+  const url = document.getElementById('api-url').value.trim()
+  const body = document.getElementById('req-body').value.trim()
+  const headers = getHeaders()
+
+  // find handler
+  const ep = ENDPOINTS.find(e => e.method === method && e.path === url)
+
+  // network animation
+  const netDiv = document.getElementById('net-anim')
+  const packet = document.getElementById('net-packet')
+  const netStatus = document.getElementById('net-status')
+  netDiv.style.display = 'block'
+  packet.className = 'net-packet'
+  netStatus.textContent = '发送中…'
+  void packet.offsetWidth
+  packet.className = 'net-packet go'
+
+  await delay(850)
+  netStatus.textContent = '处理中…'
+  await delay(400)
+
+  // get response
+  let result
+  if (!ep) {
+    result = { status: 404, body: { error: '404 Not Found', message: `没有找到端点 ${method} ${url}` } }
+  } else {
+    result = ep.handler(body, headers)
+  }
+
+  // packet back
+  packet.className = 'net-packet back'
+  netStatus.textContent = result.status + ' ' + statusText(result.status)
+  await delay(850)
+
+  // show response
+  renderResponse(result)
+  checkMissionProgress(url, result.status)
+
+  btn.disabled = false; btn.textContent = '发送请求 ▶'
+  apiState.sending = false
+}
+
+function renderResponse(result) {
+  const area = document.getElementById('resp-area')
+  const sc = result.status
+  const cls = sc < 300 ? 's2' : sc < 500 ? 's4' : 's5'
+  const json = JSON.stringify(result.body, null, 2)
+  area.innerHTML = `
+    <div class="resp-box fi">
+      <div class="resp-status-bar">
+        <span class="status-badge ${cls}">${sc} ${statusText(sc)}</span>
+        <span class="resp-time">${Math.floor(Math.random()*80+40)}ms</span>
+      </div>
+      <div class="resp-body">${syntaxHL(json)}</div>
+    </div>
+  `
+}
+
+function syntaxHL(json) {
+  return json
+    .replace(/("[\w\u4e00-\u9fff\s\.\!\-\+\%\：\，\！\。]+")(\s*:)/g, '<span class="j-k">$1</span>$2')
+    .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="j-s">$1</span>')
+    .replace(/:\s*(\d+\.?\d*)/g, ': <span class="j-n">$1</span>')
+    .replace(/:\s*(true|false|null)/g, ': <span class="j-b">$1</span>')
+}
+
+function statusText(code) {
+  return {200:'OK',201:'Created',400:'Bad Request',401:'Unauthorized',403:'Forbidden',404:'Not Found',500:'Server Error'}[code] || ''
+}
+
+function checkMissionProgress(url, status) {
+  const msId = API_MISSION_MAP[url]
+  if (!msId) return
+  if (status < 300 || (url === '/api/login' && status === 200)) {
+    apiState.completedSteps.add(msId)
+    const el = document.getElementById(msId)
+    if (el) { el.className = 'ms done' }
+  }
+
+  // mark next as active
+  const order = ['ms1','ms2','ms3','ms4']
+  let nextActive = false
+  order.forEach(id => {
+    if (!apiState.completedSteps.has(id) && !nextActive) {
+      nextActive = true
+      const el = document.getElementById(id)
+      if (el && !el.classList.contains('done')) el.className = 'ms active'
+    }
+  })
+
+  // hint for treasure step
+  if (url === '/api/login' && status === 200 && !apiState.treasureDone) {
+    setTimeout(() => {
+      showToast('✅ 已获取 token！点击 /api/treasure 端点并发送', 'api-toast')
+      const treasureEp = ENDPOINTS.find(e => e.path === '/api/treasure')
+      fillEndpoint(treasureEp, 3)
+      autoAddAuthHeader()
+    }, 400)
+  }
+
+  if (apiState.treasureDone) {
+    document.getElementById('api-done').style.display = 'inline-block'
+    showToast('🏆 API 关卡完成！两个关卡都通关了！', 'api-toast')
+  }
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)) }
+
+function showToast(msg, cls='') {
+  const t = document.getElementById('toast')
+  t.textContent = msg; t.className = 'toast ' + cls + ' show'
+  setTimeout(() => t.classList.remove('show'), 3500)
+}
+
+// INIT
+cliInit()
+renderEndpoints()
+</script>
+</body>
+</html>
