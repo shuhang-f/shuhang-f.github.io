@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DevOps & CI/CD Terms — Learn the Lingo</title>
   <link rel="stylesheet" href="style.css">
+<style>
+.lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(30,30,40,.85);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
+.lang-sw button{background:none;border:none;color:rgba(255,255,255,.55);font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s}
+.lang-sw button.lsw-active{background:rgba(255,255,255,.15);color:#fff}
+</style>
 </head>
 <body>
 
@@ -16,6 +21,11 @@
     <a href="quiz.html">Quiz</a>
   </div>
 </nav>
+
+<div class="lang-sw" id="langSw">
+  <button id="btn-en" onclick="setCicdLang('en')" class="lsw-active">EN</button>
+  <button id="btn-zh" onclick="setCicdLang('zh')">中</button>
+</div>
 
 <div class="hero">
   <h1>Software Engineering<br><span>Best Practices & CI/CD</span></h1>
@@ -80,19 +90,20 @@ const COLORS = {
 function renderCards(filter) {
   const grid = document.getElementById('cards-grid');
   const filtered = filter === 'all' ? TERMS : TERMS.filter(t => t.category === filter);
+  const isZh = cicdLang === 'zh';
   grid.innerHTML = filtered.map(t => `
     <div class="term-card" style="--card-color:${COLORS[t.category]}" data-id="${t.id}">
       <div class="card-header">
         <span class="card-emoji">${t.emoji}</span>
-        <span class="card-badge">${t.categoryLabel}</span>
+        <span class="card-badge">${isZh ? (CATEGORY_LABELS_ZH[t.category] || t.categoryLabel) : t.categoryLabel}</span>
       </div>
       <h3>${t.term}</h3>
-      <p>${t.short}</p>
+      <p>${isZh ? (TERMS_ZH[t.id]?.short || t.short) : t.short}</p>
       <div class="card-expanded">
         <p>${t.detail}</p>
-        <p><strong style="color:var(--text)">Tools/Examples:</strong></p>
+        <p><strong style="color:var(--text)">${_T('card-tools')}</strong></p>
         <ul>${t.examples.map(e => `<li>${e}</li>`).join('')}</ul>
-        <p style="margin-top:0.75rem"><strong style="color:var(--text)">Used at:</strong></p>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">${_T('card-used-at')}</strong></p>
         <div>${t.companies.map(c => `<span class="company-tag ${c.cls}" title="${c.note}">${c.name}</span>`).join('')}</div>
         <p style="margin-top:0.6rem;font-size:0.8rem;color:var(--text-dim)">${t.companies[0]?.note}</p>
       </div>
@@ -104,14 +115,53 @@ function renderCards(filter) {
   });
 }
 
+let currentFilter = 'all';
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderCards(btn.dataset.cat);
+    currentFilter = btn.dataset.cat;
+    renderCards(currentFilter);
   });
 });
 
+function applyI18n() {
+  // nav links
+  document.querySelector('.nav-links a[href="index.html"]').textContent = _T('nav-terms');
+  document.querySelector('.nav-links a[href="game.html"]').textContent = _T('nav-match');
+  document.querySelector('.nav-links a[href="quiz.html"]').textContent = _T('nav-quiz');
+  // hero
+  document.querySelector('.hero h1').innerHTML = _T('hero-h1');
+  document.querySelector('.hero > p').textContent = _T('hero-p');
+  document.querySelector('a[href="game.html"].btn-primary').textContent = _T('btn-match');
+  document.querySelector('a[href="quiz.html"].btn-secondary').textContent = _T('btn-quiz');
+  // stats labels
+  const statLabels = document.querySelectorAll('.stat-label');
+  const labelKeys = ['stat-terms','stat-cats','stat-cos','stat-qs'];
+  statLabels.forEach((el, i) => { if(labelKeys[i]) el.textContent = _T(labelKeys[i]); });
+  // section
+  document.querySelector('.section-title').textContent = _T('section-title');
+  document.querySelector('.section-sub').textContent = _T('section-sub');
+  // filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const cat = btn.dataset.cat;
+    btn.textContent = _T('filter-' + cat);
+  });
+  // footer
+  document.querySelector('footer').textContent = _T('index-footer');
+  // lang toggle buttons
+  document.getElementById('btn-en').classList.toggle('lsw-active', cicdLang === 'en');
+  document.getElementById('btn-zh').classList.toggle('lsw-active', cicdLang === 'zh');
+}
+
+function setCicdLang(lang) {
+  cicdLang = lang;
+  localStorage.setItem('cicd-lang', lang);
+  applyI18n();
+  renderCards(currentFilter);
+}
+
+applyI18n();
 renderCards('all');
 </script>
 </body>

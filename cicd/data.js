@@ -351,3 +351,197 @@ const MATCH_PAIRS = [
   { term: "Monorepo", def: "Entire company's codebase stored in one version-controlled repository" },
   { term: "IaC", def: "Define servers and networks in code files managed like source code" },
 ];
+
+// Chinese short descriptions for each term (keyed by term id)
+const TERMS_ZH = {
+  1: { short: "自动标记代码中的错误、漏洞和风格问题。" },
+  2: { short: "每次开发者推送代码时，自动构建并测试。" },
+  3: { short: "自动将每个通过构建的版本发布到生产或预发环境。" },
+  4: { short: "在合并之前，由同事检查提议的代码变更。" },
+  5: { short: "在隔离环境中测试单个函数或类。" },
+  6: { short: "测试多个组件协同工作的情况。" },
+  7: { short: "在不运行代码的情况下检查代码缺陷。" },
+  8: { short: "测试套件执行的代码百分比。" },
+  9: { short: "先将新版本发布给少量用户，验证后再全面推广。" },
+  10: { short: "在不重新部署代码的情况下，在运行时开关功能。" },
+  11: { short: "将所有项目/服务存储在单一版本控制仓库中。" },
+  12: { short: "所有开发者直接提交到主干，使用极短生命周期的分支。" },
+  13: { short: "运行两套相同的生产环境，通过流量切换实现即时回滚。" },
+  14: { short: "用版本控制的配置文件管理服务器、数据库和网络。" },
+  15: { short: "在每次 git 提交之前自动运行的脚本。" },
+  16: { short: "衡量软件交付效能的 4 个关键指标。" },
+  17: { short: "将测试、安全和质量检查提前到开发流程的早期阶段。" },
+  18: { short: "主动注入故障，在真实事故发生前发现系统弱点。" },
+};
+
+const CATEGORY_LABELS_ZH = {
+  'cicd': 'CI/CD',
+  'code-quality': '代码质量',
+  'testing': '测试',
+  'deployment': '部署',
+  'version-control': '版本控制',
+  'infrastructure': '基础设施',
+  'metrics': '指标',
+  'collaboration': '协作'
+};
+
+const MATCH_PAIRS_ZH = [
+  { term: "Linting", def: "无需运行程序即可自动发现代码风格错误" },
+  { term: "Canary Release", def: "先向 1–5% 的用户部署新版本，尽早发现问题" },
+  { term: "Feature Flag", def: "无需重新部署即可在生产环境中开关功能" },
+  { term: "Blue/Green Deploy", def: "维护两套相同环境，通过切换流量实现即时回滚" },
+  { term: "Chaos Engineering", def: "故意破坏生产系统以发现潜在弱点" },
+  { term: "Static Analysis", def: "不执行代码即可扫描漏洞和代码异味" },
+  { term: "Trunk-Based Dev", def: "所有工程师每天提交到主分支，无长期特性分支" },
+  { term: "DORA Metrics", def: "4 项指标：部署频率、前置时间、失败率、恢复时间" },
+  { term: "Monorepo", def: "整个公司的代码存储在一个版本控制仓库中" },
+  { term: "IaC", def: "用像源代码一样管理的配置文件定义服务器和网络" },
+];
+
+const QUIZ_QUESTIONS_ZH = [
+  {
+    q: "CI 在软件开发中代表什么？",
+    options: ["代码检查", "持续集成", "编译器插桩", "代码基础设施"],
+    answer: 1,
+    explanation: "CI 代表持续集成——每次开发者向共享仓库推送代码时，自动构建并测试代码。"
+  },
+  {
+    q: "Google 内部代码库 'g3' 大约包含多少行代码？",
+    options: ["1亿行", "5亿行", "20亿行", "100亿行"],
+    answer: 2,
+    explanation: "Google 的 Monorepo 包含约 20 亿行代码，由 35,000 多名工程师共同使用。"
+  },
+  {
+    q: ""金丝雀发布"的名称来源于：",
+    options: ["仪表盘上的黄色警告颜色", "矿工将金丝雀带入煤矿作为早期预警系统", "一位名叫 Canary 的 Google 工程师", "程序启动时发出的鸣叫"],
+    answer: 1,
+    explanation: "矿工用金丝雀探测有毒气体。同理，金丝雀发布是小范围早期部署，在影响所有用户之前发现问题。"
+  },
+  {
+    q: "提交前钩子的主要目的是什么？",
+    options: ["在提交前备份代码", "在提交记录前自动运行检查（如代码检查、测试）", "向团队发送通知", "压缩代码以节省空间"],
+    answer: 1,
+    explanation: "提交前钩子在 git 记录提交之前自动运行脚本，尽早发现问题——如代码风格错误或意外提交的密钥。"
+  },
+  {
+    q: "在 DORA 指标中，"变更失败率"衡量的是：",
+    options: ["开发者忘记推送代码的频率", "导致生产事故的部署比例", "被拒绝的代码审查数量", "部署后服务器的 CPU 使用率"],
+    answer: 1,
+    explanation: "变更失败率 = 导致服务降级或需要补救措施的部署比例。优秀团队的目标是低于 15%。"
+  },
+  {
+    q: "持续交付与持续部署的主要区别是什么？",
+    options: ["持续交付仅适用于移动应用", "持续交付需要人工批准发布；持续部署则完全自动化", "两者完全相同", "持续部署跳过测试"],
+    answer: 1,
+    explanation: "持续交付保持软件随时可发布，但需人工批准每次发布。持续部署去掉了这道门槛——每个通过的构建都自动上线。"
+  },
+  {
+    q: "特性开关允许团队：",
+    options: ["用优先级标签标记代码", "将代码部署到生产同时隐藏功能，实现渐进式发布", "将代码标记为待删除", "强制执行代码风格规则"],
+    answer: 1,
+    explanation: "特性开关将部署与发布解耦。代码上线后隐藏在开关后面，可针对特定用户启用，无需重新部署。"
+  },
+  {
+    q: "Netflix 的"混沌猴"是什么工具？",
+    options: ["随机更改代码风格", "随机终止生产服务器实例以测试系统弹性", "生成随机测试数据", "监控异常用户行为"],
+    answer: 1,
+    explanation: "混沌猴随机终止生产 EC2 实例，确保系统能在任意时刻优雅处理故障。"
+  },
+  {
+    q: "静态分析在何时检查代码？",
+    options: ["代码在生产环境运行时", "不执行代码的情况下", "仅在测试环境中", "用户报告 Bug 后"],
+    answer: 1,
+    explanation: "静态分析在不执行代码的情况下读取源代码，在开发早期发现 Bug、安全问题和代码异味。"
+  },
+  {
+    q: "在蓝绿部署中，"回滚"意味着：",
+    options: ["从头重写新版本", "即时将负载均衡器切换回上一个环境", "删除失败的部署", "永久同时运行新旧两个版本"],
+    answer: 1,
+    explanation: "蓝绿部署保持两个环境同时运行。回滚只需将负载均衡器切换回之前的（蓝色）环境，非常迅速。"
+  },
+  {
+    q: "主干开发要求开发者：",
+    options: ["无论需要多长时间，每个任务都创建新分支", "至少每天向主分支提交一次，使用极短生命周期的分支", "只在周五提交代码", "始终将所有提交压缩为一个"],
+    answer: 1,
+    explanation: "主干开发通过频繁合并到主分支来减少集成痛苦。特性开关隐藏未完成的工作，代替长期分支。"
+  },
+  {
+    q: "Google 的"70/20/10 测试金字塔"意味着：",
+    options: ["70% 手动，20% 自动，10% 探索性测试", "70% 单元测试，20% 集成测试，10% 端到端测试", "70% 前端，20% 后端，10% 基础设施测试", "70% 通过，20% 不稳定，10% 失败是可接受的"],
+    answer: 1,
+    explanation: "Google 建议 70% 的测试为快速单元测试，20% 为集成测试，仅 10% 为慢速端到端测试。"
+  }
+];
+
+// UI string translations
+const CICD_T = {
+  en: {
+    'nav-terms': 'Terms', 'nav-match': 'Match Game', 'nav-quiz': 'Quiz',
+    'hero-h1': 'Software Engineering<br><span>Best Practices & CI/CD</span>',
+    'hero-p': 'Learn the terms that top engineers at Google, Netflix, Amazon, and Meta use every day. Click any card to dig deeper.',
+    'btn-match': 'Play Match Game', 'btn-quiz': 'Take the Quiz',
+    'stat-terms': 'Key Terms', 'stat-cats': 'Categories', 'stat-cos': 'Companies Featured', 'stat-qs': 'Quiz Questions',
+    'section-title': 'All Terms', 'section-sub': 'Click a card to expand the full explanation + real company examples.',
+    'filter-all': 'All', 'filter-code-quality': 'Code Quality', 'filter-testing': 'Testing',
+    'filter-deployment': 'Deployment', 'filter-version-control': 'Version Control',
+    'filter-infrastructure': 'Infrastructure', 'filter-metrics': 'Metrics',
+    'card-tools': 'Tools/Examples:', 'card-used-at': 'Used at:',
+    'index-footer': 'Built to make DevOps concepts approachable. Inspired by Google, Netflix, Amazon, Meta & Microsoft engineering blogs.',
+    'game-title': 'Term Matching Game', 'score-lbl': 'Score', 'streak-lbl': 'Streak 🔥',
+    'terms-col': 'Terms', 'defs-col': 'Definitions',
+    'instr-1': 'Click a <strong>Term</strong> on the left',
+    'instr-2': 'Click its <strong>Definition</strong> on the right',
+    'instr-3': 'Match all pairs as fast as you can!',
+    'instr-pts': '✅ Correct = +10 pts | ❌ Wrong = -3 pts',
+    'btn-restart': 'Restart', 'btn-newgame': '↺ New Game', 'btn-takequiz': 'Take the Quiz →',
+    'game-footer': 'Match the term to its definition before time runs out!',
+    'quiz-title': 'DevOps Knowledge Quiz',
+    'quiz-sub': 'Test how well you know CI/CD, linting, deployment strategies, and practices from top engineering teams. 12 questions, one chance to get each right.',
+    'choose-diff': 'Choose difficulty:',
+    'diff-all': 'All 12', 'diff-all-desc': 'Full quiz',
+    'diff-quick': 'Quick 5', 'diff-quick-desc': '5 questions',
+    'diff-random': 'Random 8', 'diff-random-desc': 'Shuffled selection',
+    'btn-start': 'Start Quiz →', 'btn-retake': 'Retake Quiz',
+    'btn-playmatch': 'Play Match Game', 'btn-review': 'Review Terms',
+    'lbl-correct': 'Correct', 'lbl-wrong': 'Wrong', 'lbl-accuracy': 'Accuracy',
+    'answer-review': 'Answer Review',
+    'quiz-footer': 'Quiz covers 12 key DevOps & CI/CD concepts from top engineering teams.',
+  },
+  zh: {
+    'nav-terms': '术语', 'nav-match': '配对游戏', 'nav-quiz': '测验',
+    'hero-h1': '软件工程<br><span>最佳实践与 CI/CD</span>',
+    'hero-p': '学习 Google、Netflix、Amazon 和 Meta 的顶尖工程师每天使用的术语。点击任意卡片深入了解。',
+    'btn-match': '玩配对游戏', 'btn-quiz': '参加测验',
+    'stat-terms': '核心术语', 'stat-cats': '分类', 'stat-cos': '收录公司', 'stat-qs': '测验题目',
+    'section-title': '所有术语', 'section-sub': '点击卡片展开完整解释和真实公司案例。',
+    'filter-all': '全部', 'filter-code-quality': '代码质量', 'filter-testing': '测试',
+    'filter-deployment': '部署', 'filter-version-control': '版本控制',
+    'filter-infrastructure': '基础设施', 'filter-metrics': '指标',
+    'card-tools': '工具/示例：', 'card-used-at': '使用公司：',
+    'index-footer': '致力于让 DevOps 概念更易理解。灵感来自 Google、Netflix、Amazon、Meta 和 Microsoft 的工程博客。',
+    'game-title': '术语配对游戏', 'score-lbl': '分数', 'streak-lbl': '连击 🔥',
+    'terms-col': '术语', 'defs-col': '定义',
+    'instr-1': '点击左侧的<strong>术语</strong>',
+    'instr-2': '点击右侧对应的<strong>定义</strong>',
+    'instr-3': '尽快完成所有配对！',
+    'instr-pts': '✅ 正确 = +10 分 | ❌ 错误 = -3 分',
+    'btn-restart': '重新开始', 'btn-newgame': '↺ 新游戏', 'btn-takequiz': '参加测验 →',
+    'game-footer': '在时间用完之前，将术语与定义配对！',
+    'quiz-title': 'DevOps 知识测验',
+    'quiz-sub': '测验你对 CI/CD、代码检查、部署策略以及顶尖工程团队实践的掌握程度。共 12 道题，每题只有一次机会。',
+    'choose-diff': '选择难度：',
+    'diff-all': '全部 12 题', 'diff-all-desc': '完整测验',
+    'diff-quick': '快速 5 题', 'diff-quick-desc': '5 道题目',
+    'diff-random': '随机 8 题', 'diff-random-desc': '随机抽取',
+    'btn-start': '开始测验 →', 'btn-retake': '重新测验',
+    'btn-playmatch': '玩配对游戏', 'btn-review': '复习术语',
+    'lbl-correct': '正确', 'lbl-wrong': '错误', 'lbl-accuracy': '正确率',
+    'answer-review': '答题回顾',
+    'quiz-footer': '测验涵盖顶尖工程团队的 12 个核心 DevOps 与 CI/CD 概念。',
+  }
+};
+
+let cicdLang = (localStorage.getItem('cicd-lang') || 'en');
+function _T(k) { return (CICD_T[cicdLang] || CICD_T.en)[k] || k; }
+function getMatchPairs() { return cicdLang === 'zh' ? MATCH_PAIRS_ZH : MATCH_PAIRS; }
+function getQuizQuestions() { return cicdLang === 'zh' ? QUIZ_QUESTIONS_ZH : QUIZ_QUESTIONS; }

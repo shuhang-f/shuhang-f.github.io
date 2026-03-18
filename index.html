@@ -34,6 +34,30 @@
     .project-card.has-preview p,
     .project-card.has-preview .project-tags { padding: 0 20px; }
     .project-card.has-preview .project-tags { padding-bottom: 16px; }
+    .ai-collab-note {
+      grid-column: 1 / -1;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 8px;
+    }
+    .ai-collab-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+    .ai-collab-note p {
+      font-size: 0.85rem;
+      opacity: 0.55;
+      line-height: 1.6;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -105,6 +129,61 @@
         <div class="section-line"></div>
       </div>
       <div class="about-grid">
+
+        <!-- LEFT: rotating project carousel -->
+        <div class="project-carousel" id="projectCarousel">
+          <div class="carousel-header">
+            <div class="carousel-label">
+              <span class="carousel-live-dot"></span>
+              Live Projects
+            </div>
+            <span class="carousel-counter" id="carouselCounter">1 / 3</span>
+          </div>
+
+          <div class="carousel-track" id="carouselTrack">
+
+            <div class="carousel-slide active">
+              <div class="carousel-preview" id="cprev0">
+                <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+              </div>
+              <div class="carousel-body">
+                <div class="carousel-name">DevOps CI/CD Quiz</div>
+                <div class="carousel-desc">18 terms · Match game · Quiz · Real company examples</div>
+                <a href="./cicd/index.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
+              </div>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="carousel-preview" id="cprev1">
+                <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+              </div>
+              <div class="carousel-body">
+                <div class="carousel-name">CLI vs API Explorer</div>
+                <div class="carousel-desc">Side-by-side visual explainer · REST methods · Auth flows</div>
+                <a href="./cli-vs-api.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
+              </div>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="carousel-preview" id="cprev2">
+                <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+              </div>
+              <div class="carousel-body">
+                <div class="carousel-name">TFT Decision Lab</div>
+                <div class="carousel-desc">Champion synergies · Gold economy · Combat probability</div>
+                <a href="./tft-optima.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="carousel-footer">
+            <button class="c-dot active" data-idx="0" aria-label="Project 1"></button>
+            <button class="c-dot" data-idx="1" aria-label="Project 2"></button>
+            <button class="c-dot" data-idx="2" aria-label="Project 3"></button>
+          </div>
+        </div>
+
         <div class="about-text">
           <p>I'm a cross-functional technical operator who builds end-to-end — from infrastructure and AI integrations to community growth and product direction. Pursuing an M.S. in Data Science at USC (August 2025), I co-founded Ordinal Hive, a Bitcoin ecosystem startup, where I wore every hat simultaneously: DevOps, QA, product, community, and investor relations.</p>
           <p>My edge is bridging technical systems with real-world outcomes. I've deployed AI agent frameworks on cloud servers, established real-Bitcoin QA protocols, scaled communities from zero to 23,000 followers, and introduced LLM-assisted workflows to non-technical teammates. I move fast in ambiguous environments and ship things that actually work.</p>
@@ -346,6 +425,14 @@
           </div>
         </a>
 
+        <div class="ai-collab-note fade-in">
+          <span class="ai-collab-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+            Built with Claude Code
+          </span>
+          <p>The three interactive tools below were created through AI-native development — Sean directed the product vision and prompted the requirements; Claude (Anthropic) implemented the code end-to-end. A demonstration of how AI amplifies a builder's output.</p>
+        </div>
+
         <a href="./cicd/index.html" target="_blank" rel="noopener" class="project-card has-preview fade-in">
           <div class="iframe-preview-wrap" data-height="820">
             <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
@@ -428,6 +515,7 @@
   </section>
 
   <script>
+    /* ── Portfolio card iframe previews ── */
     function scaleIframePreviews() {
       document.querySelectorAll('.iframe-preview-wrap').forEach(function(wrap) {
         var iframe = wrap.querySelector('iframe');
@@ -439,12 +527,87 @@
         wrap.style.height = Math.round(iframeH * scale) + 'px';
       });
     }
-    window.addEventListener('load', scaleIframePreviews);
-    window.addEventListener('resize', scaleIframePreviews);
+
+    /* ── Carousel sidebar iframes ── */
+    function scaleCarouselIframes() {
+      document.querySelectorAll('.carousel-preview').forEach(function(wrap) {
+        var iframe = wrap.querySelector('iframe');
+        if (!iframe) return;
+        var scale = wrap.offsetWidth / 1400;
+        iframe.style.transform = 'scale(' + scale + ')';
+        iframe.style.height = Math.round(900 / scale * scale) + 'px';
+      });
+    }
+
+    /* ── Carousel logic ── */
+    (function() {
+      var slides  = document.querySelectorAll('.carousel-slide');
+      var dots    = document.querySelectorAll('.c-dot');
+      var counter = document.getElementById('carouselCounter');
+      var carousel = document.getElementById('projectCarousel');
+      var current = 0, timer, progressEl;
+
+      function addProgress() {
+        if (progressEl) progressEl.remove();
+        progressEl = document.createElement('div');
+        progressEl.className = 'carousel-progress';
+        document.getElementById('carouselTrack').appendChild(progressEl);
+        /* restart animation */
+        void progressEl.offsetWidth;
+        progressEl.style.animation = 'none';
+        void progressEl.offsetWidth;
+        progressEl.style.animation = 'cProgress 3.5s linear';
+      }
+
+      function goTo(idx) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (idx + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        if (counter) counter.textContent = (current + 1) + ' / ' + slides.length;
+        scaleCarouselIframes();
+        addProgress();
+      }
+
+      function start() {
+        timer = setInterval(function() { goTo(current + 1); }, 3500);
+        addProgress();
+      }
+      function stop() {
+        clearInterval(timer);
+        if (progressEl) progressEl.style.animationPlayState = 'paused';
+      }
+      function resume() {
+        if (progressEl) progressEl.style.animationPlayState = 'running';
+        start();
+      }
+
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          stop(); goTo(parseInt(dot.getAttribute('data-idx'))); start();
+        });
+      });
+
+      if (carousel) {
+        carousel.addEventListener('mouseenter', stop);
+        carousel.addEventListener('mouseleave', resume);
+      }
+
+      window.addEventListener('load', function() {
+        scaleIframePreviews();
+        scaleCarouselIframes();
+        start();
+      });
+      window.addEventListener('resize', function() {
+        scaleIframePreviews();
+        scaleCarouselIframes();
+      });
+    })();
   </script>
 
   <footer class="footer">
-    <p>&copy; 2025 Sean Feng</p>
+    <p>&copy; 2025 Sean Feng &nbsp;&middot;&nbsp; Interactive tools built with <a href="https://claude.ai/code" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:0.7">Claude Code</a></p>
   </footer>
 
   <script src="./js/main.js"></script>

@@ -65,6 +65,9 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+    .lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(30,30,40,.85);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
+    .lang-sw button{background:none;border:none;color:rgba(255,255,255,.55);font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s}
+    .lang-sw button.lsw-active{background:rgba(255,255,255,.15);color:#fff}
   </style>
 </head>
 <body>
@@ -77,6 +80,11 @@
     <a href="quiz.html">Quiz</a>
   </div>
 </nav>
+
+<div class="lang-sw" id="langSw">
+  <button id="btn-en" onclick="setCicdLang('en')" class="lsw-active">EN</button>
+  <button id="btn-zh" onclick="setCicdLang('zh')">中</button>
+</div>
 
 <div class="game-container">
   <div class="game-header">
@@ -163,17 +171,13 @@ function startGame() {
 
 function nextRound() {
   round++;
-  if (round > totalRounds) {
-    showFinalResults();
-    return;
-  }
-  document.getElementById('round-badge').textContent = `Round ${round} of ${totalRounds}`;
+  if (round > totalRounds) { showFinalResults(); return; }
+  document.getElementById('round-badge').textContent = cicdLang === 'zh' ? `第 ${round} 轮，共 ${totalRounds} 轮` : `Round ${round} of ${totalRounds}`;
   document.getElementById('game-complete').classList.remove('show');
   document.getElementById('game-area').style.display = 'grid';
 
-  // Pick 5 random pairs for this round
   const pairsPerRound = 5;
-  roundPairs = shuffle(MATCH_PAIRS).slice(0, pairsPerRound);
+  roundPairs = shuffle(getMatchPairs()).slice(0, pairsPerRound);
   totalPairs = roundPairs.length;
   matchedCount = 0;
   selectedTerm = null; selectedDef = null;
@@ -184,7 +188,6 @@ function nextRound() {
   document.getElementById('terms-col').innerHTML = terms.map(t =>
     `<div class="match-item" data-type="term" data-val="${encodeURIComponent(t)}">${t}</div>`
   ).join('');
-
   document.getElementById('defs-col').innerHTML = defs.map(d =>
     `<div class="match-item" data-type="def" data-val="${encodeURIComponent(d)}">${d}</div>`
   ).join('');
@@ -204,10 +207,7 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimer();
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      endRound(false);
-    }
+    if (timeLeft <= 0) { clearInterval(timerInterval); endRound(false); }
   }, 1000);
 }
 
@@ -223,17 +223,13 @@ function updateScore() {
 }
 
 function updateProgress() {
-  const pct = (matchedCount / (totalPairs * totalRounds)) * 100 + ((round - 1) / totalRounds) * 100;
-  // simpler: per-round progress
   document.getElementById('progress-bar').style.width = ((round - 1) / totalRounds * 100) + '%';
 }
 
 function onItemClick(e) {
   const item = e.currentTarget;
   if (item.classList.contains('matched')) return;
-
   const type = item.dataset.type;
-
   if (type === 'term') {
     document.querySelectorAll('[data-type="term"]').forEach(i => i.classList.remove('selected'));
     item.classList.add('selected');
@@ -243,10 +239,7 @@ function onItemClick(e) {
     item.classList.add('selected');
     selectedDef = item;
   }
-
-  if (selectedTerm && selectedDef) {
-    checkMatch();
-  }
+  if (selectedTerm && selectedDef) checkMatch();
 }
 
 function checkMatch() {
@@ -256,40 +249,23 @@ function checkMatch() {
   const correct = pair && pair.def === defVal;
 
   if (correct) {
-    selectedTerm.classList.remove('selected');
-    selectedDef.classList.remove('selected');
-    selectedTerm.classList.add('matched');
-    selectedDef.classList.add('matched');
+    selectedTerm.classList.remove('selected'); selectedDef.classList.remove('selected');
+    selectedTerm.classList.add('matched'); selectedDef.classList.add('matched');
     score += 10 + Math.max(0, streak) * 2;
-    streak++;
-    matchedCount++;
-    updateScore();
-    flashFeedback(true);
-
-    if (matchedCount === totalPairs) {
-      clearInterval(timerInterval);
-      setTimeout(() => endRound(true), 400);
-    }
+    streak++; matchedCount++;
+    updateScore(); flashFeedback(true);
+    if (matchedCount === totalPairs) { clearInterval(timerInterval); setTimeout(() => endRound(true), 400); }
   } else {
-    selectedTerm.classList.remove('selected');
-    selectedDef.classList.remove('selected');
-    selectedTerm.classList.add('wrong');
-    selectedDef.classList.add('wrong');
-    score = Math.max(0, score - 3);
-    streak = 0;
+    selectedTerm.classList.remove('selected'); selectedDef.classList.remove('selected');
+    selectedTerm.classList.add('wrong'); selectedDef.classList.add('wrong');
+    score = Math.max(0, score - 3); streak = 0;
     updateScore();
-    setTimeout(() => {
-      selectedTerm?.classList.remove('wrong');
-      selectedDef?.classList.remove('wrong');
-    }, 500);
+    setTimeout(() => { selectedTerm?.classList.remove('wrong'); selectedDef?.classList.remove('wrong'); }, 500);
   }
-
-  selectedTerm = null;
-  selectedDef = null;
+  selectedTerm = null; selectedDef = null;
 }
 
 function flashFeedback(correct) {
-  // small visual flash on score
   const el = document.getElementById('score-display');
   el.style.transform = 'scale(1.3)';
   el.style.color = correct ? 'var(--accent2)' : 'var(--accent3)';
@@ -300,25 +276,27 @@ function endRound(success) {
   document.getElementById('game-area').style.display = 'none';
   const complete = document.getElementById('game-complete');
   complete.classList.add('show');
-
   const timeBonus = success ? Math.floor(timeLeft * 2) : 0;
   if (success) score += timeBonus;
   updateScore();
 
+  const isZh = cicdLang === 'zh';
   const emoji = success ? (streak >= 5 ? '🔥' : '🎉') : '⏱️';
   document.getElementById('complete-emoji').textContent = emoji;
-  document.getElementById('complete-title').textContent = success ? `Round ${round} Complete!` : 'Time\'s Up!';
+  document.getElementById('complete-title').textContent = success
+    ? (isZh ? `第 ${round} 轮完成！` : `Round ${round} Complete!`)
+    : (isZh ? '时间到！' : "Time's Up!");
   document.getElementById('complete-msg').textContent = success
-    ? `All matched! ${timeBonus > 0 ? `+${timeBonus} time bonus!` : ''} ${round < totalRounds ? `Round ${round + 1} coming up.` : 'Final round done!'}`
-    : `You matched ${matchedCount}/${totalPairs}. ${round < totalRounds ? 'Try the next round!' : 'Game over!'}`;
-  document.getElementById('complete-score').textContent = `Total: ${score} pts`;
+    ? `${isZh ? '全部配对！' : 'All matched!'} ${timeBonus > 0 ? `+${timeBonus}${isZh ? ' 时间奖励！' : ' time bonus!'}` : ''} ${round < totalRounds ? (isZh ? `第 ${round+1} 轮即将开始。` : `Round ${round+1} coming up.`) : (isZh ? '最终轮完成！' : 'Final round done!')}`
+    : `${isZh ? `已配对 ${matchedCount}/${totalPairs}。` : `You matched ${matchedCount}/${totalPairs}.`} ${round < totalRounds ? (isZh ? '继续下一轮！' : 'Try the next round!') : (isZh ? '游戏结束！' : 'Game over!')}`;
+  document.getElementById('complete-score').textContent = `${isZh ? '总分：' : 'Total: '}${score}${isZh ? ' 分' : ' pts'}`;
 
   const nextBtn = document.getElementById('next-round-btn');
   if (round >= totalRounds) {
-    nextBtn.textContent = 'See Final Results';
+    nextBtn.textContent = isZh ? '查看最终结果' : 'See Final Results';
     nextBtn.onclick = showFinalResults;
   } else {
-    nextBtn.textContent = 'Next Round →';
+    nextBtn.textContent = isZh ? '下一轮 →' : 'Next Round →';
     nextBtn.onclick = nextRound;
   }
 }
@@ -327,15 +305,51 @@ function showFinalResults() {
   document.getElementById('game-area').style.display = 'none';
   const complete = document.getElementById('game-complete');
   complete.classList.add('show');
-  const grade = score >= 400 ? '🏆 Expert!' : score >= 250 ? '⭐ Solid!' : score >= 100 ? '👍 Good start!' : '📚 Keep learning!';
+  const isZh = cicdLang === 'zh';
+  const grade = score >= 400
+    ? (isZh ? '🏆 专家！' : '🏆 Expert!')
+    : score >= 250 ? (isZh ? '⭐ 不错！' : '⭐ Solid!')
+    : score >= 100 ? (isZh ? '👍 良好开端！' : '👍 Good start!')
+    : (isZh ? '📚 继续学习！' : '📚 Keep learning!');
   document.getElementById('complete-emoji').textContent = score >= 400 ? '🏆' : '🎯';
-  document.getElementById('complete-title').textContent = 'Game Over!';
-  document.getElementById('complete-msg').textContent = `${grade} Final score: ${score} points across ${totalRounds} rounds.`;
-  document.getElementById('complete-score').textContent = `${score} pts`;
-  document.getElementById('next-round-btn').textContent = 'Play Again';
+  document.getElementById('complete-title').textContent = isZh ? '游戏结束！' : 'Game Over!';
+  document.getElementById('complete-msg').textContent = `${grade} ${isZh ? `最终得分：${score} 分，共 ${totalRounds} 轮。` : `Final score: ${score} points across ${totalRounds} rounds.`}`;
+  document.getElementById('complete-score').textContent = `${score}${isZh ? ' 分' : ' pts'}`;
+  document.getElementById('next-round-btn').textContent = isZh ? '再玩一次' : 'Play Again';
   document.getElementById('next-round-btn').onclick = startGame;
 }
 
+function applyGameI18n() {
+  document.querySelector('.nav-links a[href="index.html"]').textContent = _T('nav-terms');
+  document.querySelector('.nav-links a[href="game.html"]').textContent = _T('nav-match');
+  document.querySelector('.nav-links a[href="quiz.html"]').textContent = _T('nav-quiz');
+  document.querySelector('h2').textContent = _T('game-title');
+  document.querySelector('#score-display + .score-label').textContent = _T('score-lbl');
+  document.querySelector('#streak-display + .score-label').textContent = _T('streak-lbl');
+  document.querySelector('#game-area h3:first-child').textContent = _T('terms-col');
+  document.querySelector('#game-area h3:last-of-type').textContent = _T('defs-col');
+  const instrSteps = document.querySelectorAll('.instr-step span');
+  if(instrSteps[0]) instrSteps[0].innerHTML = _T('instr-1');
+  if(instrSteps[1]) instrSteps[1].innerHTML = _T('instr-2');
+  if(instrSteps[2]) instrSteps[2].innerHTML = _T('instr-3');
+  if(instrSteps[3]) instrSteps[3].textContent = _T('instr-pts');
+  document.querySelector('button[onclick="startGame()"].btn-secondary').textContent = _T('btn-restart');
+  document.querySelector('.game-controls .btn-secondary').textContent = _T('btn-newgame');
+  document.querySelector('.game-controls .btn-primary').textContent = _T('btn-takequiz');
+  document.querySelector('footer').textContent = _T('game-footer');
+  document.getElementById('btn-en').classList.toggle('lsw-active', cicdLang === 'en');
+  document.getElementById('btn-zh').classList.toggle('lsw-active', cicdLang === 'zh');
+}
+
+function setCicdLang(lang) {
+  cicdLang = lang;
+  localStorage.setItem('cicd-lang', lang);
+  applyGameI18n();
+  // Restart game in new language
+  startGame();
+}
+
+applyGameI18n();
 startGame();
 </script>
 </body>

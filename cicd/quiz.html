@@ -79,6 +79,9 @@
       border-radius: 999px;
       transition: width 1s ease;
     }
+    .lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(30,30,40,.85);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
+    .lang-sw button{background:none;border:none;color:rgba(255,255,255,.55);font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s}
+    .lang-sw button.lsw-active{background:rgba(255,255,255,.15);color:#fff}
   </style>
 </head>
 <body>
@@ -92,13 +95,18 @@
   </div>
 </nav>
 
+<div class="lang-sw" id="langSw">
+  <button id="btn-en" onclick="setCicdLang('en')" class="lsw-active">EN</button>
+  <button id="btn-zh" onclick="setCicdLang('zh')">中</button>
+</div>
+
 <!-- INTRO SCREEN -->
 <div id="intro-screen" class="quiz-intro">
   <div style="font-size:3rem;margin-bottom:1rem">🧠</div>
   <h1>DevOps Knowledge Quiz</h1>
   <p>Test how well you know CI/CD, linting, deployment strategies, and practices from top engineering teams. 12 questions, one chance to get each right.</p>
 
-  <div style="color:var(--text-dim);font-size:0.9rem;margin-bottom:1rem">Choose difficulty:</div>
+  <div id="choose-diff-lbl" style="color:var(--text-dim);font-size:0.9rem;margin-bottom:1rem">Choose difficulty:</div>
   <div class="difficulty-grid">
     <div class="diff-btn selected" data-mode="all" onclick="selectDiff(this,'all')">
       <span class="diff-emoji">🎯</span>
@@ -156,27 +164,27 @@
     <div class="results-breakdown">
       <div class="result-stat">
         <div class="result-stat-num" id="res-correct" style="color:var(--accent2)">0</div>
-        <div class="result-stat-label">Correct</div>
+        <div class="result-stat-label" id="res-correct-lbl">Correct</div>
       </div>
       <div class="result-stat">
         <div class="result-stat-num" id="res-wrong" style="color:var(--accent3)">0</div>
-        <div class="result-stat-label">Wrong</div>
+        <div class="result-stat-label" id="res-wrong-lbl">Wrong</div>
       </div>
       <div class="result-stat">
         <div class="result-stat-num" id="res-pct" style="color:var(--accent)">0%</div>
-        <div class="result-stat-label">Accuracy</div>
+        <div class="result-stat-label" id="res-pct-lbl">Accuracy</div>
       </div>
     </div>
 
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">
-      <button class="btn btn-primary" onclick="startQuiz()">Retake Quiz</button>
-      <a href="game.html" class="btn btn-secondary">Play Match Game</a>
-      <a href="index.html" class="btn btn-secondary">Review Terms</a>
+      <button class="btn btn-primary" id="res-retake" onclick="startQuiz()">Retake Quiz</button>
+      <a href="game.html" class="btn btn-secondary" id="res-playmatch">Play Match Game</a>
+      <a href="index.html" class="btn btn-secondary" id="res-review">Review Terms</a>
     </div>
   </div>
 
   <div class="results-card" style="margin-top:1rem;max-width:700px">
-    <h3 style="margin-bottom:1rem;font-size:1.1rem">Answer Review</h3>
+    <h3 id="res-review-title" style="margin-bottom:1rem;font-size:1.1rem">Answer Review</h3>
     <div class="review-list" id="review-list"></div>
   </div>
 </div>
@@ -204,23 +212,16 @@ function selectDiff(el, mode) {
 }
 
 function startQuiz() {
-  let pool = [...QUIZ_QUESTIONS];
-  if (quizMode === '5') {
-    pool = shuffle(pool).slice(0, 5);
-  } else if (quizMode === 'random') {
-    pool = shuffle(pool).slice(0, 8);
-  } else {
-    pool = shuffle(pool);
-  }
+  let pool = [...getQuizQuestions()];
+  if (quizMode === '5') pool = shuffle(pool).slice(0, 5);
+  else if (quizMode === 'random') pool = shuffle(pool).slice(0, 8);
+  else pool = shuffle(pool);
   questions = pool;
-  current = 0;
-  correctCount = 0;
-  userAnswers = [];
+  current = 0; correctCount = 0; userAnswers = [];
 
   document.getElementById('intro-screen').style.display = 'none';
   document.getElementById('results-screen').style.display = 'none';
   document.getElementById('quiz-screen').style.display = 'block';
-
   renderProgress();
   renderQuestion();
 }
@@ -243,10 +244,15 @@ function renderProgress() {
 
 function renderQuestion() {
   const q = questions[current];
-  document.getElementById('q-counter').textContent = `Question ${current + 1} of ${questions.length}`;
-  document.getElementById('q-category').textContent = CATEGORIES[QUIZ_QUESTIONS.indexOf(q)] || 'CI/CD';
+  const isZh = cicdLang === 'zh';
+  document.getElementById('q-counter').textContent = isZh
+    ? `第 ${current+1} 题，共 ${questions.length} 题`
+    : `Question ${current+1} of ${questions.length}`;
+  document.getElementById('q-category').textContent = CATEGORIES[getQuizQuestions().indexOf(q)] || 'CI/CD';
   document.getElementById('q-text').textContent = q.q;
-  document.getElementById('q-score-live').textContent = `Score: ${correctCount}/${current}`;
+  document.getElementById('q-score-live').textContent = isZh
+    ? `得分：${correctCount}/${current}`
+    : `Score: ${correctCount}/${current}`;
 
   const opts = document.getElementById('q-options');
   opts.innerHTML = q.options.map((o, i) =>
@@ -262,8 +268,8 @@ function renderQuestion() {
 function selectAnswer(btn, idx) {
   const q = questions[current];
   const correct = idx === q.answer;
+  const isZh = cicdLang === 'zh';
 
-  // Disable all options
   document.querySelectorAll('.quiz-option').forEach(b => {
     b.disabled = true;
     if (parseInt(b.dataset.idx) === q.answer) b.classList.add('correct');
@@ -272,29 +278,33 @@ function selectAnswer(btn, idx) {
 
   const feedback = document.getElementById('q-feedback');
   feedback.className = `quiz-feedback show ${correct ? 'correct-fb' : 'wrong-fb'}`;
-  feedback.innerHTML = `${correct ? '✅ Correct!' : `❌ Not quite — the answer is: <strong>${q.options[q.answer]}</strong>`}<br><span style="color:var(--text-dim)">${q.explanation}</span>`;
+  feedback.innerHTML = `${correct
+    ? (isZh ? '✅ 回答正确！' : '✅ Correct!')
+    : `${isZh ? '❌ 不对——正确答案是：' : '❌ Not quite — the answer is: '}<strong>${q.options[q.answer]}</strong>`
+  }<br><span style="color:var(--text-dim)">${q.explanation}</span>`;
 
   if (correct) correctCount++;
   userAnswers.push({ q: q.q, chosen: q.options[idx], correct: q.options[q.answer], isCorrect: correct });
 
-  document.getElementById('q-score-live').textContent = `Score: ${correctCount}/${current + 1}`;
+  document.getElementById('q-score-live').textContent = isZh
+    ? `得分：${correctCount}/${current+1}`
+    : `Score: ${correctCount}/${current+1}`;
   document.getElementById('next-btn').style.display = 'block';
-  document.getElementById('next-btn').textContent = current < questions.length - 1 ? 'Next →' : 'See Results →';
+  document.getElementById('next-btn').textContent = current < questions.length - 1
+    ? (isZh ? '下一题 →' : 'Next →')
+    : (isZh ? '查看结果 →' : 'See Results →');
 }
 
 function nextQuestion() {
   current++;
-  if (current >= questions.length) {
-    showResults();
-  } else {
-    renderQuestion();
-  }
+  if (current >= questions.length) showResults();
+  else renderQuestion();
 }
 
 function showResults() {
   document.getElementById('quiz-screen').style.display = 'none';
   document.getElementById('results-screen').style.display = 'block';
-
+  const isZh = cicdLang === 'zh';
   const total = questions.length;
   const pct = Math.round((correctCount / total) * 100);
   const xp = correctCount * 25;
@@ -303,24 +313,32 @@ function showResults() {
   document.getElementById('res-correct').textContent = correctCount;
   document.getElementById('res-wrong').textContent = total - correctCount;
   document.getElementById('res-pct').textContent = pct + '%';
-  document.getElementById('xp-label').textContent = `${xp} XP earned`;
+  document.getElementById('xp-label').textContent = isZh ? `获得 ${xp} XP` : `${xp} XP earned`;
 
   let emoji, grade, msg;
-  if (pct >= 90) { emoji = '🏆'; grade = 'Expert Level!'; msg = 'Outstanding! You have deep knowledge of DevOps practices used at top engineering teams.'; }
-  else if (pct >= 75) { emoji = '⭐'; grade = 'Solid Knowledge!'; msg = 'Great work! You understand the core concepts. Review the terms you missed to level up further.'; }
-  else if (pct >= 50) { emoji = '📚'; grade = 'Good Foundation!'; msg = 'You\'re getting there! Check out the Terms page and try the matching game to reinforce the concepts.'; }
-  else { emoji = '🌱'; grade = 'Keep Learning!'; msg = 'DevOps takes time to master. Head back to the Terms page and explore each concept in depth.'; }
+  if (pct >= 90) {
+    emoji = '🏆';
+    grade = isZh ? '专家水平！' : 'Expert Level!';
+    msg = isZh ? '出色！你对顶尖工程团队的 DevOps 实践有深刻理解。' : 'Outstanding! You have deep knowledge of DevOps practices used at top engineering teams.';
+  } else if (pct >= 75) {
+    emoji = '⭐';
+    grade = isZh ? '掌握扎实！' : 'Solid Knowledge!';
+    msg = isZh ? '做得很好！你理解核心概念。回顾答错的题目以进一步提升。' : 'Great work! You understand the core concepts. Review the terms you missed to level up further.';
+  } else if (pct >= 50) {
+    emoji = '📚';
+    grade = isZh ? '基础良好！' : 'Good Foundation!';
+    msg = isZh ? '你在进步！查看术语页面并尝试配对游戏来强化概念。' : "You're getting there! Check out the Terms page and try the matching game to reinforce the concepts.";
+  } else {
+    emoji = '🌱';
+    grade = isZh ? '继续学习！' : 'Keep Learning!';
+    msg = isZh ? 'DevOps 需要时间掌握。回到术语页面深入了解每个概念。' : 'DevOps takes time to master. Head back to the Terms page and explore each concept in depth.';
+  }
 
   document.getElementById('res-emoji').textContent = emoji;
   document.getElementById('res-grade').textContent = grade;
   document.getElementById('res-msg').textContent = msg;
+  setTimeout(() => { document.getElementById('xp-bar').style.width = pct + '%'; }, 100);
 
-  // Animate XP bar
-  setTimeout(() => {
-    document.getElementById('xp-bar').style.width = pct + '%';
-  }, 100);
-
-  // Review list
   const review = document.getElementById('review-list');
   review.innerHTML = userAnswers.map(a => `
     <div class="review-item">
@@ -328,16 +346,56 @@ function showResults() {
       <div>
         <div class="review-q">${a.q}</div>
         ${a.isCorrect
-          ? `<div class="review-correct">Your answer: ${a.chosen}</div>`
-          : `<div class="review-wrong">Your answer: ${a.chosen}</div>
-             <div class="review-correct">Correct: ${a.correct}</div>`
+          ? `<div class="review-correct">${isZh ? '你的答案：' : 'Your answer: '}${a.chosen}</div>`
+          : `<div class="review-wrong">${isZh ? '你的答案：' : 'Your answer: '}${a.chosen}</div>
+             <div class="review-correct">${isZh ? '正确答案：' : 'Correct: '}${a.correct}</div>`
         }
       </div>
     </div>
   `).join('');
 
+  // Update result buttons text
+  document.getElementById('res-retake').textContent = _T('btn-retake');
+  document.getElementById('res-playmatch').textContent = _T('btn-playmatch');
+  document.getElementById('res-review').textContent = _T('btn-review');
+  document.getElementById('res-review-title').textContent = _T('answer-review');
+  document.getElementById('res-correct-lbl').textContent = _T('lbl-correct');
+  document.getElementById('res-wrong-lbl').textContent = _T('lbl-wrong');
+  document.getElementById('res-pct-lbl').textContent = _T('lbl-accuracy');
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+function applyQuizI18n() {
+  const isZh = cicdLang === 'zh';
+  document.querySelector('.nav-links a[href="index.html"]').textContent = _T('nav-terms');
+  document.querySelector('.nav-links a[href="game.html"]').textContent = _T('nav-match');
+  document.querySelector('.nav-links a[href="quiz.html"]').textContent = _T('nav-quiz');
+  document.querySelector('.quiz-intro h1').textContent = _T('quiz-title');
+  document.querySelector('.quiz-intro > p').textContent = _T('quiz-sub');
+  document.getElementById('choose-diff-lbl').textContent = _T('choose-diff');
+  // diff buttons
+  const diffBtns = document.querySelectorAll('.diff-btn');
+  if(diffBtns[0]) { diffBtns[0].querySelector('.diff-name').textContent = _T('diff-all'); diffBtns[0].querySelector('.diff-desc').textContent = _T('diff-all-desc'); }
+  if(diffBtns[1]) { diffBtns[1].querySelector('.diff-name').textContent = _T('diff-quick'); diffBtns[1].querySelector('.diff-desc').textContent = _T('diff-quick-desc'); }
+  if(diffBtns[2]) { diffBtns[2].querySelector('.diff-name').textContent = _T('diff-random'); diffBtns[2].querySelector('.diff-desc').textContent = _T('diff-random-desc'); }
+  document.querySelector('button[onclick="startQuiz()"]').textContent = _T('btn-start');
+  document.querySelector('footer').textContent = _T('quiz-footer');
+  document.getElementById('btn-en').classList.toggle('lsw-active', !isZh);
+  document.getElementById('btn-zh').classList.toggle('lsw-active', isZh);
+}
+
+function setCicdLang(lang) {
+  cicdLang = lang;
+  localStorage.setItem('cicd-lang', lang);
+  applyQuizI18n();
+  // Reset to intro if mid-quiz
+  document.getElementById('intro-screen').style.display = 'block';
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'none';
+}
+
+applyQuizI18n();
 </script>
 </body>
 </html>

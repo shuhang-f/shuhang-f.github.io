@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CLI vs API 开发者冒险</title>
+<title>CLI vs API Developer Adventure</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -249,16 +249,23 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   .analogy{flex-direction:column}
   .analogy-vs{width:100%;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 }
+.lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(5,8,20,.75);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
+.lang-sw button{background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;font-weight:700;padding:4px 11px;border-radius:14px;cursor:pointer;transition:all .2s;letter-spacing:.6px}
+.lang-sw button.lsw-active{background:rgba(255,255,255,.12);color:#fff}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
+<div class="lang-sw" id="langSw">
+  <button id="btn-en" onclick="setLang('en')" class="lsw-active">EN</button>
+  <button id="btn-zh" onclick="setLang('zh')">中</button>
+</div>
 
 <!-- HEADER -->
 <div class="hdr">
-  <h1><span class="cli-color">CLI</span> vs <span class="api-color">API</span> &nbsp;开发者冒险</h1>
-  <p>两个关卡，亲身感受命令行与接口调用的区别</p>
+  <h1 data-i18n="hdr-h1"><span class="cli-color">CLI</span> vs <span class="api-color">API</span> &nbsp;Developer Adventure</h1>
+  <p data-i18n="hdr-p">Two levels — feel the difference between command-line and API calls firsthand</p>
 </div>
 
 <div class="wrap">
@@ -267,52 +274,42 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <div class="concept-row">
   <div class="concept-card cli-c">
     <div class="icon">💻</div>
-    <h3>CLI — 命令行界面</h3>
-    <p>Command Line Interface，你在终端里直接打命令，控制<strong style="color:var(--text)">本地或远程机器</strong>。</p>
-    <ul>
-      <li>直接操作文件、进程、系统</li>
-      <li>必须在目标机器上运行</li>
-      <li>强大、高效、脚本友好</li>
-      <li>输入文本命令 → 文本输出</li>
-    </ul>
-    <span class="tag cli-tag">在机器内部直接操作</span>
+    <h3 data-i18n="cli-h">CLI — Command Line Interface</h3>
+    <p data-i18n="cli-p">Command Line Interface — you type commands directly in a terminal to control a <strong style="color:var(--text)">local or remote machine</strong>.</p>
+    <ul data-i18n="cli-ul"><li>Direct filesystem, process, and system control</li><li>Must run on the target machine</li><li>Powerful, efficient, script-friendly</li><li>Text input → text output</li></ul>
+    <span class="tag cli-tag" data-i18n="cli-tag">Operates directly inside the machine</span>
   </div>
   <div class="concept-card api-c">
     <div class="icon">🌐</div>
-    <h3>API — 应用程序接口</h3>
-    <p>Application Programming Interface，你通过网络发送<strong style="color:var(--text)">标准化请求</strong>，调用远程服务。</p>
-    <ul>
-      <li>任何地方都能调用（浏览器/手机/服务器）</li>
-      <li>HTTP 方法 + JSON 数据</li>
-      <li>服务可复用、权限可控</li>
-      <li>请求 → 结构化响应（JSON）</li>
-    </ul>
-    <span class="tag api-tag">跨网络通信，随处调用</span>
+    <h3 data-i18n="api-h">API — Application Programming Interface</h3>
+    <p data-i18n="api-p">Send <strong style="color:var(--text)">standardized requests</strong> over the network to call remote services from anywhere.</p>
+    <ul data-i18n="api-ul"><li>Call from anywhere (browser/phone/server)</li><li>HTTP methods + JSON data</li><li>Reusable, access-controlled services</li><li>Request → structured response (JSON)</li></ul>
+    <span class="tag api-tag" data-i18n="api-tag">Cross-network communication, call from anywhere</span>
   </div>
 </div>
 
 <!-- ANALOGY -->
 <div class="analogy">
   <div class="analogy-half cli-h">
-    <h4>🍳 CLI = 自己进厨房做饭</h4>
-    <div class="scene">👨‍🍳 → 冰箱 → 炉灶 → 盘子</div>
-    <p>你直接站在厨房里，打开冰箱、拿食材、开火，每步都亲手完成。速度快，权限大，但你得在厨房里才行。</p>
+    <h4 data-i18n="ana-cli-h">🍳 CLI = Cooking in the kitchen yourself</h4>
+    <div class="scene" data-i18n="ana-cli-scene">👨‍🍳 → Fridge → Stove → Plate</div>
+    <p data-i18n="ana-cli-p">You're right there in the kitchen — opening the fridge, grabbing ingredients, cooking. Every step is hands-on. Fast and powerful, but you must be physically in the kitchen.</p>
   </div>
   <div class="analogy-vs">VS</div>
   <div class="analogy-half api-h">
-    <h4>🛎️ API = 在餐厅点餐</h4>
-    <div class="scene">📱 → 菜单（API文档）→ 服务员（API）→ 厨房</div>
-    <p>你拿着菜单点餐，服务员传达给厨房，厨房做好端给你。你不用进厨房，从任何地方都能点。</p>
+    <h4 data-i18n="ana-api-h">🛎️ API = Ordering at a restaurant</h4>
+    <div class="scene" data-i18n="ana-api-scene">📱 → Menu (API docs) → Waiter (API) → Kitchen</div>
+    <p data-i18n="ana-api-p">You order from a menu — the waiter relays your request to the kitchen and brings your meal back. No need to enter the kitchen; you can order from anywhere.</p>
   </div>
 </div>
 
 <!-- CLI GAME -->
 <div class="card">
   <div class="sec-hdr">
-    <span class="badge cli-badge">关卡 1</span>
-    <h2 style="color:var(--cli)">CLI 终端冒险</h2>
-    <span class="mission-txt">🎯 任务：导航到隐藏目录，读取宝藏文件</span>
-    <span class="done-badge" id="cli-done">✓ 任务完成！</span>
+    <span class="badge cli-badge" data-i18n="lv1">Level 1</span>
+    <h2 style="color:var(--cli)" data-i18n="cli-game-h">CLI Terminal Adventure</h2>
+    <span class="mission-txt" data-i18n="cli-mission">🎯 Mission: Navigate to the hidden directory and read the treasure file</span>
+    <span class="done-badge" id="cli-done" data-i18n="cli-done">✓ Mission Complete!</span>
   </div>
 
   <div class="terminal-wrap">
@@ -325,7 +322,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
     <div class="term-output" id="term-out"></div>
     <div class="term-input-row">
       <span class="term-prompt-label" id="term-prompt">developer@kingdom:~$</span>
-      <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="输入命令，回车执行…">
+      <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command and press Enter…">
     </div>
     <div class="term-hint">
       <span onclick="injectCmd('help')">help</span>
@@ -340,29 +337,29 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <!-- API GAME -->
 <div class="card">
   <div class="sec-hdr">
-    <span class="badge api-badge">关卡 2</span>
-    <h2 style="color:var(--api)">API 请求冒险</h2>
-    <span class="mission-txt">🎯 任务：登录获取令牌，再用令牌取回宝藏</span>
-    <span class="done-badge" id="api-done">✓ 任务完成！</span>
+    <span class="badge api-badge" data-i18n="lv2">Level 2</span>
+    <h2 style="color:var(--api)" data-i18n="api-game-h">API Request Adventure</h2>
+    <span class="mission-txt" data-i18n="api-mission">🎯 Mission: Log in to get a token, then use the token to retrieve the treasure</span>
+    <span class="done-badge" id="api-done" data-i18n="api-done">✓ Mission Complete!</span>
   </div>
 
   <!-- mission steps -->
   <div class="mission-steps" id="mission-steps">
-    <div class="ms active" id="ms1"><div class="ms-num">1</div>查询状态</div>
-    <div class="ms" id="ms2"><div class="ms-num">2</div>获取英雄列表</div>
-    <div class="ms" id="ms3"><div class="ms-num">3</div>登录拿令牌</div>
-    <div class="ms" id="ms4"><div class="ms-num">4</div>解锁宝藏</div>
+    <div class="ms active" id="ms1"><div class="ms-num">1</div><span data-i18n="ms1-txt">Check Status</span></div>
+    <div class="ms" id="ms2"><div class="ms-num">2</div><span data-i18n="ms2-txt">Get Heroes</span></div>
+    <div class="ms" id="ms3"><div class="ms-num">3</div><span data-i18n="ms3-txt">Login for Token</span></div>
+    <div class="ms" id="ms4"><div class="ms-num">4</div><span data-i18n="ms4-txt">Unlock Treasure</span></div>
   </div>
 
   <!-- endpoint guide -->
   <div class="ep-guide">
-    <h4>📋 可用端点（点击自动填充）</h4>
+    <h4 data-i18n="ep-guide-h">📋 Available Endpoints (click to fill)</h4>
     <div class="ep-list" id="ep-list"></div>
   </div>
 
   <!-- request builder -->
   <div class="req-builder">
-    <h4>请求构建器</h4>
+    <h4 data-i18n="req-h">Request Builder</h4>
     <div class="method-url">
       <select class="method-sel" id="api-method">
         <option value="GET">GET</option>
@@ -371,21 +368,21 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
         <option value="DELETE">DELETE</option>
       </select>
       <input class="url-input" id="api-url" type="text" value="/api/status" placeholder="/api/endpoint">
-      <button class="send-btn" id="send-btn" onclick="sendRequest()">发送请求 ▶</button>
+      <button class="send-btn" id="send-btn" onclick="sendRequest()" data-i18n="send-btn-txt">Send Request ▶</button>
     </div>
 
     <div class="req-tabs">
-      <div class="req-tab active" onclick="switchTab('headers')">请求头 Headers</div>
-      <div class="req-tab" onclick="switchTab('body')">请求体 Body</div>
+      <div class="req-tab active" onclick="switchTab('headers')" data-i18n="tab-headers">Headers</div>
+      <div class="req-tab" onclick="switchTab('body')" data-i18n="tab-body">Body</div>
     </div>
     <div class="tab-panel active" id="tab-headers">
       <div class="headers-grid" id="headers-grid">
         <div class="hdr-row">
-          <input class="hdr-key" placeholder="Header 名称" value="Content-Type">
-          <input class="hdr-val" placeholder="值" value="application/json">
+          <input class="hdr-key" placeholder="Header Name" value="Content-Type">
+          <input class="hdr-val" placeholder="Value" value="application/json">
         </div>
       </div>
-      <button class="hdr-add" onclick="addHeaderRow()" style="margin-top:6px">+ 添加 Header</button>
+      <button class="hdr-add" onclick="addHeaderRow()" style="margin-top:6px" data-i18n="add-header">+ Add Header</button>
     </div>
     <div class="tab-panel" id="tab-body">
       <textarea class="body-input" id="req-body" placeholder='{"key": "value"}'></textarea>
@@ -395,39 +392,39 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   <!-- network animation -->
   <div class="network-anim" id="net-anim">
     <div class="net-track">
-      <div class="net-node net-client">CLIENT 客户端</div>
+      <div class="net-node net-client" data-i18n="net-client">CLIENT</div>
       <div class="net-line"><div class="net-packet" id="net-packet"></div></div>
-      <div class="net-node net-server">SERVER 服务器</div>
-      <div class="net-status" id="net-status">等待中…</div>
+      <div class="net-node net-server" data-i18n="net-server">SERVER</div>
+      <div class="net-status" id="net-status" data-i18n="net-idle">Idle…</div>
     </div>
   </div>
 
   <!-- response -->
   <div class="response-panel">
-    <h4>响应 Response</h4>
-    <div id="resp-area"><p class="resp-empty">点击「发送请求」查看响应</p></div>
+    <h4 data-i18n="resp-h">Response</h4>
+    <div id="resp-area"><p class="resp-empty" data-i18n="resp-empty">Click "Send Request" to see the response</p></div>
   </div>
 </div>
 
 <!-- COMPARISON TABLE -->
 <div class="cmp-wrap">
-  <div class="sec-hdr"><span class="icon" style="font-size:1.2em">📊</span><h2>CLI vs API 全面对比</h2></div>
+  <div class="sec-hdr"><span class="icon" style="font-size:1.2em">📊</span><h2 data-i18n="cmp-h">CLI vs API — Full Comparison</h2></div>
   <table class="cmp-table">
     <thead>
       <tr>
-        <th>特性</th>
+        <th data-i18n="th-feature">Feature</th>
         <th class="cli-th">💻 CLI</th>
         <th class="api-th">🌐 API</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>调用方式</td><td class="cli-td">输入文字命令</td><td class="api-td">发送 HTTP 请求</td></tr>
-      <tr><td>运行位置</td><td class="cli-td">必须在目标机器上</td><td class="api-td">任何联网的地方</td></tr>
-      <tr><td>数据格式</td><td class="cli-td">纯文本输入/输出</td><td class="api-td">结构化 JSON/XML</td></tr>
-      <tr><td>权限控制</td><td class="cli-td">系统用户权限</td><td class="api-td">Token / API Key</td></tr>
-      <tr><td>适合场景</td><td class="cli-td">系统管理、自动化脚本、DevOps</td><td class="api-td">Web服务、移动端、跨平台集成</td></tr>
-      <tr><td>学习曲线</td><td class="cli-td">需要记忆命令语法</td><td class="api-td">需要理解 HTTP 协议</td></tr>
-      <tr><td>典型工具</td><td class="cli-td">bash、zsh、PowerShell</td><td class="api-td">Postman、curl、fetch</td></tr>
+      <tr><td data-i18n="tr1-f">Invocation</td><td class="cli-td" data-i18n="tr1-cli">Type text commands</td><td class="api-td" data-i18n="tr1-api">Send HTTP requests</td></tr>
+      <tr><td data-i18n="tr2-f">Run location</td><td class="cli-td" data-i18n="tr2-cli">Must be on target machine</td><td class="api-td" data-i18n="tr2-api">Anywhere with network</td></tr>
+      <tr><td data-i18n="tr3-f">Data format</td><td class="cli-td" data-i18n="tr3-cli">Plain text input/output</td><td class="api-td" data-i18n="tr3-api">Structured JSON/XML</td></tr>
+      <tr><td data-i18n="tr4-f">Access control</td><td class="cli-td" data-i18n="tr4-cli">System user permissions</td><td class="api-td" data-i18n="tr4-api">Token / API Key</td></tr>
+      <tr><td data-i18n="tr5-f">Best for</td><td class="cli-td" data-i18n="tr5-cli">System admin, automation scripts, DevOps</td><td class="api-td" data-i18n="tr5-api">Web services, mobile apps, cross-platform</td></tr>
+      <tr><td data-i18n="tr6-f">Learning curve</td><td class="cli-td" data-i18n="tr6-cli">Memorize command syntax</td><td class="api-td" data-i18n="tr6-api">Understand HTTP protocol</td></tr>
+      <tr><td data-i18n="tr7-f">Typical tools</td><td class="cli-td" data-i18n="tr7-cli">bash, zsh, PowerShell</td><td class="api-td" data-i18n="tr7-api">Postman, curl, fetch</td></tr>
     </tbody>
   </table>
 </div>
@@ -435,31 +432,17 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <!-- WHEN TO USE -->
 <div class="when-grid">
   <div class="when-card cli-w">
-    <h4>💻 什么时候用 CLI？</h4>
-    <ul>
-      <li>管理服务器文件和进程</li>
-      <li>自动化部署脚本（CI/CD）</li>
-      <li>安装软件包（npm / pip / apt）</li>
-      <li>Git 操作版本控制</li>
-      <li>数据库本地管理</li>
-      <li>系统监控（top / htop）</li>
-    </ul>
+    <h4 data-i18n="when-cli-h">💻 When to use CLI?</h4>
+    <ul data-i18n="when-cli-ul"><li>Manage server files and processes</li><li>Automate deployment scripts (CI/CD)</li><li>Install packages (npm / pip / apt)</li><li>Git version control operations</li><li>Local database management</li><li>System monitoring (top / htop)</li></ul>
   </div>
   <div class="when-card api-w">
-    <h4>🌐 什么时候用 API？</h4>
-    <ul>
-      <li>前端调用后端数据</li>
-      <li>接入第三方服务（支付/地图/AI）</li>
-      <li>手机 App 与服务器通信</li>
-      <li>微服务之间相互调用</li>
-      <li>给外部开发者开放功能</li>
-      <li>Webhook 触发自动化流程</li>
-    </ul>
+    <h4 data-i18n="when-api-h">🌐 When to use API?</h4>
+    <ul data-i18n="when-api-ul"><li>Frontend fetching backend data</li><li>Integrating third-party services (payments/maps/AI)</li><li>Mobile app communicating with a server</li><li>Microservices calling each other</li><li>Exposing functionality to external developers</li><li>Webhook-triggered automation flows</li></ul>
   </div>
 </div>
 
-<div style="text-align:center;padding:24px;color:var(--dim);font-size:.82em">
-  CLI × API 开发者冒险 · 亲身体验比一百遍讲解更有效 🚀
+<div style="text-align:center;padding:24px;color:var(--dim);font-size:.82em" data-i18n="footer-txt">
+  CLI × API Developer Adventure · One hands-on experience beats a hundred explanations 🚀
 </div>
 
 </div><!-- /wrap -->
@@ -468,40 +451,91 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 /* ═══════════════════════════════════════
    CLI ENGINE
 ═══════════════════════════════════════ */
-const FS = {
-  'home': {
-    type: 'dir',
-    children: {
-      'readme.txt': {
-        type: 'file',
-        content: '📄 欢迎来到开发者王国！\n\n目标：找到隐藏的宝藏文件。\n\n提示：用 ls 查看目录，cd 进入文件夹，cat 读取文件。'
-      },
-      'docs': {
-        type: 'dir',
-        children: {
-          'cli_guide.txt': {
-            type: 'file',
-            content: '📘 CLI 快速指南\n\n常用命令：\n  ls              列出当前目录文件\n  cd <目录>       进入指定目录\n  cd ..           返回上级目录\n  cat <文件>      读取文件内容\n  pwd             显示当前路径\n  mkdir <目录>    创建新目录\n  echo <内容>     打印文字\n  clear           清空终端\n  whoami          显示当前用户'
-          }
-        }
-      },
-      'api_notes.txt': {
-        type: 'file',
-        content: '📝 API 学习笔记\n\n"CLI 在机器内部操作，API 跨网络通信。\nCLI 像走进厨房，API 像对服务员点餐。"\n\n                      —— 一个正在学习的开发者'
-      },
-      'secret': {
-        type: 'dir',
-        children: {
-          'treasure.txt': {
-            type: 'file',
-            isTreasure: true,
-            content: '🏆 恭喜！你通过 CLI 找到了宝藏！\n\n你刚刚体验的就是 CLI 的核心：\n  1. 直接控制文件系统\n  2. 逐条执行命令\n  3. 在本机上运行\n\n✅ 关卡1 完成！去体验 API 关卡吧 ↓'
-          }
-        }
-      }
-    }
+const FS_DATA = {
+  en: {
+    'home': { type:'dir', children: {
+      'readme.txt': { type:'file', content:'📄 Welcome to the Developer Kingdom!\n\nGoal: Find the hidden treasure file.\n\nHint: Use ls to list directories, cd to enter folders, cat to read files.' },
+      'docs': { type:'dir', children: {
+        'cli_guide.txt': { type:'file', content:'📘 CLI Quick Reference\n\nCommon commands:\n  ls              List files in current directory\n  cd <dir>        Enter a directory\n  cd ..           Go up one level\n  cat <file>      Read file contents\n  pwd             Show current path\n  mkdir <dir>     Create a directory\n  echo <text>     Print text\n  clear           Clear the terminal\n  whoami          Show current user' }
+      }},
+      'api_notes.txt': { type:'file', content:'📝 API Learning Notes\n\n"CLI operates directly inside the machine; API communicates across a network.\nCLI is like walking into the kitchen; API is like ordering from a menu."\n\n                      — A developer in training' },
+      'secret': { type:'dir', children: {
+        'treasure.txt': { type:'file', isTreasure:true, content:'🏆 Congratulations! You found the treasure via CLI!\n\nYou just experienced the core of CLI:\n  1. Direct filesystem control\n  2. Execute commands one at a time\n  3. Runs on the local machine\n\n✅ Level 1 complete! Try the API level below ↓' }
+      }}
+    }}
+  },
+  zh: {
+    'home': { type:'dir', children: {
+      'readme.txt': { type:'file', content:'📄 欢迎来到开发者王国！\n\n目标：找到隐藏的宝藏文件。\n\n提示：用 ls 查看目录，cd 进入文件夹，cat 读取文件。' },
+      'docs': { type:'dir', children: {
+        'cli_guide.txt': { type:'file', content:'📘 CLI 快速指南\n\n常用命令：\n  ls              列出当前目录文件\n  cd <目录>       进入指定目录\n  cd ..           返回上级目录\n  cat <文件>      读取文件内容\n  pwd             显示当前路径\n  mkdir <目录>    创建新目录\n  echo <内容>     打印文字\n  clear           清空终端\n  whoami          显示当前用户' }
+      }},
+      'api_notes.txt': { type:'file', content:'📝 API 学习笔记\n\n"CLI 在机器内部操作，API 跨网络通信。\nCLI 像走进厨房，API 像对服务员点餐。"\n\n                      —— 一个正在学习的开发者' },
+      'secret': { type:'dir', children: {
+        'treasure.txt': { type:'file', isTreasure:true, content:'🏆 恭喜！你通过 CLI 找到了宝藏！\n\n你刚刚体验的就是 CLI 的核心：\n  1. 直接控制文件系统\n  2. 逐条执行命令\n  3. 在本机上运行\n\n✅ 关卡1 完成！去体验 API 关卡吧 ↓' }
+      }}
+    }}
   }
 }
+function getFS() { return FS_DATA[window._lang||'en'] }
+
+const CLI_T = {
+  en: {
+    init1: 'Kingdom Terminal v1.0 — type <span style="color:var(--cli)">help</span> to see commands',
+    init2: '─────────────────────────────────',
+    help: ['Available commands:',
+      '  <span style="color:var(--cli)">ls</span>              List directory contents',
+      '  <span style="color:var(--cli)">cd &lt;dir&gt;</span>       Enter directory (cd .. to go up)',
+      '  <span style="color:var(--cli)">cat &lt;file&gt;</span>     Read file contents',
+      '  <span style="color:var(--cli)">pwd</span>             Show current path',
+      '  <span style="color:var(--cli)">mkdir &lt;name&gt;</span>   Create directory (demo)',
+      '  <span style="color:var(--cli)">echo &lt;text&gt;</span>    Print text',
+      '  <span style="color:var(--cli)">whoami</span>          Show current user',
+      '  <span style="color:var(--cli)">clear</span>           Clear terminal',
+    ],
+    mkdir: (a) => `Created directory: <span style="color:var(--cli)">${a}</span> (demo only)`,
+    api: '<span style="color:var(--api)">Hint: scroll down to see the API level!</span>',
+    err_cmd: (c) => `bash: ${c}: command not found. Type 'help' for commands.`,
+    err_dir: (a) => `cd: ${a}: no such directory`,
+    err_notdir: (a) => `cd: ${a}: not a directory`,
+    err_cat_arg: 'cat: missing file argument',
+    err_cat_read: 'cat: cannot read',
+    err_cat_nofile: (a) => `cat: ${a}: no such file or directory`,
+    err_cat_isdir: (a) => `cat: ${a}: is a directory`,
+    err_ls: 'error: cannot read directory',
+    empty_dir: '(empty directory)',
+    done_toast: '🎉 CLI level complete!',
+    placeholder: 'Type a command and press Enter…',
+  },
+  zh: {
+    init1: '王国终端 v1.0 — 输入 <span style="color:var(--cli)">help</span> 查看命令',
+    init2: '─────────────────────────────────',
+    help: ['<span class="t-dim">可用命令：</span>',
+      '  <span style="color:var(--cli)">ls</span>              列出当前目录内容',
+      '  <span style="color:var(--cli)">cd &lt;目录&gt;</span>       进入目录（cd .. 返回上级）',
+      '  <span style="color:var(--cli)">cat &lt;文件&gt;</span>     读取文件内容',
+      '  <span style="color:var(--cli)">pwd</span>             显示当前路径',
+      '  <span style="color:var(--cli)">mkdir &lt;名称&gt;</span>   创建目录（演示）',
+      '  <span style="color:var(--cli)">echo &lt;内容&gt;</span>    打印文字',
+      '  <span style="color:var(--cli)">whoami</span>          显示当前用户',
+      '  <span style="color:var(--cli)">clear</span>           清空终端',
+    ],
+    mkdir: (a) => `已创建目录: <span style="color:var(--cli)">${a}</span>（仅演示，不持久化）`,
+    api: '<span style="color:var(--api)">提示：滚动页面查看 API 关卡！</span>',
+    err_cmd: (c) => `bash: ${c}: 未找到命令。输入 'help' 查看可用命令。`,
+    err_dir: (a) => `cd: ${a}: 没有那个目录`,
+    err_notdir: (a) => `cd: ${a}: 不是一个目录`,
+    err_cat_arg: 'cat: 缺少文件名',
+    err_cat_read: 'cat: 无法读取',
+    err_cat_nofile: (a) => `cat: ${a}: 没有那个文件或目录`,
+    err_cat_isdir: (a) => `cat: ${a}: 是一个目录`,
+    err_ls: '错误：无法读取目录',
+    empty_dir: '（空目录）',
+    done_toast: '🎉 CLI 关卡完成！',
+    placeholder: '输入命令，回车执行…',
+  }
+}
+function cliT() { return CLI_T[window._lang||'en'] }
 
 let cliState = {
   cwd: ['home'],
@@ -520,7 +554,7 @@ function promptLabel() {
 }
 
 function getCwdNode() {
-  let node = FS
+  let node = getFS()
   for (const p of cliState.cwd) {
     if (!node[p]) return null
     node = node[p].type === 'dir' ? node[p].children : null
@@ -548,8 +582,8 @@ function escHtml(s) {
 }
 
 function cliInit() {
-  appendLine('<span class="t-dim">王国终端 v1.0 — 输入 <span style="color:var(--cli)">help</span> 查看命令</span>')
-  appendLine('<span class="t-dim">─────────────────────────────────</span>')
+  appendLine('<span class="t-dim">' + cliT().init1 + '</span>')
+  appendLine('<span class="t-dim">' + cliT().init2 + '</span>')
   appendLine(`<span class="t-prompt">${promptLabel()}</span> <span class="t-cmd">_</span>`, 't-line')
 }
 
@@ -570,36 +604,25 @@ function runCmd(raw) {
     case 'pwd': appendLine(cwdPath()); break
     case 'cd': cmdCd(arg); break
     case 'cat': cmdCat(arg); break
-    case 'mkdir': appendLine(`已创建目录: <span style="color:var(--cli)">${escHtml(arg)}</span>（仅演示，不持久化）`); break
+    case 'mkdir': appendLine(cliT().mkdir(escHtml(arg))); break
     case 'clear': document.getElementById('term-out').innerHTML=''; break
     case 'echo': appendLine(escHtml(arg || '')); break
     case 'whoami': appendLine('developer'); break
-    case 'api': appendLine('<span style="color:var(--api)">提示：滚动页面查看 API 关卡！</span>'); break
-    default: appendLine(`<span class="t-err">bash: ${escHtml(cmd)}: 未找到命令。输入 'help' 查看可用命令。</span>`)
+    case 'api': appendLine(cliT().api); break
+    default: appendLine('<span class="t-err">' + cliT().err_cmd(escHtml(cmd)) + '</span>')
   }
   updatePrompt()
 }
 
 function cmdHelp() {
-  const lines = [
-    '<span class="t-dim">可用命令：</span>',
-    '  <span style="color:var(--cli)">ls</span>              列出当前目录内容',
-    '  <span style="color:var(--cli)">cd &lt;目录&gt;</span>       进入目录（cd .. 返回上级）',
-    '  <span style="color:var(--cli)">cat &lt;文件&gt;</span>     读取文件内容',
-    '  <span style="color:var(--cli)">pwd</span>             显示当前路径',
-    '  <span style="color:var(--cli)">mkdir &lt;名称&gt;</span>   创建目录（演示）',
-    '  <span style="color:var(--cli)">echo &lt;内容&gt;</span>    打印文字',
-    '  <span style="color:var(--cli)">whoami</span>          显示当前用户',
-    '  <span style="color:var(--cli)">clear</span>           清空终端',
-  ]
-  lines.forEach(l => appendLine(l))
+  cliT().help.forEach(l => appendLine(l))
 }
 
 function cmdLs() {
   const node = getCwdNode()
-  if (!node) { appendLine('<span class="t-err">错误：无法读取目录</span>'); return }
+  if (!node) { appendLine('<span class="t-err">' + cliT().err_ls + '</span>'); return }
   const entries = Object.entries(node)
-  if (!entries.length) { appendLine('<span class="t-dim">（空目录）</span>'); return }
+  if (!entries.length) { appendLine('<span class="t-dim">' + cliT().empty_dir + '</span>'); return }
   const line = entries.map(([name, obj]) =>
     obj.type === 'dir'
       ? `<span style="color:#4A9EFF;font-weight:700">${name}/</span>`
@@ -621,11 +644,11 @@ function cmdCd(arg) {
     if (p === '..') { if (cliState.cwd.length > 1) cliState.cwd.pop(); continue }
     const node = getCwdNode()
     if (!node || !node[p]) {
-      appendLine(`<span class="t-err">cd: ${escHtml(arg)}: 没有那个目录</span>`)
+      appendLine('<span class="t-err">' + cliT().err_dir(escHtml(arg)) + '</span>')
       cliState.cwd = saved; return
     }
     if (node[p].type !== 'dir') {
-      appendLine(`<span class="t-err">cd: ${escHtml(arg)}: 不是一个目录</span>`)
+      appendLine('<span class="t-err">' + cliT().err_notdir(escHtml(arg)) + '</span>')
       cliState.cwd = saved; return
     }
     cliState.cwd.push(p)
@@ -633,19 +656,19 @@ function cmdCd(arg) {
 }
 
 function cmdCat(arg) {
-  if (!arg) { appendLine('<span class="t-err">cat: 缺少文件名</span>'); return }
+  if (!arg) { appendLine('<span class="t-err">' + cliT().err_cat_arg + '</span>'); return }
   const node = getCwdNode()
-  if (!node) { appendLine('<span class="t-err">cat: 无法读取</span>'); return }
+  if (!node) { appendLine('<span class="t-err">' + cliT().err_cat_read + '</span>'); return }
   const file = node[arg]
-  if (!file) { appendLine(`<span class="t-err">cat: ${escHtml(arg)}: 没有那个文件或目录</span>`); return }
-  if (file.type === 'dir') { appendLine(`<span class="t-err">cat: ${escHtml(arg)}: 是一个目录</span>`); return }
+  if (!file) { appendLine('<span class="t-err">' + cliT().err_cat_nofile(escHtml(arg)) + '</span>'); return }
+  if (file.type === 'dir') { appendLine('<span class="t-err">' + cliT().err_cat_isdir(escHtml(arg)) + '</span>'); return }
   const lines = file.content.split('\n')
   lines.forEach(l => appendLine(escHtml(l) || ' '))
   if (file.isTreasure && !cliState.done) {
     cliState.done = true
     setTimeout(() => {
       document.getElementById('cli-done').style.display = 'inline-block'
-      showToast('🎉 CLI 关卡完成！', 'cli-toast')
+      showToast(cliT().done_toast, 'cli-toast')
     }, 300)
   }
 }
@@ -697,43 +720,69 @@ function autoComplete(inp) {
 /* ═══════════════════════════════════════
    API ENGINE
 ═══════════════════════════════════════ */
-const ENDPOINTS = [
-  { method: 'GET',  path: '/api/status',  desc: '查询服务器状态', lock: false,
-    handler: () => ({ status: 200, body: { status: 'online', server: '王国API v2.0', uptime: '99.9%', message: '服务运行正常！' } })
-  },
-  { method: 'GET',  path: '/api/heroes',  desc: '获取英雄列表', lock: false,
-    handler: () => ({ status: 200, body: { heroes: [
-      { id: 1, name: '盖伦', class: '战士', power: 85 },
-      { id: 2, name: '卡西奥佩娅', class: '法师', power: 79 },
-      { id: 3, name: '维迦', class: '法师', power: 91 }
-    ], total: 3 } })
-  },
-  { method: 'POST', path: '/api/login',   desc: '登录获取令牌', lock: false,
-    handler: (body) => {
-      try {
-        const b = JSON.parse(body || '{}')
-        if (b.username === 'dev' && b.password === '123456') {
-          apiState.token = 'Bearer dev-abc123'
-          apiState.loggedIn = true
-          return { status: 200, body: { success: true, token: 'dev-abc123', message: '登录成功！复制 token 填入请求头后调用宝藏接口', hint: '将 token 加入 Authorization 请求头：Bearer dev-abc123' } }
+const ENDPOINTS_DATA = {
+  en: [
+    { method:'GET',  path:'/api/status',   desc:'Check server status',         lock:false,
+      handler: () => ({ status:200, body:{ status:'online', server:'Kingdom API v2.0', uptime:'99.9%', message:'Service running normally!' } }) },
+    { method:'GET',  path:'/api/heroes',   desc:'Get heroes list',              lock:false,
+      handler: () => ({ status:200, body:{ heroes:[
+        { id:1, name:'Garen',      class:'Warrior',  power:85 },
+        { id:2, name:'Cassiopeia', class:'Mage',     power:79 },
+        { id:3, name:'Veigar',     class:'Mage',     power:91 }
+      ], total:3 } }) },
+    { method:'POST', path:'/api/login',    desc:'Login to get token',           lock:false,
+      handler: (body) => {
+        try {
+          const b = JSON.parse(body||'{}')
+          if (b.username==='dev' && b.password==='123456') {
+            apiState.token='Bearer dev-abc123'; apiState.loggedIn=true
+            return { status:200, body:{ success:true, token:'dev-abc123', message:'Login successful! Copy the token into Authorization header and call the treasure endpoint', hint:'Add to headers: Authorization: Bearer dev-abc123' } }
+          }
+          return { status:401, body:{ error:'Invalid credentials', hint:'Try username: "dev", password: "123456"' } }
+        } catch { return { status:400, body:{ error:'Request body is not valid JSON', hint:'Example: {"username":"dev","password":"123456"}' } } }
+      }},
+    { method:'GET',  path:'/api/treasure', desc:'Get treasure (token required)', lock:true,
+      handler: (body, headers) => {
+        const auth = headers['authorization']||headers['Authorization']||''
+        if (auth.includes('dev-abc123')) {
+          apiState.treasureDone=true
+          return { status:200, body:{ treasure:'🏆 Congratulations! Treasure unlocked!', message:'API Level complete! You mastered HTTP authentication flow', reward:{ exp:500, badge:'🌐 API Master' } } }
         }
-        return { status: 401, body: { error: '用户名或密码错误', hint: '试试 username: "dev", password: "123456"' } }
-      } catch {
-        return { status: 400, body: { error: '请求体不是合法 JSON', hint: '示例: {"username":"dev","password":"123456"}' } }
-      }
-    }
-  },
-  { method: 'GET',  path: '/api/treasure', desc: '获取宝藏（需令牌）', lock: true,
-    handler: (body, headers) => {
-      const auth = headers['authorization'] || headers['Authorization'] || ''
-      if (auth.includes('dev-abc123')) {
-        apiState.treasureDone = true
-        return { status: 200, body: { treasure: '🏆 恭喜！宝藏解锁！', message: 'API 关卡完成！你已掌握 HTTP 认证流程', reward: { exp: 500, badge: '🌐 API大师' } } }
-      }
-      return { status: 401, body: { error: 'Unauthorized', message: '需要有效的 Authorization 请求头', hint: '先调用 POST /api/login 获取 token，然后添加请求头: Authorization: Bearer dev-abc123' } }
-    }
-  },
-]
+        return { status:401, body:{ error:'Unauthorized', message:'A valid Authorization header is required', hint:'First call POST /api/login to get a token, then add: Authorization: Bearer dev-abc123' } }
+      }}
+  ],
+  zh: [
+    { method:'GET',  path:'/api/status',   desc:'查询服务器状态',     lock:false,
+      handler: () => ({ status:200, body:{ status:'online', server:'王国API v2.0', uptime:'99.9%', message:'服务运行正常！' } }) },
+    { method:'GET',  path:'/api/heroes',   desc:'获取英雄列表',       lock:false,
+      handler: () => ({ status:200, body:{ heroes:[
+        { id:1, name:'盖伦', class:'战士', power:85 },
+        { id:2, name:'卡西奥佩娅', class:'法师', power:79 },
+        { id:3, name:'维迦', class:'法师', power:91 }
+      ], total:3 } }) },
+    { method:'POST', path:'/api/login',    desc:'登录获取令牌',       lock:false,
+      handler: (body) => {
+        try {
+          const b = JSON.parse(body||'{}')
+          if (b.username==='dev' && b.password==='123456') {
+            apiState.token='Bearer dev-abc123'; apiState.loggedIn=true
+            return { status:200, body:{ success:true, token:'dev-abc123', message:'登录成功！复制 token 填入请求头后调用宝藏接口', hint:'将 token 加入 Authorization 请求头：Bearer dev-abc123' } }
+          }
+          return { status:401, body:{ error:'用户名或密码错误', hint:'试试 username: "dev", password: "123456"' } }
+        } catch { return { status:400, body:{ error:'请求体不是合法 JSON', hint:'示例: {"username":"dev","password":"123456"}' } } }
+      }},
+    { method:'GET',  path:'/api/treasure', desc:'获取宝藏（需令牌）', lock:true,
+      handler: (body, headers) => {
+        const auth = headers['authorization']||headers['Authorization']||''
+        if (auth.includes('dev-abc123')) {
+          apiState.treasureDone=true
+          return { status:200, body:{ treasure:'🏆 恭喜！宝藏解锁！', message:'API 关卡完成！你已掌握 HTTP 认证流程', reward:{ exp:500, badge:'🌐 API大师' } } }
+        }
+        return { status:401, body:{ error:'Unauthorized', message:'需要有效的 Authorization 请求头', hint:'先调用 POST /api/login 获取 token，然后添加请求头: Authorization: Bearer dev-abc123' } }
+      }}
+  ]
+}
+function getEndpoints() { return ENDPOINTS_DATA[window._lang||'en'] }
 
 const API_MISSION_MAP = {
   '/api/status':  'ms1',
@@ -747,7 +796,7 @@ let apiState = { token: null, loggedIn: false, treasureDone: false, completedSte
 // Render endpoint list
 function renderEndpoints() {
   const list = document.getElementById('ep-list')
-  ENDPOINTS.forEach((ep, i) => {
+  getEndpoints().forEach((ep, i) => {
     const div = document.createElement('div')
     div.className = 'ep-item'
     div.id = 'ep-' + i
@@ -791,9 +840,10 @@ function autoAddAuthHeader() {
   }
   const row = document.createElement('div')
   row.className = 'hdr-row'
+  const lang = window._lang || 'en'
   row.innerHTML = `
-    <input class="hdr-key" placeholder="Header 名称" value="Authorization">
-    <input class="hdr-val" placeholder="值" value="Bearer dev-abc123">
+    <input class="hdr-key" placeholder="${lang==='zh' ? 'Header 名称' : 'Header Name'}" value="Authorization">
+    <input class="hdr-val" placeholder="${lang==='zh' ? '值' : 'Value'}" value="Bearer dev-abc123">
   `
   grid.appendChild(row)
 }
@@ -802,9 +852,10 @@ function addHeaderRow() {
   const grid = document.getElementById('headers-grid')
   const row = document.createElement('div')
   row.className = 'hdr-row'
+  const lang = window._lang || 'en'
   row.innerHTML = `
-    <input class="hdr-key" placeholder="Header 名称">
-    <input class="hdr-val" placeholder="值">
+    <input class="hdr-key" placeholder="${lang==='zh' ? 'Header 名称' : 'Header Name'}">
+    <input class="hdr-val" placeholder="${lang==='zh' ? '值' : 'Value'}">
   `
   grid.appendChild(row)
 }
@@ -831,7 +882,7 @@ async function sendRequest() {
   if (apiState.sending) return
   apiState.sending = true
   const btn = document.getElementById('send-btn')
-  btn.disabled = true; btn.textContent = '发送中…'
+  btn.disabled = true; btn.textContent = window._lang==='zh' ? '发送中…' : 'Sending…'
 
   const method = document.getElementById('api-method').value
   const url = document.getElementById('api-url').value.trim()
@@ -839,7 +890,7 @@ async function sendRequest() {
   const headers = getHeaders()
 
   // find handler
-  const ep = ENDPOINTS.find(e => e.method === method && e.path === url)
+  const ep = getEndpoints().find(e => e.method === method && e.path === url)
 
   // network animation
   const netDiv = document.getElementById('net-anim')
@@ -847,18 +898,18 @@ async function sendRequest() {
   const netStatus = document.getElementById('net-status')
   netDiv.style.display = 'block'
   packet.className = 'net-packet'
-  netStatus.textContent = '发送中…'
+  netStatus.textContent = window._lang==='zh' ? '发送中…' : 'Sending…'
   void packet.offsetWidth
   packet.className = 'net-packet go'
 
   await delay(850)
-  netStatus.textContent = '处理中…'
+  netStatus.textContent = window._lang==='zh' ? '处理中…' : 'Processing…'
   await delay(400)
 
   // get response
   let result
   if (!ep) {
-    result = { status: 404, body: { error: '404 Not Found', message: `没有找到端点 ${method} ${url}` } }
+    result = { status:404, body:{ error:'404 Not Found', message: window._lang==='zh' ? `没有找到端点 ${method} ${url}` : `Endpoint not found: ${method} ${url}` } }
   } else {
     result = ep.handler(body, headers)
   }
@@ -872,7 +923,7 @@ async function sendRequest() {
   renderResponse(result)
   checkMissionProgress(url, result.status)
 
-  btn.disabled = false; btn.textContent = '发送请求 ▶'
+  btn.disabled = false; btn.textContent = _CA('send-btn-txt')
   apiState.sending = false
 }
 
@@ -927,8 +978,8 @@ function checkMissionProgress(url, status) {
   // hint for treasure step
   if (url === '/api/login' && status === 200 && !apiState.treasureDone) {
     setTimeout(() => {
-      showToast('✅ 已获取 token！点击 /api/treasure 端点并发送', 'api-toast')
-      const treasureEp = ENDPOINTS.find(e => e.path === '/api/treasure')
+      showToast(window._lang==='zh' ? '✅ 已获取 token！点击 /api/treasure 端点并发送' : '✅ Token received! Click /api/treasure endpoint and send', 'api-toast')
+      const treasureEp = getEndpoints().find(e => e.path === '/api/treasure')
       fillEndpoint(treasureEp, 3)
       autoAddAuthHeader()
     }, 400)
@@ -936,7 +987,7 @@ function checkMissionProgress(url, status) {
 
   if (apiState.treasureDone) {
     document.getElementById('api-done').style.display = 'inline-block'
-    showToast('🏆 API 关卡完成！两个关卡都通关了！', 'api-toast')
+    showToast(window._lang==='zh' ? '🏆 API 关卡完成！两个关卡都通关了！' : '🏆 API Level complete! Both levels cleared!', 'api-toast')
   }
 }
 
@@ -948,9 +999,148 @@ function showToast(msg, cls='') {
   setTimeout(() => t.classList.remove('show'), 3500)
 }
 
+/* ═══════════════════════════════════════
+   I18N
+═══════════════════════════════════════ */
+const CA_T = {
+  en: {
+    'hdr-h1': '<span class="cli-color">CLI</span> vs <span class="api-color">API</span> &nbsp;Developer Adventure',
+    'hdr-p': 'Two levels — feel the difference between command-line and API calls firsthand',
+    'cli-h':'CLI — Command Line Interface',
+    'cli-p':'Command Line Interface — you type commands directly in a terminal to control a <strong style="color:var(--text)">local or remote machine</strong>.',
+    'cli-ul':'<li>Direct filesystem, process, and system control</li><li>Must run on the target machine</li><li>Powerful, efficient, script-friendly</li><li>Text input → text output</li>',
+    'cli-tag':'Operates directly inside the machine',
+    'api-h':'API — Application Programming Interface',
+    'api-p':'Send <strong style="color:var(--text)">standardized requests</strong> over the network to call remote services from anywhere.',
+    'api-ul':'<li>Call from anywhere (browser/phone/server)</li><li>HTTP methods + JSON data</li><li>Reusable, access-controlled services</li><li>Request → structured response (JSON)</li>',
+    'api-tag':'Cross-network communication, call from anywhere',
+    'ana-cli-h':'🍳 CLI = Cooking in the kitchen yourself',
+    'ana-cli-scene':'👨‍🍳 → Fridge → Stove → Plate',
+    'ana-cli-p':"You're right there in the kitchen — opening the fridge, grabbing ingredients, cooking. Every step is hands-on. Fast and powerful, but you must be physically in the kitchen.",
+    'ana-api-h':'🛎️ API = Ordering at a restaurant',
+    'ana-api-scene':'📱 → Menu (API docs) → Waiter (API) → Kitchen',
+    'ana-api-p':'You order from a menu — the waiter relays your request to the kitchen and brings your meal back. No need to enter the kitchen; you can order from anywhere.',
+    'lv1':'Level 1','lv2':'Level 2',
+    'cli-game-h':'CLI Terminal Adventure',
+    'cli-mission':'🎯 Mission: Navigate to the hidden directory and read the treasure file',
+    'cli-done':'✓ Mission Complete!',
+    'api-game-h':'API Request Adventure',
+    'api-mission':'🎯 Mission: Log in to get a token, then use the token to retrieve the treasure',
+    'api-done':'✓ Mission Complete!',
+    'ms1-txt':'Check Status','ms2-txt':'Get Heroes','ms3-txt':'Login for Token','ms4-txt':'Unlock Treasure',
+    'ep-guide-h':'📋 Available Endpoints (click to fill)',
+    'req-h':'Request Builder',
+    'send-btn-txt':'Send Request ▶',
+    'tab-headers':'Headers','tab-body':'Body',
+    'add-header':'+ Add Header',
+    'net-client':'CLIENT','net-server':'SERVER','net-idle':'Idle…',
+    'resp-h':'Response',
+    'resp-empty':'Click "Send Request" to see the response',
+    'cmp-h':'CLI vs API — Full Comparison',
+    'th-feature':'Feature',
+    'tr1-f':'Invocation','tr1-cli':'Type text commands','tr1-api':'Send HTTP requests',
+    'tr2-f':'Run location','tr2-cli':'Must be on target machine','tr2-api':'Anywhere with network',
+    'tr3-f':'Data format','tr3-cli':'Plain text input/output','tr3-api':'Structured JSON/XML',
+    'tr4-f':'Access control','tr4-cli':'System user permissions','tr4-api':'Token / API Key',
+    'tr5-f':'Best for','tr5-cli':'System admin, automation, DevOps','tr5-api':'Web services, mobile apps, cross-platform',
+    'tr6-f':'Learning curve','tr6-cli':'Memorize command syntax','tr6-api':'Understand HTTP protocol',
+    'tr7-f':'Typical tools','tr7-cli':'bash, zsh, PowerShell','tr7-api':'Postman, curl, fetch',
+    'when-cli-h':'💻 When to use CLI?',
+    'when-cli-ul':'<li>Manage server files and processes</li><li>Automate deployment scripts (CI/CD)</li><li>Install packages (npm / pip / apt)</li><li>Git version control operations</li><li>Local database management</li><li>System monitoring (top / htop)</li>',
+    'when-api-h':'🌐 When to use API?',
+    'when-api-ul':'<li>Frontend fetching backend data</li><li>Integrating third-party services (payments/maps/AI)</li><li>Mobile app communicating with a server</li><li>Microservices calling each other</li><li>Exposing functionality to external developers</li><li>Webhook-triggered automation flows</li>',
+    'footer-txt':'CLI × API Developer Adventure · One hands-on experience beats a hundred explanations 🚀',
+  },
+  zh: {
+    'hdr-h1': '<span class="cli-color">CLI</span> vs <span class="api-color">API</span> &nbsp;开发者冒险',
+    'hdr-p': '两个关卡，亲身感受命令行与接口调用的区别',
+    'cli-h':'CLI — 命令行界面',
+    'cli-p':'Command Line Interface，你在终端里直接打命令，控制<strong style="color:var(--text)">本地或远程机器</strong>。',
+    'cli-ul':'<li>直接操作文件、进程、系统</li><li>必须在目标机器上运行</li><li>强大、高效、脚本友好</li><li>输入文本命令 → 文本输出</li>',
+    'cli-tag':'在机器内部直接操作',
+    'api-h':'API — 应用程序接口',
+    'api-p':'Application Programming Interface，你通过网络发送<strong style="color:var(--text)">标准化请求</strong>，调用远程服务。',
+    'api-ul':'<li>任何地方都能调用（浏览器/手机/服务器）</li><li>HTTP 方法 + JSON 数据</li><li>服务可复用、权限可控</li><li>请求 → 结构化响应（JSON）</li>',
+    'api-tag':'跨网络通信，随处调用',
+    'ana-cli-h':'🍳 CLI = 自己进厨房做饭',
+    'ana-cli-scene':'👨‍🍳 → 冰箱 → 炉灶 → 盘子',
+    'ana-cli-p':'你直接站在厨房里，打开冰箱、拿食材、开火，每步都亲手完成。速度快，权限大，但你得在厨房里才行。',
+    'ana-api-h':'🛎️ API = 在餐厅点餐',
+    'ana-api-scene':'📱 → 菜单（API文档）→ 服务员（API）→ 厨房',
+    'ana-api-p':'你拿着菜单点餐，服务员传达给厨房，厨房做好端给你。你不用进厨房，从任何地方都能点。',
+    'lv1':'关卡 1','lv2':'关卡 2',
+    'cli-game-h':'CLI 终端冒险',
+    'cli-mission':'🎯 任务：导航到隐藏目录，读取宝藏文件',
+    'cli-done':'✓ 任务完成！',
+    'api-game-h':'API 请求冒险',
+    'api-mission':'🎯 任务：登录获取令牌，再用令牌取回宝藏',
+    'api-done':'✓ 任务完成！',
+    'ms1-txt':'查询状态','ms2-txt':'获取英雄列表','ms3-txt':'登录拿令牌','ms4-txt':'解锁宝藏',
+    'ep-guide-h':'📋 可用端点（点击自动填充）',
+    'req-h':'请求构建器',
+    'send-btn-txt':'发送请求 ▶',
+    'tab-headers':'请求头 Headers','tab-body':'请求体 Body',
+    'add-header':'+ 添加 Header',
+    'net-client':'CLIENT 客户端','net-server':'SERVER 服务器','net-idle':'等待中…',
+    'resp-h':'响应 Response',
+    'resp-empty':'点击「发送请求」查看响应',
+    'cmp-h':'CLI vs API 全面对比',
+    'th-feature':'特性',
+    'tr1-f':'调用方式','tr1-cli':'输入文字命令','tr1-api':'发送 HTTP 请求',
+    'tr2-f':'运行位置','tr2-cli':'必须在目标机器上','tr2-api':'任何联网的地方',
+    'tr3-f':'数据格式','tr3-cli':'纯文本输入/输出','tr3-api':'结构化 JSON/XML',
+    'tr4-f':'权限控制','tr4-cli':'系统用户权限','tr4-api':'Token / API Key',
+    'tr5-f':'适合场景','tr5-cli':'系统管理、自动化脚本、DevOps','tr5-api':'Web服务、移动端、跨平台集成',
+    'tr6-f':'学习曲线','tr6-cli':'需要记忆命令语法','tr6-api':'需要理解 HTTP 协议',
+    'tr7-f':'典型工具','tr7-cli':'bash、zsh、PowerShell','tr7-api':'Postman、curl、fetch',
+    'when-cli-h':'💻 什么时候用 CLI？',
+    'when-cli-ul':'<li>管理服务器文件和进程</li><li>自动化部署脚本（CI/CD）</li><li>安装软件包（npm / pip / apt）</li><li>Git 操作版本控制</li><li>数据库本地管理</li><li>系统监控（top / htop）</li>',
+    'when-api-h':'🌐 什么时候用 API？',
+    'when-api-ul':'<li>前端调用后端数据</li><li>接入第三方服务（支付/地图/AI）</li><li>手机 App 与服务器通信</li><li>微服务之间相互调用</li><li>给外部开发者开放功能</li><li>Webhook 触发自动化流程</li>',
+    'footer-txt':'CLI × API 开发者冒险 · 亲身体验比一百遍讲解更有效 🚀',
+  }
+}
+function _CA(key) { return (CA_T[window._lang||'en'][key] !== undefined ? CA_T[window._lang||'en'][key] : (CA_T['en'][key] || key)) }
+
+function setLang(lang) {
+  window._lang = lang
+  document.documentElement.lang = lang==='en' ? 'en' : 'zh-CN'
+  document.title = lang==='zh' ? 'CLI vs API 开发者冒险' : 'CLI vs API Developer Adventure'
+  document.getElementById('btn-en').classList.toggle('lsw-active', lang==='en')
+  document.getElementById('btn-zh').classList.toggle('lsw-active', lang==='zh')
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n
+    if (CA_T[lang][k] !== undefined) el.innerHTML = CA_T[lang][k]
+  })
+  // re-render dynamic parts
+  document.getElementById('ep-list').innerHTML = ''
+  renderEndpoints()
+  // update input placeholders
+  document.querySelectorAll('.hdr-key').forEach(el => el.placeholder = lang==='zh' ? 'Header 名称' : 'Header Name')
+  document.querySelectorAll('.hdr-val').forEach(el => el.placeholder = lang==='zh' ? '值' : 'Value')
+  const ti = document.getElementById('term-input')
+  if (ti) ti.placeholder = cliT().placeholder
+  const rb = document.querySelector('.body-input')
+  if (rb) rb.placeholder = '{"key": "value"}'
+  // update send button
+  const sb = document.getElementById('send-btn')
+  if (sb && !sb.disabled) sb.textContent = _CA('send-btn-txt')
+  // update resp empty if still empty
+  const ra = document.getElementById('resp-area')
+  if (ra && ra.querySelector('.resp-empty')) ra.innerHTML = `<p class="resp-empty">${_CA('resp-empty')}</p>`
+  localStorage.setItem('cva-lang', lang)
+}
+
 // INIT
 cliInit()
 renderEndpoints()
+const savedLang = localStorage.getItem('cva-lang') || 'en'
+window._lang = savedLang
+if (savedLang !== 'en') {
+  setLang(savedLang)
+} else {
+  window._lang = 'en'
+}
 </script>
 </body>
 </html>

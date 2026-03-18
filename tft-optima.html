@@ -192,41 +192,51 @@
       .shop-grid{grid-template-columns:repeat(3,1fr)}
       .bar-lbl{width:80px;font-size:.75em}
     }
+
+    /* ── language switch ── */
+    .lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(10,10,20,.7);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(200,155,60,.25);padding:3px;gap:2px}
+    .lang-sw button{background:none;border:none;color:rgba(200,155,60,.5);font-size:11px;font-weight:700;padding:4px 11px;border-radius:14px;cursor:pointer;transition:all .2s;letter-spacing:.6px}
+    .lang-sw button.lsw-active{background:rgba(200,155,60,.2);color:var(--gold)}
   </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
+<div class="lang-sw" id="langSw">
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+  <button id="btn-zh" onclick="setLang('zh')" class="lsw-active">中</button>
+</div>
+
 <!-- HEADER -->
 <div class="hero-header">
-  <h1>🏆 TFT 决策优化实验室</h1>
-  <p>用 <strong>云顶之弈</strong> 理解算法中的 <strong>本地最优解</strong> 与 <strong>全局最优解</strong></p>
+  <h1 data-i18n="hdr-h1">🏆 TFT 决策优化实验室</h1>
+  <p data-i18n="hdr-p">用 <strong>云顶之弈</strong> 理解算法中的 <strong>本地最优解</strong> 与 <strong>全局最优解</strong></p>
 </div>
 
 <div class="wrap">
 
   <!-- ① CONCEPT -->
   <div class="card">
-    <div class="card-head"><span class="icon">📊</span><h2>什么是本地最优 vs 全局最优？</h2></div>
+    <div class="card-head"><span class="icon">📊</span><h2 data-i18n="c1-h">什么是本地最优 vs 全局最优？</h2></div>
     <div class="card-body">
-      <p style="color:var(--dim);margin-bottom:14px">
+      <p data-i18n="c1-body" style="color:var(--dim);margin-bottom:14px">
         想象你在一片崎岖的山地里爬山，但每次只能看到脚下一步。
         <strong style="color:var(--text)">本地最优</strong> 是你踩到的第一个山顶——你以为登顶了，但旁边有更高的峰。
         <strong style="color:var(--text)">全局最优</strong> 才是真正的最高点，需要你愿意先走下坡。
       </p>
 
       <canvas id="cvs"></canvas>
-      <p class="cvs-hint">👆 点击画布 — 第1次看「贪心」如何困在本地最优，第2次看「策略」如何到达全局最优，第3次重置</p>
+      <p class="cvs-hint" data-i18n="cvs-hint">👆 点击画布 — 第1次看「贪心」如何困在本地最优，第2次看「策略」如何到达全局最优，第3次重置</p>
 
       <div class="duo">
         <div class="duo-card red">
-          <h3>🔴 本地最优解（Local Optimum）</h3>
-          <p>在当前视野内的最好解。贪心算法每步选「眼前最优」，容易在此驻足，无法看到更高的全局方案。</p>
+          <h3 data-i18n="duo-red-h">🔴 本地最优解（Local Optimum）</h3>
+          <p data-i18n="duo-red-p">在当前视野内的最好解。贪心算法每步选「眼前最优」，容易在此驻足，无法看到更高的全局方案。</p>
         </div>
         <div class="duo-card green">
-          <h3>🟢 全局最优解（Global Optimum）</h3>
-          <p>所有方案中真正最好的解。往往需要牺牲短期利益、甚至先变差，才能到达真正的最高峰。</p>
+          <h3 data-i18n="duo-green-h">🟢 全局最优解（Global Optimum）</h3>
+          <p data-i18n="duo-green-p">所有方案中真正最好的解。往往需要牺牲短期利益、甚至先变差，才能到达真正的最高峰。</p>
         </div>
       </div>
     </div>
@@ -234,32 +244,32 @@
 
   <!-- ② TFT ANALOGY -->
   <div class="card">
-    <div class="card-head"><span class="icon">🎮</span><h2>在 TFT 中是什么样的？</h2></div>
+    <div class="card-head"><span class="icon">🎮</span><h2 data-i18n="c2-h">在 TFT 中是什么样的？</h2></div>
     <div class="card-body">
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
-          <div class="step-body">
+          <div class="step-body" data-i18n="step1">
             <strong>每轮商店刷出英雄</strong><br>
             <span>每个英雄都有「单体战力」值。<b>贪心策略</b>是每轮都选战力最高的那个——追求的是本地最优。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
-          <div class="step-body">
+          <div class="step-body" data-i18n="step2">
             <strong>羁绊带来全局增益</strong><br>
             <span>集齐同一职业的英雄可激活羁绊，获得巨大团队加成。牺牲短期单体战力，换取全局最优组合。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
-          <div class="step-body">
+          <div class="step-body" data-i18n="step3">
             <strong>陷阱：散装强者 vs 羁绊协同</strong><br>
             <span>3个顶级散装英雄（5+6+7=<b>18战力</b>，无羁绊），往往输给3个普通法师（2+3+2=7 + 法师羁绊+16 = <b style="color:var(--mage)">23战力</b>）！</span>
           </div>
         </div>
       </div>
-      <div class="tip">
+      <div class="tip" data-i18n="c2-tip">
         💡 <strong>类比算法：</strong>
         贪心算法（Greedy）= 每轮抢最强英雄，快但不保证全局最优。
         动态规划（DP）= 有计划地攒羁绊，考虑全局才找到真正最优解。
@@ -269,30 +279,30 @@
 
   <!-- ③ GAME -->
   <div class="card">
-    <div class="card-head"><span class="icon">⚔️</span><h2>亲身体验：3轮英雄选择</h2></div>
+    <div class="card-head"><span class="icon">⚔️</span><h2 data-i18n="c3-h">亲身体验：3轮英雄选择</h2></div>
     <div class="card-body">
-      <p style="color:var(--dim);margin-bottom:20px">
+      <p data-i18n="c3-desc" style="color:var(--dim);margin-bottom:20px">
         每轮从商店选 1 个英雄。<strong style="color:var(--text)">提示：</strong>
         集齐 3 个 <span style="color:var(--mage)">法师</span> 可激活羁绊，获得 <span style="color:var(--mage)">+16 战力</span> 加成！
       </p>
 
       <!-- progress -->
       <div class="prog" id="prog">
-        <div class="prog-step"><div class="prog-circle active" id="pc1">1</div><div class="prog-label">第1轮</div></div>
-        <div class="prog-step"><div class="prog-circle" id="pc2">2</div><div class="prog-label">第2轮</div></div>
-        <div class="prog-step"><div class="prog-circle" id="pc3">3</div><div class="prog-label">第3轮</div></div>
-        <div class="prog-step"><div class="prog-circle" id="pc4">✓</div><div class="prog-label">结算</div></div>
+        <div class="prog-step"><div class="prog-circle active" id="pc1">1</div><div class="prog-label" data-i18n="prog-r1">第1轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc2">2</div><div class="prog-label" data-i18n="prog-r2">第2轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc3">3</div><div class="prog-label" data-i18n="prog-r3">第3轮</div></div>
+        <div class="prog-step"><div class="prog-circle" id="pc4">✓</div><div class="prog-label" data-i18n="prog-end">结算</div></div>
       </div>
 
       <!-- status -->
       <div class="status-bar">
         <span class="round-lbl" id="round-lbl">第 1 / 3 轮</span>
-        <div class="pow-wrap"><span class="pow-lbl">当前战力</span><span class="pow-val" id="pow-val">0</span></div>
+        <div class="pow-wrap"><span class="pow-lbl" data-i18n="pow-lbl">当前战力</span><span class="pow-val" id="pow-val">0</span></div>
       </div>
 
       <!-- team -->
       <div style="margin-bottom:12px">
-        <div style="font-size:.82em;color:var(--dim);margin-bottom:7px">当前队伍：</div>
+        <div class="syn-title" style="font-size:.82em;color:var(--dim);margin-bottom:7px" data-i18n="team-lbl">当前队伍：</div>
         <div class="team-row">
           <div class="slot" id="s0">空位</div>
           <div class="slot" id="s1">空位</div>
@@ -302,17 +312,17 @@
 
       <!-- synergy tracker -->
       <div class="syn-wrap" id="syn-wrap">
-        <div class="syn-title">激活的羁绊：</div>
+        <div class="syn-title" data-i18n="syn-active">激活的羁绊：</div>
         <div class="syn-row" id="syn-row"></div>
       </div>
 
       <!-- shop -->
       <div id="shop">
-        <div class="shop-lbl">🏪 英雄商店（选择 1 个）</div>
+        <div class="shop-lbl" id="shop-lbl" data-i18n="shop-lbl">🏪 英雄商店（选择 1 个）</div>
         <div class="shop-grid" id="shop-grid"></div>
       </div>
 
-      <div class="syn-hint" id="syn-hint">
+      <div class="syn-hint" id="syn-hint" data-i18n="syn-hint-txt">
         🔮 提示：选择 <strong>法师</strong> 英雄可积累法师羁绊——集齐 3 个获得巨大战力加成！
       </div>
     </div>
@@ -320,80 +330,80 @@
 
   <!-- ④ RESULTS -->
   <div class="card" id="results">
-    <div class="card-head"><span class="icon">📈</span><h2>结算：三条路径的对比</h2></div>
+    <div class="card-head"><span class="icon">📈</span><h2 data-i18n="res-h">结算：三条路径的对比</h2></div>
     <div class="card-body">
       <div class="winner-box" id="winner-box"></div>
 
       <div class="bar-chart">
-        <div class="bar-row"><div class="bar-lbl">你的路径</div><div class="bar-track"><div class="bar-fill p" id="bp">0</div></div></div>
-        <div class="bar-row"><div class="bar-lbl">🔴 本地最优</div><div class="bar-track"><div class="bar-fill l" id="bl">18</div></div></div>
-        <div class="bar-row"><div class="bar-lbl">🟢 全局最优</div><div class="bar-track"><div class="bar-fill g" id="bg2">23</div></div></div>
+        <div class="bar-row"><div class="bar-lbl" data-i18n="bar-yours">你的路径</div><div class="bar-track"><div class="bar-fill p" id="bp">0</div></div></div>
+        <div class="bar-row"><div class="bar-lbl" data-i18n="bar-local">🔴 本地最优</div><div class="bar-track"><div class="bar-fill l" id="bl">18</div></div></div>
+        <div class="bar-row"><div class="bar-lbl" data-i18n="bar-global">🟢 全局最优</div><div class="bar-track"><div class="bar-fill g" id="bg2">23</div></div></div>
       </div>
 
       <div class="paths">
         <div class="path-card player-c">
           <div class="path-head">
-            <span class="path-name">🎯 你的路径</span>
+            <span class="path-name" data-i18n="path-yours">🎯 你的路径</span>
             <span class="path-score" id="ps-player">—</span>
           </div>
           <div class="path-units" id="pu-player"></div>
         </div>
         <div class="path-card local-c">
           <div class="path-head">
-            <span class="path-name">🔴 本地最优路径（每轮选单体最强）</span>
+            <span class="path-name" data-i18n="path-local">🔴 本地最优路径（每轮选单体最强）</span>
             <span class="path-score">18</span>
           </div>
           <div class="path-units">
-            <div class="punit">⚔️ 战士·盖伦 (+5)</div>
-            <div class="punit">🗡️ 刺客·阿卡丽 (+6)</div>
-            <div class="punit">💪 蛮力·蔚 (+7)</div>
-            <div class="punit" style="background:rgba(239,68,68,.15);color:#EF4444">无羁绊 +0</div>
+            <div class="punit" data-i18n="lp-u1">⚔️ 战士·盖伦 (+5)</div>
+            <div class="punit" data-i18n="lp-u2">🗡️ 刺客·阿卡丽 (+6)</div>
+            <div class="punit" data-i18n="lp-u3">💪 蛮力·蔚 (+7)</div>
+            <div class="punit" data-i18n="lp-u4" style="background:rgba(239,68,68,.15);color:#EF4444">无羁绊 +0</div>
           </div>
         </div>
         <div class="path-card global-c">
           <div class="crown">👑</div>
           <div class="path-head">
-            <span class="path-name">🟢 全局最优路径（积累法师羁绊）</span>
+            <span class="path-name" data-i18n="path-global">🟢 全局最优路径（积累法师羁绊）</span>
             <span class="path-score">23</span>
           </div>
           <div class="path-units">
-            <div class="punit">🔮 法师·卡西奥佩娅 (+2)</div>
-            <div class="punit">🔮 法师·辛德拉 (+3)</div>
-            <div class="punit">🔮 法师·维迦 (+2)</div>
-            <div class="punit" style="background:rgba(168,85,247,.2);color:#A855F7">法师羁绊(3) +16</div>
+            <div class="punit" data-i18n="gp-u1">🔮 法师·卡西奥佩娅 (+2)</div>
+            <div class="punit" data-i18n="gp-u2">🔮 法师·辛德拉 (+3)</div>
+            <div class="punit" data-i18n="gp-u3">🔮 法师·维迦 (+2)</div>
+            <div class="punit" data-i18n="gp-u4" style="background:rgba(168,85,247,.2);color:#A855F7">法师羁绊(3) +16</div>
           </div>
         </div>
       </div>
 
       <div style="text-align:center;margin-top:18px">
-        <button class="btn btn-gold" onclick="resetGame()">🔄 重新体验</button>
+        <button class="btn btn-gold" data-i18n="btn-reset" onclick="resetGame()">🔄 重新体验</button>
       </div>
     </div>
   </div>
 
   <!-- ⑤ TAKEAWAYS -->
   <div class="card">
-    <div class="card-head"><span class="icon">🧠</span><h2>算法启示：TFT 教会我们什么？</h2></div>
+    <div class="card-head"><span class="icon">🧠</span><h2 data-i18n="take-h">算法启示：TFT 教会我们什么？</h2></div>
     <div class="card-body">
       <div class="concl-grid">
         <div class="concl-item">
-          <h4>🔴 贪心算法的局限</h4>
-          <p>像每轮选最强英雄——快速、简单，但可能陷入本地最优。仅在问题具有「贪心选择性质」时保证全局最优（如 Dijkstra 最短路）。</p>
+          <h4 data-i18n="take-1h">🔴 贪心算法的局限</h4>
+          <p data-i18n="take-1p">像每轮选最强英雄——快速、简单，但可能陷入本地最优。仅在问题具有「贪心选择性质」时保证全局最优（如 Dijkstra 最短路）。</p>
         </div>
         <div class="concl-item">
-          <h4>🟢 动态规划的优势</h4>
-          <p>像有计划地凑羁绊——枚举所有子问题并记忆结果，保证找到全局最优。代价是更高的计算量。</p>
+          <h4 data-i18n="take-2h">🟢 动态规划的优势</h4>
+          <p data-i18n="take-2p">像有计划地凑羁绊——枚举所有子问题并记忆结果，保证找到全局最优。代价是更高的计算量。</p>
         </div>
         <div class="concl-item">
-          <h4>🔵 模拟退火的思路</h4>
-          <p>像偶尔「主动选差的英雄」来探索新方向——允许暂时变差，以一定概率跳出本地最优，寻找更高峰。</p>
+          <h4 data-i18n="take-3h">🔵 模拟退火的思路</h4>
+          <p data-i18n="take-3p">像偶尔「主动选差的英雄」来探索新方向——允许暂时变差，以一定概率跳出本地最优，寻找更高峰。</p>
         </div>
         <div class="concl-item">
-          <h4>🟡 遗传算法的思路</h4>
-          <p>像同时模拟多位玩家跑不同阵容——多个解并行进化，通过「选择+变异」逐渐逼近全局最优。</p>
+          <h4 data-i18n="take-4h">🟡 遗传算法的思路</h4>
+          <p data-i18n="take-4p">像同时模拟多位玩家跑不同阵容——多个解并行进化，通过「选择+变异」逐渐逼近全局最优。</p>
         </div>
       </div>
-      <div class="tip" style="margin-top:16px">
+      <div class="tip" data-i18n="take-tip" style="margin-top:16px">
         🎯 <strong>核心洞察：</strong>
         TFT 的最强路线不是每轮抢最强英雄，而是有预见性地构建最强整体阵容——
         这正是优化算法设计的精髓：<strong>全局视野</strong>往往胜过<strong>贪心冲动</strong>。
@@ -401,7 +411,7 @@
     </div>
   </div>
 
-  <div style="text-align:center;padding:28px;color:var(--dim);font-size:.82em">
+  <div data-i18n="footer-txt" style="text-align:center;padding:28px;color:var(--dim);font-size:.82em">
     Local Optimum vs Global Optimum · Powered by TFT 🎮
   </div>
 </div>
@@ -463,14 +473,14 @@ function drawScene(ballX, ballColor, ballLabel) {
   ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI * 2)
   ctx.fillStyle = '#EF4444'; ctx.fill()
   ctx.fillStyle = '#EF4444'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'
-  ctx.fillText('本地最优', lx, ly - 13)
+  ctx.fillText(_L('canvas-local'), lx, ly - 13)
 
   // global peak marker
   const gx = 0.72 * W, gy = H - landscape(0.72) * (H - 35) - 18
   ctx.beginPath(); ctx.arc(gx, gy, 5, 0, Math.PI * 2)
   ctx.fillStyle = '#22C55E'; ctx.fill()
   ctx.fillStyle = '#22C55E'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'
-  ctx.fillText('全局最优', gx, gy - 13)
+  ctx.fillText(_L('canvas-global'), gx, gy - 13)
 
   // ball
   if (ballX >= 0) {
@@ -494,7 +504,7 @@ function drawScene(ballX, ballColor, ballLabel) {
 
   // hint text
   ctx.fillStyle = 'rgba(200,155,60,.45)'; ctx.font = '11px Arial'; ctx.textAlign = 'right'
-  ctx.fillText('点击模拟', W - 10, H - 8)
+  ctx.fillText(_L('canvas-click'), W - 10, H - 8)
 }
 
 let clickState = 0, animLock = false
@@ -516,14 +526,14 @@ cvs.addEventListener('click', () => {
   animLock = true
   if (clickState === 0) {
     // greedy → local max
-    animBall(0, 0.22, '#EF4444', '贪心', () => {
-      toast('🔴 贪心策略：困在了本地最优！再点一次看全局最优')
+    animBall(0, 0.22, '#EF4444', _L('ball-greedy'), () => {
+      toast(_L('toast-greedy'))
     })
     clickState = 1
   } else if (clickState === 1) {
     // strategic → global max
-    animBall(0, 0.72, '#22C55E', '策略', () => {
-      toast('🟢 策略视野：到达全局最优！再点一次重置')
+    animBall(0, 0.72, '#22C55E', _L('ball-strategy'), () => {
+      toast(_L('toast-strategy'))
     })
     clickState = 2
   } else {
@@ -536,28 +546,31 @@ cvs.addEventListener('click', () => {
 /* ═══════════════════════════════════════
    GAME DATA
 ═══════════════════════════════════════ */
-const ROUNDS = [
+const ROUNDS_DATA = [
   [
-    { name: '法师·卡西奥佩娅', cls: 'mage',     emoji: '🔮', pow: 2, syn: '法师' },
-    { name: '战士·盖伦',       cls: 'warrior',  emoji: '⚔️',  pow: 5, syn: '战士' },
-    { name: '射手·凯特琳',     cls: 'archer',   emoji: '🏹', pow: 4, syn: '射手' },
+    { name:{zh:'法师·卡西奥佩娅',en:'Mage·Cassiopeia'}, cls:'mage',     emoji:'🔮', pow:2, syn:{zh:'法师',en:'Mage'} },
+    { name:{zh:'战士·盖伦',      en:'Warrior·Garen'},   cls:'warrior',  emoji:'⚔️',  pow:5, syn:{zh:'战士',en:'Warrior'} },
+    { name:{zh:'射手·凯特琳',    en:'Archer·Caitlyn'},  cls:'archer',   emoji:'🏹', pow:4, syn:{zh:'射手',en:'Archer'} },
   ],
   [
-    { name: '法师·辛德拉',     cls: 'mage',     emoji: '🔮', pow: 3, syn: '法师' },
-    { name: '刺客·阿卡丽',     cls: 'assassin', emoji: '🗡️',  pow: 6, syn: '刺客' },
-    { name: '骑士·盖伦二星',   cls: 'knight',   emoji: '🛡️',  pow: 3, syn: '骑士' },
+    { name:{zh:'法师·辛德拉',    en:'Mage·Syndra'},     cls:'mage',     emoji:'🔮', pow:3, syn:{zh:'法师',en:'Mage'} },
+    { name:{zh:'刺客·阿卡丽',    en:'Assassin·Akali'},  cls:'assassin', emoji:'🗡️',  pow:6, syn:{zh:'刺客',en:'Assassin'} },
+    { name:{zh:'骑士·盖伦二星',  en:'Knight·Garen★'},   cls:'knight',   emoji:'🛡️',  pow:3, syn:{zh:'骑士',en:'Knight'} },
   ],
   [
-    { name: '法师·维迦',       cls: 'mage',     emoji: '🔮', pow: 2, syn: '法师' },
-    { name: '蛮力·蔚',         cls: 'berserker',emoji: '💪', pow: 7, syn: '蛮力' },
-    { name: '射手·金克丝',     cls: 'archer',   emoji: '🏹', pow: 3, syn: '射手' },
+    { name:{zh:'法师·维迦',      en:'Mage·Veigar'},     cls:'mage',     emoji:'🔮', pow:2, syn:{zh:'法师',en:'Mage'} },
+    { name:{zh:'蛮力·蔚',        en:'Berserker·Vi'},    cls:'berserker',emoji:'💪', pow:7, syn:{zh:'蛮力',en:'Berserker'} },
+    { name:{zh:'射手·金克丝',    en:'Archer·Jinx'},     cls:'archer',   emoji:'🏹', pow:3, syn:{zh:'射手',en:'Archer'} },
   ],
 ]
+// ROUNDS uses current lang
+function getRounds() { return ROUNDS_DATA.map(r => r.map(h => ({...h, name:h.name[window._lang||'zh'], syn:h.syn[window._lang||'zh']}))) }
 
-const SYNERGY = {
-  '法师': { need: 3, bonus: 16, desc: '法术爆发' },
-  '战士': { need: 2, bonus: 4,  desc: '物理强化' },
+const SYNERGY_DATA = {
+  zh: { '法师': { need:3, bonus:16, desc:'法术爆发' }, '战士': { need:2, bonus:4, desc:'物理强化' } },
+  en: { 'Mage':  { need:3, bonus:16, desc:'Spell Burst'    }, 'Warrior': { need:2, bonus:4, desc:'Physical Boost' } },
 }
+function getSynergy() { return SYNERGY_DATA[window._lang||'zh'] }
 
 let G = { round: 0, team: [] }
 
@@ -567,9 +580,9 @@ function calcPow(team) {
   team.forEach(h => counts[h.syn] = (counts[h.syn] || 0) + 1)
   let bonus = 0, active = []
   for (const [syn, cnt] of Object.entries(counts)) {
-    if (SYNERGY[syn] && cnt >= SYNERGY[syn].need) {
-      bonus += SYNERGY[syn].bonus
-      active.push({ syn, cnt, bonus: SYNERGY[syn].bonus })
+    if (getSynergy()[syn] && cnt >= getSynergy()[syn].need) {
+      bonus += getSynergy()[syn].bonus
+      active.push({ syn, cnt, bonus: getSynergy()[syn].bonus })
     }
   }
   return { total: base + bonus, base, bonus, active }
@@ -578,7 +591,7 @@ function calcPow(team) {
 function renderShop() {
   const grid = document.getElementById('shop-grid')
   grid.innerHTML = ''
-  ROUNDS[G.round].forEach((h, i) => {
+  getRounds()[G.round].forEach((h, i) => {
     const card = document.createElement('div')
     card.className = 'hero-card fi'
     card.style.animationDelay = `${i * 0.09}s`
@@ -586,7 +599,7 @@ function renderShop() {
       <span class="hc-emoji">${h.emoji}</span>
       <div class="hc-name">${h.name}</div>
       <div class="hc-class cls-${h.cls}">${h.syn}</div>
-      <div class="hc-pow">战力 <span>+${h.pow}</span></div>
+      <div class="hc-pow">${_L('hero-pow')} <span>+${h.pow}</span></div>
     `
     card.addEventListener('click', () => pick(h, card))
     grid.appendChild(card)
@@ -599,7 +612,7 @@ function renderShop() {
     else if (i === G.round + 1) { el.className = 'prog-circle active'; el.textContent = i }
     else { el.className = 'prog-circle'; el.textContent = i }
   }
-  document.getElementById('round-lbl').textContent = `第 ${G.round + 1} / 3 轮`
+  document.getElementById('round-lbl').textContent = _L('round-lbl').replace('{n}', G.round+1)
   if (G.round === 0) document.getElementById('syn-hint').style.display = 'block'
 }
 
@@ -630,7 +643,7 @@ function pick(hero, card) {
     document.getElementById('pc4').className = 'prog-circle active'
     document.getElementById('pc3').className = 'prog-circle done'
     document.getElementById('pc3').textContent = '✓'
-    document.getElementById('round-lbl').textContent = '结算中…'
+    document.getElementById('round-lbl').textContent = _L('settling')
   } else {
     setTimeout(renderShop, 620)
   }
@@ -643,15 +656,15 @@ function renderSynTracker() {
   let any = false
   for (const [syn, cnt] of Object.entries(counts)) {
     any = true
-    const isMage = syn === '法师'
-    const thr = SYNERGY[syn]?.need || 99
+    const isMage = syn === '法师' || syn === 'Mage'
+    const thr = getSynergy()[syn]?.need || 99
     const activated = cnt >= thr
     const badge = document.createElement('div')
     badge.className = 'syn-badge'
     badge.style.background = isMage ? 'rgba(168,85,247,.2)' : 'rgba(239,68,68,.12)'
     badge.style.color = isMage ? '#A855F7' : '#EF4444'
     badge.style.border = `1px solid ${isMage ? 'rgba(168,85,247,.4)' : 'rgba(239,68,68,.3)'}`
-    badge.innerHTML = `${isMage ? '🔮' : '⚔️'} ${syn} ${cnt}/${thr}${activated ? ' <span style="color:#22C55E">✓ 激活！</span>' : ''}`
+    badge.innerHTML = `${isMage ? '🔮' : '⚔️'} ${syn} ${cnt}/${thr}${activated ? ` <span style="color:#22C55E">✓ ${_L("activated")}</span>` : ''}`
     row.appendChild(badge)
   }
   if (any) document.getElementById('syn-wrap').style.display = 'block'
@@ -674,23 +687,23 @@ function showResults() {
     active.forEach(a => {
       const d = document.createElement('div'); d.className = 'punit'
       d.style.background = 'rgba(168,85,247,.2)'; d.style.color = '#A855F7'
-      d.textContent = `${a.syn}羁绊(${a.cnt}) +${a.bonus}`; pu.appendChild(d)
+      d.textContent = `${a.syn}${_L('syn-bond')}(${a.cnt}) +${a.bonus}`; pu.appendChild(d)
     })
   } else {
     const d = document.createElement('div'); d.className = 'punit'
     d.style.background = 'rgba(239,68,68,.15)'; d.style.color = '#EF4444'
-    d.textContent = '无羁绊加成 +0'; pu.appendChild(d)
+    d.textContent = _L('no-syn'); pu.appendChild(d)
   }
 
   const wb = document.getElementById('winner-box')
   if (total >= 23) {
-    wb.innerHTML = `<div class="winner-big">🏆 你找到了全局最优解！</div><div class="winner-sub">完美！你在牺牲短期战力后获得了最强阵容</div>`
+    wb.innerHTML = `<div class="winner-big">${_L('win-perfect-h')}</div><div class="winner-sub">${_L('win-perfect-p')}</div>`
   } else if (total > 18) {
-    wb.innerHTML = `<div class="winner-big">✨ 不错！你超越了本地最优！</div><div class="winner-sub">战略眼光比贪心更好，但还可以更优</div>`
+    wb.innerHTML = `<div class="winner-big">${_L('win-good-h')}</div><div class="winner-sub">${_L('win-good-p')}</div>`
   } else if (total === 18) {
-    wb.innerHTML = `<div class="winner-big">🔴 你走上了本地最优路径</div><div class="winner-sub">每轮都选最强单体——错过了羁绊的力量</div>`
+    wb.innerHTML = `<div class="winner-big">${_L('win-local-h')}</div><div class="winner-sub">${_L('win-local-p')}</div>`
   } else {
-    wb.innerHTML = `<div class="winner-big">🤔 独特路径！</div><div class="winner-sub">既没贪心抢单体，也没攒齐羁绊——勇于探索！</div>`
+    wb.innerHTML = `<div class="winner-big">${_L('win-unique-h')}</div><div class="winner-sub">${_L('win-unique-p')}</div>`
   }
 
   const maxS = Math.max(total, 18, 23)
@@ -715,7 +728,7 @@ function resetGame() {
   document.getElementById('pow-val').textContent = '0'
   for (let i = 0; i < 3; i++) {
     const s = document.getElementById('s' + i)
-    s.className = 'slot'; s.style.borderColor = ''; s.textContent = '空位'
+    s.className = 'slot'; s.style.borderColor = ''; s.textContent = _L('slot-empty')
   }
   ;['pc1','pc2','pc3','pc4'].forEach(id => {
     const el = document.getElementById(id)
@@ -731,8 +744,160 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 3200)
 }
 
+/* ═══════════════════════════════════════
+   i18n
+═══════════════════════════════════════ */
+const TFT_T = {
+  zh: {
+    'hdr-h1':     '🏆 TFT 决策优化实验室',
+    'hdr-p':      '用 <strong>云顶之弈</strong> 理解算法中的 <strong>本地最优解</strong> 与 <strong>全局最优解</strong>',
+    'c1-h':       '什么是本地最优 vs 全局最优？',
+    'c1-body':    '想象你在一片崎岖的山地里爬山，但每次只能看到脚下一步。<strong style="color:var(--text)">本地最优</strong> 是你踩到的第一个山顶——你以为登顶了，但旁边有更高的峰。<strong style="color:var(--text)">全局最优</strong> 才是真正的最高点，需要你愿意先走下坡。',
+    'cvs-hint':   '👆 点击画布 — 第1次看「贪心」如何困在本地最优，第2次看「策略」如何到达全局最优，第3次重置',
+    'duo-red-h':  '🔴 本地最优解（Local Optimum）',
+    'duo-red-p':  '在当前视野内的最好解。贪心算法每步选「眼前最优」，容易在此驻足，无法看到更高的全局方案。',
+    'duo-green-h':'🟢 全局最优解（Global Optimum）',
+    'duo-green-p':'所有方案中真正最好的解。往往需要牺牲短期利益、甚至先变差，才能到达真正的最高峰。',
+    'c2-h':       '在 TFT 中是什么样的？',
+    'step1':      '<strong>每轮商店刷出英雄</strong><br><span>每个英雄都有「单体战力」值。<b>贪心策略</b>是每轮都选战力最高的那个——追求的是本地最优。</span>',
+    'step2':      '<strong>羁绊带来全局增益</strong><br><span>集齐同一职业的英雄可激活羁绊，获得巨大团队加成。牺牲短期单体战力，换取全局最优组合。</span>',
+    'step3':      '<strong>陷阱：散装强者 vs 羁绊协同</strong><br><span>3个顶级散装英雄（5+6+7=<b>18战力</b>，无羁绊），往往输给3个普通法师（2+3+2=7 + 法师羁绊+16 = <b style="color:var(--mage)">23战力</b>）！</span>',
+    'c2-tip':     '💡 <strong>类比算法：</strong>贪心算法（Greedy）= 每轮抢最强英雄，快但不保证全局最优。动态规划（DP）= 有计划地攒羁绊，考虑全局才找到真正最优解。',
+    'c3-h':       '亲身体验：3轮英雄选择',
+    'c3-desc':    '每轮从商店选 1 个英雄。<strong style="color:var(--text)">提示：</strong>集齐 3 个 <span style="color:var(--mage)">法师</span> 可激活羁绊，获得 <span style="color:var(--mage)">+16 战力</span> 加成！',
+    'prog-r1':    '第1轮','prog-r2':'第2轮','prog-r3':'第3轮','prog-end':'结算',
+    'pow-lbl':    '当前战力',
+    'team-lbl':   '当前队伍：',
+    'syn-active': '激活的羁绊：',
+    'shop-lbl':   '🏪 英雄商店（选择 1 个）',
+    'syn-hint-txt':'🔮 提示：选择 <strong>法师</strong> 英雄可积累法师羁绊——集齐 3 个获得巨大战力加成！',
+    'hero-pow':   '战力',
+    'round-lbl':  '第 {n} / 3 轮',
+    'settling':   '结算中…',
+    'slot-empty': '空位',
+    'activated':  '激活！',
+    'syn-bond':   '羁绊',
+    'no-syn':     '无羁绊加成 +0',
+    'res-h':      '结算：三条路径的对比',
+    'bar-yours':  '你的路径','bar-local':'🔴 本地最优','bar-global':'🟢 全局最优',
+    'path-yours': '🎯 你的路径',
+    'path-local': '🔴 本地最优路径（每轮选单体最强）',
+    'path-global':'🟢 全局最优路径（积累法师羁绊）',
+    'lp-u1':'⚔️ 战士·盖伦 (+5)','lp-u2':'🗡️ 刺客·阿卡丽 (+6)','lp-u3':'💪 蛮力·蔚 (+7)','lp-u4':'无羁绊 +0',
+    'gp-u1':'🔮 法师·卡西奥佩娅 (+2)','gp-u2':'🔮 法师·辛德拉 (+3)','gp-u3':'🔮 法师·维迦 (+2)','gp-u4':'法师羁绊(3) +16',
+    'btn-reset':  '🔄 重新体验',
+    'take-h':     '算法启示：TFT 教会我们什么？',
+    'take-1h':'🔴 贪心算法的局限','take-1p':'像每轮选最强英雄——快速、简单，但可能陷入本地最优。仅在问题具有「贪心选择性质」时保证全局最优（如 Dijkstra 最短路）。',
+    'take-2h':'🟢 动态规划的优势','take-2p':'像有计划地凑羁绊——枚举所有子问题并记忆结果，保证找到全局最优。代价是更高的计算量。',
+    'take-3h':'🔵 模拟退火的思路','take-3p':'像偶尔「主动选差的英雄」来探索新方向——允许暂时变差，以一定概率跳出本地最优，寻找更高峰。',
+    'take-4h':'🟡 遗传算法的思路','take-4p':'像同时模拟多位玩家跑不同阵容——多个解并行进化，通过「选择+变异」逐渐逼近全局最优。',
+    'take-tip':'🎯 <strong>核心洞察：</strong>TFT 的最强路线不是每轮抢最强英雄，而是有预见性地构建最强整体阵容——这正是优化算法设计的精髓：<strong>全局视野</strong>往往胜过<strong>贪心冲动</strong>。',
+    'footer-txt': 'Local Optimum vs Global Optimum · Powered by TFT 🎮',
+    'canvas-local':'本地最优','canvas-global':'全局最优','canvas-click':'点击模拟',
+    'ball-greedy':'贪心','ball-strategy':'策略',
+    'toast-greedy':'🔴 贪心策略：困在了本地最优！再点一次看全局最优',
+    'toast-strategy':'🟢 策略视野：到达全局最优！再点一次重置',
+    'win-perfect-h':'🏆 你找到了全局最优解！','win-perfect-p':'完美！你在牺牲短期战力后获得了最强阵容',
+    'win-good-h':'✨ 不错！你超越了本地最优！','win-good-p':'战略眼光比贪心更好，但还可以更优',
+    'win-local-h':'🔴 你走上了本地最优路径','win-local-p':'每轮都选最强单体——错过了羁绊的力量',
+    'win-unique-h':'🤔 独特路径！','win-unique-p':'既没贪心抢单体，也没攒齐羁绊——勇于探索！',
+  },
+  en: {
+    'hdr-h1':     '🏆 TFT Decision Optimization Lab',
+    'hdr-p':      'Using <strong>Teamfight Tactics</strong> to understand <strong>Local Optimum</strong> vs <strong>Global Optimum</strong> in algorithms',
+    'c1-h':       'What is Local Optimum vs Global Optimum?',
+    'c1-body':    'Imagine hiking through rugged terrain, but you can only see one step ahead. A <strong style="color:var(--text)">Local Optimum</strong> is the first peak you reach — you think you\'ve summited, but there\'s a higher one nearby. The <strong style="color:var(--text)">Global Optimum</strong> is the true highest point, and reaching it may require going downhill first.',
+    'cvs-hint':   '👆 Click the canvas — 1st click: see Greedy get stuck at local optimum · 2nd click: see Strategy reach the global optimum · 3rd click: reset',
+    'duo-red-h':  '🔴 Local Optimum',
+    'duo-red-p':  'The best solution within the current field of view. Greedy algorithms pick the "best right now" at each step, easily getting stuck here without seeing the global picture.',
+    'duo-green-h':'🟢 Global Optimum',
+    'duo-green-p':'The truly best solution across all possibilities. Often requires sacrificing short-term gains — even getting temporarily worse — to reach the real peak.',
+    'c2-h':       'How Does This Look in TFT?',
+    'step1':      '<strong>Each round the shop offers heroes</strong><br><span>Every hero has a "unit power" value. <b>Greedy strategy</b>: always pick the highest-power hero each round — chasing the local optimum.</span>',
+    'step2':      '<strong>Synergies create global bonuses</strong><br><span>Collecting heroes of the same class activates a synergy, granting massive team-wide bonuses. Sacrifice short-term unit power for the globally optimal composition.</span>',
+    'step3':      '<strong>The trap: random strong picks vs. synergy</strong><br><span>3 top standalone heroes (5+6+7=<b>18 power</b>, no synergy) often lose to 3 ordinary mages (2+3+2=7 + Mage synergy+16 = <b style="color:var(--mage)">23 power</b>)!</span>',
+    'c2-tip':     '💡 <strong>Algorithm analogy:</strong> Greedy = grab the strongest hero each round — fast, but no global optimum guarantee. Dynamic Programming (DP) = plan synergies strategically — consider the whole picture to find the true optimum.',
+    'c3-h':       'Experience It: 3 Rounds of Hero Selection',
+    'c3-desc':    'Pick 1 hero from the shop each round. <strong style="color:var(--text)">Tip:</strong> collect 3 <span style="color:var(--mage)">Mage</span> heroes to activate the synergy for a <span style="color:var(--mage)">+16 power</span> bonus!',
+    'prog-r1':    'Round 1','prog-r2':'Round 2','prog-r3':'Round 3','prog-end':'Results',
+    'pow-lbl':    'Combat Power',
+    'team-lbl':   'Your Team:',
+    'syn-active': 'Active Synergies:',
+    'shop-lbl':   '🏪 Hero Shop (Pick 1)',
+    'syn-hint-txt':'🔮 Tip: Pick <strong>Mage</strong> heroes to build the Mage synergy — collect 3 for a massive power bonus!',
+    'hero-pow':   'Power',
+    'round-lbl':  'Round {n} / 3',
+    'settling':   'Calculating…',
+    'slot-empty': 'Empty',
+    'activated':  'Active!',
+    'syn-bond':   ' Bond',
+    'no-syn':     'No synergy bonus +0',
+    'res-h':      'Results: Three Path Comparison',
+    'bar-yours':  'Your Path','bar-local':'🔴 Local Opt.','bar-global':'🟢 Global Opt.',
+    'path-yours': '🎯 Your Path',
+    'path-local': '🔴 Local Optimum Path (max unit power each round)',
+    'path-global':'🟢 Global Optimum Path (build Mage synergy)',
+    'lp-u1':'⚔️ Warrior·Garen (+5)','lp-u2':'🗡️ Assassin·Akali (+6)','lp-u3':'💪 Berserker·Vi (+7)','lp-u4':'No synergy +0',
+    'gp-u1':'🔮 Mage·Cassiopeia (+2)','gp-u2':'🔮 Mage·Syndra (+3)','gp-u3':'🔮 Mage·Veigar (+2)','gp-u4':'Mage Bond(3) +16',
+    'btn-reset':  '🔄 Play Again',
+    'take-h':     'Algorithm Insights: What TFT Teaches Us',
+    'take-1h':'🔴 The Limits of Greedy','take-1p':'Like picking the strongest hero each round — fast and simple, but risks getting stuck at a local optimum. Only guarantees the global optimum when the problem has "greedy choice property" (e.g., Dijkstra\'s shortest path).',
+    'take-2h':'🟢 The Power of Dynamic Programming','take-2p':'Like strategically building synergies — enumerate all sub-problems and memoize results, guaranteeing the global optimum. The tradeoff: higher computational cost.',
+    'take-3h':'🔵 Simulated Annealing','take-3p':'Like occasionally picking a weaker hero to explore new directions — allows temporary decline, probabilistically escaping local optima to find higher peaks.',
+    'take-4h':'🟡 Genetic Algorithms','take-4p':'Like simulating many players running different team comps simultaneously — multiple solutions evolve in parallel via selection + mutation, gradually converging to the global optimum.',
+    'take-tip':'🎯 <strong>Core Insight:</strong> The strongest TFT path isn\'t grabbing the best hero each round — it\'s building the strongest overall composition with foresight. This is the essence of optimization algorithm design: <strong>global vision</strong> beats <strong>greedy impulse</strong>.',
+    'footer-txt': 'Local Optimum vs Global Optimum · Powered by TFT 🎮',
+    'canvas-local':'Local Opt.','canvas-global':'Global Opt.','canvas-click':'click',
+    'ball-greedy':'Greedy','ball-strategy':'Strategy',
+    'toast-greedy':'🔴 Greedy: stuck at local optimum! Click again to see global',
+    'toast-strategy':'🟢 Strategic vision: reached global optimum! Click to reset',
+    'win-perfect-h':'🏆 You found the Global Optimum!','win-perfect-p':'Perfect! You sacrificed short-term power for the strongest composition.',
+    'win-good-h':'✨ Nice! You beat the local optimum!','win-good-p':'Strategic thinking beats greed — though there\'s still room to improve.',
+    'win-local-h':'🔴 You took the Local Optimum path','win-local-p':'Picked the strongest unit each round — missed the power of synergies.',
+    'win-unique-h':'🤔 Unique path!','win-unique-p':'Neither greedy nor full synergy — bold exploration!',
+  }
+}
+
+function _L(key) { return TFT_T[window._lang||'zh'][key] || TFT_T['zh'][key] || key }
+
+function setLang(lang) {
+  window._lang = lang
+  document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN'
+  document.title = lang === 'en' ? 'TFT Decision Optimization Lab' : 'TFT 决策优化实验室'
+  document.getElementById('btn-en').classList.toggle('lsw-active', lang === 'en')
+  document.getElementById('btn-zh').classList.toggle('lsw-active', lang === 'zh')
+  // update data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n
+    if (TFT_T[lang][k] !== undefined) el.innerHTML = TFT_T[lang][k]
+  })
+  // re-render dynamic parts
+  resizeCvs(); drawScene(-1, '', '')
+  if (G.round < 3) renderShop()
+  // reset slot empties
+  for (let i = 0; i < 3; i++) {
+    const s = document.getElementById('s' + i)
+    if (s && s.className === 'slot') s.textContent = _L('slot-empty')
+  }
+  localStorage.setItem('tft-lang', lang)
+}
+
 /* init */
-window.addEventListener('load', () => { resizeCvs(); drawScene(-1, '', ''); renderShop() })
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('tft-lang') || 'zh'
+  window._lang = saved
+  resizeCvs(); drawScene(-1, '', ''); renderShop()
+  document.getElementById('btn-en').classList.toggle('lsw-active', saved === 'en')
+  document.getElementById('btn-zh').classList.toggle('lsw-active', saved === 'zh')
+  if (saved === 'en') {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n
+      if (TFT_T['en'][k] !== undefined) el.innerHTML = TFT_T['en'][k]
+    })
+    document.title = 'TFT Decision Optimization Lab'
+    document.documentElement.lang = 'en'
+  }
+})
 window.addEventListener('resize', () => { resizeCvs(); drawScene(-1, '', '') })
 </script>
 </body>
