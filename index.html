@@ -130,58 +130,30 @@
       </div>
       <div class="about-grid">
 
-        <!-- LEFT: rotating project carousel -->
-        <div class="project-carousel" id="projectCarousel">
-          <div class="carousel-header">
-            <div class="carousel-label">
-              <span class="carousel-live-dot"></span>
-              Live Projects
+        <!-- LEFT: stacked live project previews -->
+        <div class="about-projects-col">
+
+          <a href="./cicd/index.html" target="_blank" rel="noopener" class="about-proj-link">
+            <div class="about-proj-frame">
+              <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
             </div>
-            <span class="carousel-counter" id="carouselCounter">1 / 3</span>
-          </div>
+            <div class="about-proj-label">DevOps CI/CD Quiz</div>
+          </a>
 
-          <div class="carousel-track" id="carouselTrack">
-
-            <div class="carousel-slide active">
-              <div class="carousel-preview" id="cprev0">
-                <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-              </div>
-              <div class="carousel-body">
-                <div class="carousel-name">DevOps CI/CD Quiz</div>
-                <div class="carousel-desc">18 terms · Match game · Quiz · Real company examples</div>
-                <a href="./cicd/index.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
-              </div>
+          <a href="./cli-vs-api.html" target="_blank" rel="noopener" class="about-proj-link">
+            <div class="about-proj-frame">
+              <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
             </div>
+            <div class="about-proj-label">CLI vs API Explorer</div>
+          </a>
 
-            <div class="carousel-slide">
-              <div class="carousel-preview" id="cprev1">
-                <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-              </div>
-              <div class="carousel-body">
-                <div class="carousel-name">CLI vs API Explorer</div>
-                <div class="carousel-desc">Side-by-side visual explainer · REST methods · Auth flows</div>
-                <a href="./cli-vs-api.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
-              </div>
+          <a href="./tft-optima.html" target="_blank" rel="noopener" class="about-proj-link">
+            <div class="about-proj-frame">
+              <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
             </div>
+            <div class="about-proj-label">TFT Decision Lab</div>
+          </a>
 
-            <div class="carousel-slide">
-              <div class="carousel-preview" id="cprev2">
-                <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-              </div>
-              <div class="carousel-body">
-                <div class="carousel-name">TFT Decision Lab</div>
-                <div class="carousel-desc">Champion synergies · Gold economy · Combat probability</div>
-                <a href="./tft-optima.html" target="_blank" rel="noopener" class="carousel-cta">Try it &rarr;</a>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="carousel-footer">
-            <button class="c-dot active" data-idx="0" aria-label="Project 1"></button>
-            <button class="c-dot" data-idx="1" aria-label="Project 2"></button>
-            <button class="c-dot" data-idx="2" aria-label="Project 3"></button>
-          </div>
         </div>
 
         <div class="about-text">
@@ -515,7 +487,6 @@
   </section>
 
   <script>
-    /* ── Portfolio card iframe previews ── */
     function scaleIframePreviews() {
       document.querySelectorAll('.iframe-preview-wrap').forEach(function(wrap) {
         var iframe = wrap.querySelector('iframe');
@@ -528,82 +499,23 @@
       });
     }
 
-    /* ── Carousel sidebar iframes ── */
-    function scaleCarouselIframes() {
-      document.querySelectorAll('.carousel-preview').forEach(function(wrap) {
+    function scaleAboutPreviews() {
+      document.querySelectorAll('.about-proj-frame').forEach(function(wrap) {
         var iframe = wrap.querySelector('iframe');
         if (!iframe) return;
-        var scale = wrap.offsetWidth / 1400;
+        var scale = wrap.offsetWidth / 1280;
         iframe.style.transform = 'scale(' + scale + ')';
-        iframe.style.height = Math.round(900 / scale * scale) + 'px';
       });
     }
 
-    /* ── Carousel logic ── */
-    (function() {
-      var slides  = document.querySelectorAll('.carousel-slide');
-      var dots    = document.querySelectorAll('.c-dot');
-      var counter = document.getElementById('carouselCounter');
-      var carousel = document.getElementById('projectCarousel');
-      var current = 0, timer, progressEl;
-
-      function addProgress() {
-        if (progressEl) progressEl.remove();
-        progressEl = document.createElement('div');
-        progressEl.className = 'carousel-progress';
-        document.getElementById('carouselTrack').appendChild(progressEl);
-        /* restart animation */
-        void progressEl.offsetWidth;
-        progressEl.style.animation = 'none';
-        void progressEl.offsetWidth;
-        progressEl.style.animation = 'cProgress 3.5s linear';
-      }
-
-      function goTo(idx) {
-        slides[current].classList.remove('active');
-        dots[current].classList.remove('active');
-        current = (idx + slides.length) % slides.length;
-        slides[current].classList.add('active');
-        dots[current].classList.add('active');
-        if (counter) counter.textContent = (current + 1) + ' / ' + slides.length;
-        scaleCarouselIframes();
-        addProgress();
-      }
-
-      function start() {
-        timer = setInterval(function() { goTo(current + 1); }, 3500);
-        addProgress();
-      }
-      function stop() {
-        clearInterval(timer);
-        if (progressEl) progressEl.style.animationPlayState = 'paused';
-      }
-      function resume() {
-        if (progressEl) progressEl.style.animationPlayState = 'running';
-        start();
-      }
-
-      dots.forEach(function(dot) {
-        dot.addEventListener('click', function() {
-          stop(); goTo(parseInt(dot.getAttribute('data-idx'))); start();
-        });
-      });
-
-      if (carousel) {
-        carousel.addEventListener('mouseenter', stop);
-        carousel.addEventListener('mouseleave', resume);
-      }
-
-      window.addEventListener('load', function() {
-        scaleIframePreviews();
-        scaleCarouselIframes();
-        start();
-      });
-      window.addEventListener('resize', function() {
-        scaleIframePreviews();
-        scaleCarouselIframes();
-      });
-    })();
+    window.addEventListener('load', function() {
+      scaleIframePreviews();
+      scaleAboutPreviews();
+    });
+    window.addEventListener('resize', function() {
+      scaleIframePreviews();
+      scaleAboutPreviews();
+    });
   </script>
 
   <footer class="footer">
