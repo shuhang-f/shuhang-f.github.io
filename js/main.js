@@ -1,53 +1,61 @@
 'use strict';
 
-const nav = document.getElementById('nav');
-const navLinks = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section[id]');
-const mobileBtn = document.getElementById('mobileBtn');
-const mobileMenu = document.getElementById('mobileMenu');
+const header = document.getElementById('siteHeader');
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+const navAnchors = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+const sections = [...document.querySelectorAll('main section[id]')];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Nav: add blur/border on scroll + update active link
+const setMenu = (open) => {
+  navLinks.classList.toggle('open', open);
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.querySelector('span').textContent = open ? 'Close' : 'Menu';
+};
+
+menuToggle.addEventListener('click', () => {
+  setMenu(menuToggle.getAttribute('aria-expanded') !== 'true');
+});
+
+navLinks.addEventListener('click', (event) => {
+  if (event.target.closest('a')) setMenu(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') setMenu(false);
+});
+
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 20);
-  updateActiveLink();
+  header.classList.toggle('scrolled', window.scrollY > 18);
 }, { passive: true });
 
-function updateActiveLink() {
-  let current = '';
-  sections.forEach(section => {
-    if (window.scrollY >= section.offsetTop - 90) {
-      current = section.getAttribute('id');
-    }
-  });
-  navLinks.forEach(link => {
-    link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
-  });
+if ('IntersectionObserver' in window) {
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navAnchors.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+      });
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+
+  sections.forEach((section) => sectionObserver.observe(section));
 }
 
-// Mobile menu toggle
-mobileBtn.addEventListener('click', () => {
-  mobileMenu.classList.toggle('open');
-});
+const reveals = document.querySelectorAll('.reveal');
 
-// Close mobile menu on link click
-mobileMenu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => mobileMenu.classList.remove('open'));
-});
-
-// Fade-in on scroll via IntersectionObserver
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      // Stagger sibling cards slightly
-      const siblings = entry.target.parentElement.querySelectorAll('.fade-in');
-      let delay = 0;
-      siblings.forEach((el, idx) => {
-        if (el === entry.target) delay = idx * 80;
-      });
-      setTimeout(() => entry.target.classList.add('visible'), delay);
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  reveals.forEach((element) => element.classList.add('is-visible'));
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
       observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px' });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  reveals.forEach((element) => revealObserver.observe(element));
+}
+
+document.getElementById('year').textContent = String(new Date().getFullYear());

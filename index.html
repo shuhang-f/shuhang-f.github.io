@@ -1,525 +1,302 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sean Feng — Co-Founder, Data Scientist, and AI-Native Builder. M.S. Data Science, USC 2025.">
-  <title>Sean Feng</title>
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sean Feng is a technical operations builder who ships AI products, runs production infrastructure, and connects user feedback with engineering execution.">
+  <meta name="theme-color" content="#f3f0e8">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sean Feng — Technical Operations & AI Product Delivery">
+  <meta property="og:description" content="AI product delivery, infrastructure, QA, and user-engineering feedback loops.">
+  <meta property="og:url" content="https://shuhang-f.github.io/">
+  <meta property="og:image" content="https://shuhang-f.github.io/images/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sean Feng — Technical Operations & AI Product Delivery">
+  <meta name="twitter:description" content="AI product delivery, infrastructure, QA, and user-engineering feedback loops.">
+  <meta name="twitter:image" content="https://shuhang-f.github.io/images/og.png">
+  <title>Sean Feng — Technical Operations & AI Product Delivery</title>
+  <link rel="canonical" href="https://shuhang-f.github.io/">
+  <link rel="icon" href="./favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
-  <style>
-    .iframe-preview-wrap {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      background: #111520;
-      border-radius: 10px;
-      margin-bottom: 12px;
-    }
-    .iframe-preview-wrap iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1400px;
-      border: none;
-      pointer-events: none;
-      transform-origin: top left;
-    }
-    .project-card.has-preview { padding-top: 0; overflow: hidden; }
-    .project-card.has-preview .project-card-top { padding: 16px 20px 0; }
-    .project-card.has-preview h3,
-    .project-card.has-preview p,
-    .project-card.has-preview .project-tags { padding: 0 20px; }
-    .project-card.has-preview .project-tags { padding-bottom: 16px; }
-    .ai-collab-note {
-      grid-column: 1 / -1;
-      border: 1px dashed rgba(255,255,255,0.12);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-top: 8px;
-    }
-    .ai-collab-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      opacity: 0.5;
-      margin-bottom: 8px;
-    }
-    .ai-collab-note p {
-      font-size: 0.85rem;
-      opacity: 0.55;
-      line-height: 1.6;
-      margin: 0;
-    }
-  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- NAV -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a class="nav-logo" href="#hero">SF</a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <button class="nav-mobile-btn" id="mobileBtn" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
+  <header class="site-header" id="siteHeader">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Sean Feng, home">
+        <span class="brand-mark">SF</span>
+        <span class="brand-meta">Technical operator<br>California · 2026</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">
+        <span>Menu</span>
       </button>
-    </div>
-    <div class="nav-mobile-menu" id="mobileMenu">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-inner">
-      <div class="hero-photo-wrap">
-        <img src="./images/profile.jpg" alt="Sean Feng" class="hero-photo">
+      <div class="nav-links" id="navLinks">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-resume" href="./resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
       </div>
-      <div class="hero-tag">
-        <span class="hero-tag-dot"></span>
-        Open to full-time roles &middot; Open to relocation
-      </div>
-      <h1 class="hero-name">Sean Feng</h1>
-      <p class="hero-title">Co-Founder &amp; Technical Operator &nbsp;&middot;&nbsp; Data Scientist &nbsp;&middot;&nbsp; AI-Native Builder</p>
-      <p class="hero-desc">Building at the intersection of AI, blockchain, and data — from 0-to-23K communities to geospatial models to agentic trading platforms.</p>
-      <div class="hero-cta">
-        <a href="https://www.linkedin.com/in/shuhangf/" target="_blank" rel="noopener" class="btn btn-primary">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          LinkedIn
-        </a>
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="btn btn-outline">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
-        </a>
-        <a href="mailto:shuhang.feng@leapcareer.org" class="btn btn-outline">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          Email
-        </a>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <span>scroll</span>
-      <div class="hero-scroll-line"></div>
-    </div>
-  </section>
+    </nav>
+  </header>
 
-  <!-- ABOUT -->
-  <section class="section" id="about">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">01</span>
-        <h2 class="section-title">About</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="about-grid">
-
-        <!-- LEFT: stacked live project previews -->
-        <div class="about-projects-col">
-
-          <a href="./cicd/index.html" target="_blank" rel="noopener" class="about-proj-link">
-            <div class="about-proj-frame">
-              <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-            </div>
-            <div class="about-proj-label">DevOps CI/CD Quiz</div>
-          </a>
-
-          <a href="./cli-vs-api.html" target="_blank" rel="noopener" class="about-proj-link">
-            <div class="about-proj-frame">
-              <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-            </div>
-            <div class="about-proj-label">CLI vs API Explorer</div>
-          </a>
-
-          <a href="./tft-optima.html" target="_blank" rel="noopener" class="about-proj-link">
-            <div class="about-proj-frame">
-              <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-            </div>
-            <div class="about-proj-label">TFT Decision Lab</div>
-          </a>
-
-        </div>
-
-        <div class="about-text">
-          <p>I'm a cross-functional technical operator who builds end-to-end — from infrastructure and AI integrations to community growth and product direction. Pursuing an M.S. in Data Science at USC (August 2025), I co-founded Ordinal Hive, a Bitcoin ecosystem startup, where I wore every hat simultaneously: DevOps, QA, product, community, and investor relations.</p>
-          <p>My edge is bridging technical systems with real-world outcomes. I've deployed AI agent frameworks on cloud servers, established real-Bitcoin QA protocols, scaled communities from zero to 23,000 followers, and introduced LLM-assisted workflows to non-technical teammates. I move fast in ambiguous environments and ship things that actually work.</p>
-          <p>Currently open to full-time roles in AI, technical operations, product, or data. Based in Southern California, open to relocation — SF/Bay Area preferred. Bilingual in English and Mandarin. Requires H-1B sponsorship.</p>
-        </div>
-        <div class="about-stats">
-          <div class="stat-card fade-in">
-            <span class="stat-num">23K+</span>
-            <span class="stat-label">Twitter followers built from zero</span>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open to full-time roles · West Coast</p>
+          <h1>I turn ambiguous AI ideas into systems people can use.</h1>
+          <p class="hero-lede">Founding-team technical operations engineer with 3+ years across fintech, AI-native product development, infrastructure, QA, and customer-facing execution.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#work">See selected work <span aria-hidden="true">↓</span></a>
+            <a class="button button-light" href="./resume.pdf" target="_blank" rel="noopener">Download resume <span aria-hidden="true">↗</span></a>
           </div>
-          <div class="stat-card fade-in">
-            <span class="stat-num">$200K</span>
-            <span class="stat-label">NFT collection market cap</span>
-          </div>
-          <div class="stat-card fade-in">
-            <span class="stat-num">$30K+</span>
-            <span class="stat-label">Annual e-commerce revenue</span>
-          </div>
-          <div class="stat-card fade-in">
-            <span class="stat-num">6K+</span>
-            <span class="stat-label">Discord community members</span>
+          <div class="hero-footnote">
+            <span>English / 中文</span>
+            <span>Corona, CA · Open to relocation</span>
+            <span>F-1 OPT / STEM OPT · H-1B sponsorship required</span>
           </div>
         </div>
+
+        <aside class="operator-panel reveal" aria-label="Current operating profile">
+          <div class="panel-topline">
+            <span>Operating profile</span>
+            <span>01 / 04</span>
+          </div>
+          <div class="profile-photo-wrap">
+            <img src="./images/profile.jpg" alt="Sean Feng" class="profile-photo">
+            <span class="photo-label">Sean Feng</span>
+          </div>
+          <dl class="signal-list">
+            <div><dt>Build</dt><dd>Agentic product prototypes</dd></div>
+            <div><dt>Operate</dt><dd>Cloud infrastructure & production QA</dd></div>
+            <div><dt>Bridge</dt><dd>User feedback ↔ engineering</dd></div>
+            <div><dt>Lead</dt><dd>Small teams & cross-functional launches</dd></div>
+          </dl>
+        </aside>
       </div>
-    </div>
-  </section>
 
-  <!-- EXPERIENCE -->
-  <section class="section section-alt" id="experience">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">02</span>
-        <h2 class="section-title">Experience</h2>
-        <div class="section-line"></div>
+      <div class="proof-strip reveal" aria-label="Selected outcomes">
+        <div><strong>~3 weeks</strong><span>to ship an agentic trading terminal</span></div>
+        <div><strong>~60%</strong><span>less downtime after a live-Bitcoin QA feedback loop</span></div>
+        <div><strong>0 → 8K</strong><span>Discord members with automated community systems</span></div>
+        <div><strong>$1K → $6K</strong><span>peak monthly revenue from a solo sales operation</span></div>
+      </div>
+    </section>
+
+    <section class="intro section-pad" aria-labelledby="introTitle">
+      <div class="section-index">01 · Positioning</div>
+      <div class="intro-copy reveal">
+        <h2 id="introTitle">The operations half of the founding team.</h2>
+        <div class="intro-columns">
+          <p>I work where product intent meets operational reality: prototyping AI interfaces, testing real user journeys, operating cloud environments, and translating feedback into decisions an engineering team can act on.</p>
+          <p>My edge is range with accountability. I have shipped an agentic trading terminal, designed live-transaction QA on Bitcoin infrastructure, migrated critical production data, operated my own AI agent stack, and built revenue and community systems from zero.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="work section-pad" id="work" aria-labelledby="workTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">02 · Selected work</p>
+          <h2 id="workTitle">Systems shipped,<br>not just concepts.</h2>
+        </div>
+        <p>Three projects that show how I build, operate, and learn across AI, infrastructure, and data.</p>
       </div>
 
-      <div class="timeline">
-
-        <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div class="timeline-meta">
-                <h3 class="timeline-role">Co-Founder &amp; Technical Operations Lead</h3>
-                <p class="timeline-company">Ordinal Hive</p>
-              </div>
-              <span class="timeline-date">Jan 2023 — Present</span>
+      <article class="case-study case-dark reveal">
+        <div class="case-number">01</div>
+        <div class="case-body">
+          <div class="case-kicker"><span>Ordinal Hive</span><span>AI product prototype · 2026</span></div>
+          <h3>Agentic Trading Terminal</h3>
+          <p class="case-summary">A ChatGPT-style interface that turns natural-language trading intent into an inspectable order across Polymarket, Hyperliquid, and stock market data—while keeping execution behind explicit human approval.</p>
+          <div class="case-details">
+            <div>
+              <span class="detail-label">What I shipped</span>
+              <p>Next.js interface, MiniMax tool-use integration, MCP and CLI market tools, and a human-in-the-loop approval flow.</p>
             </div>
-            <ul class="timeline-bullets">
-              <li>Co-founded Bitcoin NFT/Ordinals marketplace and BRC-20 trading platform from zero — scaled to 23,000+ Twitter followers and 6,000+ Discord members</li>
-              <li>Launched Ordinal NFT collections reaching $200K market cap; established real-Bitcoin QA testing protocol that became standard team practice</li>
-              <li>Deployed OpenClaw AI agent framework on DigitalOcean with Claude/MiniMax hybrid fallback; engineered bilingual AI persona with Telegram integration</li>
-              <li>Managed infrastructure across AWS, OVH Cloud, GitHub, Linear, and Sentry; onboarded and offboarded 10+ collaborators with proper access controls</li>
-              <li>Architected agentic trading marketplace — conversational AI for on-chain data, Hyperliquid portfolio management, and Polymarket predictions</li>
+            <div>
+              <span class="detail-label">Why it matters</span>
+              <p>Compressed a working product prototype into roughly three calendar weeks through AI-assisted development and tight product iteration.</p>
+            </div>
+          </div>
+          <div class="tag-row"><span>Next.js</span><span>MiniMax</span><span>MCP</span><span>Tool use</span><span>Human approval</span></div>
+        </div>
+        <div class="terminal-motif" aria-hidden="true">
+          <div class="terminal-bar"><span></span><span></span><span></span></div>
+          <p><b>intent</b> “Build a $50 position…”</p>
+          <p><b>agent</b> Market found · order prepared</p>
+          <p><b>guardrail</b> Awaiting explicit approval_</p>
+        </div>
+      </article>
+
+      <div class="case-grid">
+        <article class="case-study case-accent reveal">
+          <div class="case-number">02</div>
+          <div class="case-body">
+            <div class="case-kicker"><span>Public project</span><span>Live · 2026</span></div>
+            <h3>TFT Damage Lab</h3>
+            <p class="case-summary">An interactive learning site that makes a game’s damage system legible by exposing each multiplier—AP, critical chance, amplification, resistance, and reduction.</p>
+            <div class="formula" aria-label="Damage formula">Base × AP × Crit × Amp × MR × DR</div>
+            <div class="tag-row"><span>TypeScript</span><span>Next.js</span><span>Math modeling</span><span>Vitest</span></div>
+            <div class="case-links">
+              <a href="https://tft-damage-lab.vercel.app/" target="_blank" rel="noopener">Open live demo ↗</a>
+              <a href="https://github.com/shuhang-f/TFT_Damage_Lab" target="_blank" rel="noopener">View source ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-study case-paper reveal">
+          <div class="case-number">03</div>
+          <div class="case-body">
+            <div class="case-kicker"><span>Personal infrastructure</span><span>In production</span></div>
+            <h3>OpenClaw Agent Hub</h3>
+            <p class="case-summary">A self-hosted bilingual AI agent environment used daily through Telegram, operated across DigitalOcean and Hetzner with a hybrid model fallback for cost and reliability.</p>
+            <dl class="mini-spec">
+              <div><dt>Primary</dt><dd>Claude Sonnet</dd></div>
+              <div><dt>Fallback</dt><dd>MiniMax</dd></div>
+              <div><dt>Surface</dt><dd>Telegram</dd></div>
+              <div><dt>Runtime</dt><dd>Hetzner / Linux</dd></div>
+            </dl>
+            <div class="tag-row"><span>LLM operations</span><span>Hetzner</span><span>Linux</span><span>Telegram</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="lab-row reveal" aria-label="Interactive learning tools">
+        <div class="lab-intro"><span>Small labs</span><p>Interactive tools I built to understand technical systems by making them visible.</p></div>
+        <a href="./cli-vs-api.html" target="_blank" rel="noopener"><strong>CLI vs API Explorer</strong><span>Developer workflows, authentication, REST ↗</span></a>
+        <a href="./cicd/index.html" target="_blank" rel="noopener"><strong>CI/CD Learning Lab</strong><span>Reference, quiz, and matching game ↗</span></a>
+        <a href="https://github.com/shuhang-f/LEAP-Career-Forum" target="_blank" rel="noopener"><strong>LEAP Career Forum</strong><span>React + Django community platform ↗</span></a>
+      </div>
+    </section>
+
+    <section class="experience section-pad" id="experience" aria-labelledby="experienceTitle">
+      <div class="section-heading compact">
+        <div>
+          <p class="section-index">03 · Experience</p>
+          <h2 id="experienceTitle">Built across the stack.<br>Accountable for the outcome.</h2>
+        </div>
+      </div>
+
+      <div class="experience-list">
+        <article class="experience-item reveal">
+          <div class="experience-meta">
+            <span>2023 — Present</span>
+            <span>Remote</span>
+          </div>
+          <div class="experience-main">
+            <p class="company">Ordinal Hive · Seed-stage Bitcoin / AI startup</p>
+            <h3>Co-Founder & Technical Operations Lead</h3>
+            <ul>
+              <li>Designed and shipped an agentic trading terminal with live market tools and human approval before execution.</li>
+              <li>Designed a real-transaction QA protocol after testnet proved unreliable; adopted as team standard and contributed to roughly 60% less downtime.</li>
+              <li>Operated multi-cloud infrastructure and access control for 10+ collaborators; migrated critical wallet and user data with zero data loss.</li>
+              <li>Built Discord from zero to 8K members with on-chain and purchase-tracking bots supporting 200+ raffles and 30K+ interactions.</li>
             </ul>
-            <div class="timeline-tags">
-              <span>Bitcoin</span><span>AI Agents</span><span>AWS</span><span>DevOps</span><span>Community Growth</span><span>Product</span>
-            </div>
           </div>
-        </div>
+          <div class="experience-scope"><span>AI product</span><span>QA</span><span>Infrastructure</span><span>Community systems</span></div>
+        </article>
 
-        <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div class="timeline-meta">
-                <h3 class="timeline-role">Technical Sales &amp; Product Operations Associate</h3>
-                <p class="timeline-company">Advance Int'l Trading Inc</p>
-              </div>
-              <span class="timeline-date">Sep 2024 — Aug 2025</span>
-            </div>
-            <ul class="timeline-bullets">
-              <li>Built and scaled multi-platform e-commerce operations (eBay, Amazon, Facebook Marketplace), growing monthly revenue from $1K to $5–6K — a 500%+ increase</li>
-              <li>Generated $30K+ in annual revenue at ~10 hours/week; applied data analytics to pricing strategy, increasing average order value by 25%</li>
-              <li>Tested diverse hardware categories: servers, SSDs, monitors, industrial electronics; performed OS reinstallation and hardware diagnostics</li>
+        <article class="experience-item reveal">
+          <div class="experience-meta">
+            <span>2024 — 2025</span>
+            <span>Corona, CA</span>
+          </div>
+          <div class="experience-main">
+            <p class="company">Advance Int’l Trading Inc</p>
+            <h3>Technical Sales & Product Operations Associate</h3>
+            <ul>
+              <li>Ran a one-person e-commerce operation across eBay, Amazon, and Facebook Marketplace—from sourcing and hardware diagnostics to pricing, fulfillment, and support.</li>
+              <li>Grew monthly revenue from $1K to $6K at peak and generated $30K+ annually on roughly ten hours per week.</li>
             </ul>
-            <div class="timeline-tags">
-              <span>E-Commerce</span><span>Data Analytics</span><span>Hardware</span><span>Operations</span>
-            </div>
           </div>
-        </div>
+          <div class="experience-scope"><span>Revenue ops</span><span>Hardware</span><span>Customer support</span></div>
+        </article>
 
-        <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div class="timeline-meta">
-                <h3 class="timeline-role">IT Specialist &amp; Team Lead</h3>
-                <p class="timeline-company">LEAP Career Forum</p>
-              </div>
-              <span class="timeline-date">Jan 2022 — Jan 2024</span>
-            </div>
-            <ul class="timeline-bullets">
-              <li>Led a team of 4 developers with weekly standups and Figma-based design sessions; team members went on to roles at Google and Adobe</li>
-              <li>Architected and built the LEAP Career Forum platform using React frontend and Django REST backend integrated with dynamic data APIs</li>
-              <li>Configured and secured production infrastructure: domain management, server setup, and DNS routing on cloud environments</li>
+        <article class="experience-item reveal">
+          <div class="experience-meta">
+            <span>2023 — 2024</span>
+            <span>Remote</span>
+          </div>
+          <div class="experience-main">
+            <p class="company">LEAP Career Forum · Nonprofit community</p>
+            <h3>IT Specialist & Team Lead</h3>
+            <ul>
+              <li>Led four developers building a React and Django REST platform through weekly standups and Figma-based design collaboration.</li>
+              <li>Configured production infrastructure, domain and DNS routing, and supported users through event and RSVP operations.</li>
             </ul>
-            <div class="timeline-tags">
-              <span>React</span><span>Django</span><span>Python</span><span>Team Lead</span><span>Cloud Infrastructure</span>
-            </div>
           </div>
-        </div>
+          <div class="experience-scope"><span>Team lead</span><span>React</span><span>Django REST</span><span>User support</span></div>
+        </article>
+      </div>
+    </section>
 
+    <section class="capabilities section-pad" id="capabilities" aria-labelledby="capabilitiesTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">04 · Capabilities</p>
+          <h2 id="capabilitiesTitle">A builder’s toolkit,<br>organized by outcome.</h2>
+        </div>
+        <p>Tools matter when they shorten the path from a messy problem to a reliable result.</p>
       </div>
 
-      <div class="edu-block">
-        <h3 class="edu-heading">Education</h3>
-        <div class="edu-grid">
-          <div class="edu-card fade-in">
-            <div class="edu-degree">M.S. Data Science</div>
-            <div class="edu-school">University of Southern California</div>
-            <div class="edu-date">2022 — 2025</div>
-            <p class="edu-detail">DBSCAN clustering, Kriging &amp; IDW interpolation, agent-based modeling, geospatial analysis with ArcGIS Pro</p>
-          </div>
-          <div class="edu-card fade-in">
-            <div class="edu-degree">B.S. Computer Science</div>
-            <div class="edu-school">Northeastern University</div>
-            <div class="edu-date">2018 — 2022</div>
-            <p class="edu-detail">Software engineering, algorithms, and systems programming foundations</p>
-          </div>
-        </div>
+      <div class="capability-grid reveal">
+        <article>
+          <span class="capability-index">A</span>
+          <h3>AI product delivery</h3>
+          <p>Agentic tool use, MCP, Claude API, MiniMax integration, OpenClaw, model fallback design, Claude Code, Codex, Cursor.</p>
+        </article>
+        <article>
+          <span class="capability-index">B</span>
+          <h3>Product & engineering</h3>
+          <p>Python, JavaScript, TypeScript, SQL, React, Next.js, Django REST, Node.js, user research, QA feedback loops.</p>
+        </article>
+        <article>
+          <span class="capability-index">C</span>
+          <h3>Infrastructure operations</h3>
+          <p>AWS EC2, DigitalOcean, Hetzner, Render, Linux, Docker, Proxmox, Tailscale/Headscale, DNS, OAuth, Sentry, Git.</p>
+        </article>
+        <article>
+          <span class="capability-index">D</span>
+          <h3>Data & analysis</h3>
+          <p>Pandas, NumPy, on-chain analytics, DBSCAN, Kriging/IDW interpolation, ArcGIS Pro, Excel, operational metrics.</p>
+        </article>
       </div>
 
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="section" id="skills">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">03</span>
-        <h2 class="section-title">Skills</h2>
-        <div class="section-line"></div>
+      <div class="education-row reveal">
+        <div><span>Education</span><strong>University of Southern California</strong><p>M.S. Data Science · August 2025</p></div>
+        <div><span>Foundation</span><strong>Northeastern University</strong><p>B.S. Computer Science · 2018–2022</p></div>
+        <div><span>Working style</span><strong>AI-native, user-centered</strong><p>Fast prototype loops · production accountability</p></div>
       </div>
-      <div class="skills-list fade-in">
-        <div class="skill-row">
-          <span class="skill-category">Languages</span>
-          <div class="skill-tags">
-            <span>Python</span><span>JavaScript</span><span>SQL</span><span>HTML / CSS</span>
-          </div>
+    </section>
+
+    <section class="contact section-pad" id="contact" aria-labelledby="contactTitle">
+      <div class="contact-grid">
+        <div>
+          <p class="section-index">05 · Contact</p>
+          <h2 id="contactTitle">Have a difficult system<br>that needs an operator?</h2>
         </div>
-        <div class="skill-row">
-          <span class="skill-category">Frameworks &amp; Tools</span>
-          <div class="skill-tags">
-            <span>React</span><span>Django</span><span>Node.js</span><span>Git</span><span>Docker</span><span>Figma</span><span>Notion</span>
-          </div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-category">Infrastructure</span>
-          <div class="skill-tags">
-            <span>AWS EC2</span><span>DigitalOcean</span><span>OVH Cloud</span><span>Linux</span><span>DNS / Domain Mgmt</span><span>Sentry</span>
-          </div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-category">AI &amp; Automation</span>
-          <div class="skill-tags">
-            <span>Claude API</span><span>OpenAI GPT</span><span>LLM Workflows</span><span>Prompt Engineering</span><span>OpenClaw Agent Framework</span><span>Cursor</span>
-          </div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-category">Data Science</span>
-          <div class="skill-tags">
-            <span>Pandas</span><span>NumPy</span><span>DBSCAN</span><span>Kriging / IDW</span><span>ArcGIS Pro</span><span>NetLogo</span><span>Blockchain Analytics</span>
-          </div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-category">Platforms</span>
-          <div class="skill-tags">
-            <span>Discord Bots</span><span>Twitter / X Growth</span><span>eBay / Amazon Seller</span><span>Luma</span><span>Matrica</span><span>Linear</span>
+        <div class="contact-copy">
+          <p>I’m exploring full-time roles in AI solutions, technical operations, forward-deployed engineering, and data/AI platforms.</p>
+          <a class="contact-email" href="mailto:shuhangf@usc.edu">shuhangf@usc.edu <span aria-hidden="true">↗</span></a>
+          <div class="contact-links">
+            <a href="https://www.linkedin.com/in/shuhangf/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a href="https://github.com/shuhang-f" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="./resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="section section-alt" id="projects">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">04</span>
-        <h2 class="section-title">Projects</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="projects-grid">
-
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="project-card fade-in">
-          <div class="project-card-top">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name">Ordinal Hive Platform</h3>
-          <p class="project-desc">Bitcoin NFT/Ordinals marketplace and BRC-20 token trading platform. Includes an agentic AI interface for on-chain data, Hyperliquid portfolio management, and Polymarket predictions.</p>
-          <div class="project-tags">
-            <span>Bitcoin</span><span>AI Agents</span><span>Web3</span><span>Python</span>
-          </div>
-        </a>
-
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="project-card fade-in">
-          <div class="project-card-top">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name">LEAP Career Forum</h3>
-          <p class="project-desc">Full-stack career networking platform for the LEAP community. React frontend with Django REST backend, integrated with dynamic job and event APIs. Led a team of 4 developers.</p>
-          <div class="project-tags">
-            <span>React</span><span>Django</span><span>Python</span><span>REST API</span>
-          </div>
-        </a>
-
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="project-card fade-in">
-          <div class="project-card-top">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name">Discord Automation Bots</h3>
-          <p class="project-desc">Python bots integrating Bitcoin on-chain data and user purchase tracking for community management. Managed 200+ raffles with 30,000+ participant interactions and automated cross-community campaigns.</p>
-          <div class="project-tags">
-            <span>Python</span><span>Discord API</span><span>Blockchain</span><span>Automation</span>
-          </div>
-        </a>
-
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="project-card fade-in">
-          <div class="project-card-top">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name">Geospatial Analysis Suite</h3>
-          <p class="project-desc">USC coursework: ocean depth estimation using Kriging and IDW interpolation, urban traffic congestion analysis with DBSCAN clustering, and rainflow dynamics via agent-based modeling in NetLogo.</p>
-          <div class="project-tags">
-            <span>Python</span><span>ArcGIS Pro</span><span>DBSCAN</span><span>Kriging</span><span>NetLogo</span>
-          </div>
-        </a>
-
-        <div class="ai-collab-note fade-in">
-          <span class="ai-collab-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
-            Built with Claude Code
-          </span>
-          <p>The three interactive tools below were created through AI-native development — Sean directed the product vision and prompted the requirements; Claude (Anthropic) implemented the code end-to-end. A demonstration of how AI amplifies a builder's output.</p>
-        </div>
-
-        <a href="./cicd/index.html" target="_blank" rel="noopener" class="project-card has-preview fade-in">
-          <div class="iframe-preview-wrap" data-height="820">
-            <iframe src="./cicd/index.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-          </div>
-          <div class="project-card-top" style="padding:16px 20px 0">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name" style="padding:0 20px">DevOps CI/CD Quiz</h3>
-          <p class="project-desc" style="padding:0 20px">Interactive reference and quiz covering 18 key CI/CD & DevOps terms with real examples from Google, Netflix, Amazon, and Meta. Includes a match game and timed quiz.</p>
-          <div class="project-tags" style="padding:0 20px 16px">
-            <span>HTML / CSS</span><span>JavaScript</span><span>Interactive</span><span>DevOps</span>
-          </div>
-        </a>
-
-        <a href="./cli-vs-api.html" target="_blank" rel="noopener" class="project-card has-preview fade-in">
-          <div class="iframe-preview-wrap" data-height="820">
-            <iframe src="./cli-vs-api.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-          </div>
-          <div class="project-card-top" style="padding:16px 20px 0">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name" style="padding:0 20px">CLI vs API Explorer</h3>
-          <p class="project-desc" style="padding:0 20px">Side-by-side visual explainer comparing CLI and API developer workflows — covering REST methods, authentication, and tooling with live code examples.</p>
-          <div class="project-tags" style="padding:0 20px 16px">
-            <span>HTML / CSS</span><span>JavaScript</span><span>Developer Tools</span>
-          </div>
-        </a>
-
-        <a href="./tft-optima.html" target="_blank" rel="noopener" class="project-card has-preview fade-in">
-          <div class="iframe-preview-wrap" data-height="820">
-            <iframe src="./tft-optima.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-          </div>
-          <div class="project-card-top" style="padding:16px 20px 0">
-            <div class="project-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </div>
-            <svg class="project-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-          <h3 class="project-name" style="padding:0 20px">TFT Decision Lab</h3>
-          <p class="project-desc" style="padding:0 20px">Interactive decision optimization tool for Teamfight Tactics — models champion class synergies, gold economy tradeoffs, and combat outcome probabilities.</p>
-          <div class="project-tags" style="padding:0 20px 16px">
-            <span>HTML / CSS</span><span>JavaScript</span><span>Game Theory</span><span>Data Viz</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="section" id="contact">
-    <div class="container container-narrow">
-      <div class="section-header centered">
-        <span class="section-num">05</span>
-        <h2 class="section-title">Get in touch</h2>
-      </div>
-      <p class="contact-tagline">Open to full-time roles in AI, technical operations, product, and data. Based in Southern California — SF/Bay Area preferred, open to any West Coast city.</p>
-      <a href="mailto:shuhang.feng@leapcareer.org" class="contact-email">shuhang.feng@leapcareer.org</a>
-      <div class="contact-socials">
-        <a href="https://www.linkedin.com/in/shuhangf/" target="_blank" rel="noopener" class="social-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          LinkedIn
-        </a>
-        <a href="https://github.com/shuhang-f" target="_blank" rel="noopener" class="social-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
-        </a>
-        <a href="#" class="social-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Twitter
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    function scaleIframePreviews() {
-      document.querySelectorAll('.iframe-preview-wrap').forEach(function(wrap) {
-        var iframe = wrap.querySelector('iframe');
-        if (!iframe) return;
-        var scale = wrap.offsetWidth / 1400;
-        var iframeH = parseFloat(wrap.getAttribute('data-height') || 820);
-        iframe.style.transform = 'scale(' + scale + ')';
-        iframe.style.height = iframeH + 'px';
-        wrap.style.height = Math.round(iframeH * scale) + 'px';
-      });
-    }
-
-    function scaleAboutPreviews() {
-      document.querySelectorAll('.about-proj-frame').forEach(function(wrap) {
-        var iframe = wrap.querySelector('iframe');
-        if (!iframe) return;
-        var scale = wrap.offsetWidth / 1280;
-        iframe.style.transform = 'scale(' + scale + ')';
-      });
-    }
-
-    window.addEventListener('load', function() {
-      scaleIframePreviews();
-      scaleAboutPreviews();
-    });
-    window.addEventListener('resize', function() {
-      scaleIframePreviews();
-      scaleAboutPreviews();
-    });
-  </script>
+    </section>
+  </main>
 
   <footer class="footer">
-    <p>&copy; 2025 Sean Feng &nbsp;&middot;&nbsp; Interactive tools built with <a href="https://claude.ai/code" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:0.7">Claude Code</a></p>
+    <p>Sean Feng · Technical operations & AI product delivery</p>
+    <p>Built as a static site · <span id="year">2026</span></p>
   </footer>
 
   <script src="./js/main.js"></script>
