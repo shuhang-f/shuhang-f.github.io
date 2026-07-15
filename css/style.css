@@ -147,7 +147,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 28px; }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22a75a; box-shadow: 0 0 0 5px rgba(34, 167, 90, 0.12); }
+.status-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: #22a75a; box-shadow: 0 0 0 5px rgba(34, 167, 90, 0.12); }
 
 .hero h1 {
   max-width: 900px;
@@ -253,7 +253,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .case-grid .case-summary { max-width: 590px; font-size: 16px; }
 .case-accent { background: var(--lime); }
 .case-paper { background: var(--white); border: 1px solid var(--ink); }
-.formula { margin-top: 44px; padding: 20px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font: 500 clamp(15px, 1.6vw, 22px) var(--mono); letter-spacing: -0.04em; }
+.formula { margin-top: 44px; padding: 20px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font: 500 clamp(15px, 1.6vw, 22px)/1.4 var(--mono); letter-spacing: -0.04em; overflow-wrap: anywhere; }
 .case-links { position: absolute; left: 30px; right: 30px; bottom: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
 .case-links a { flex: 1; display: flex; justify-content: space-between; min-width: 160px; padding: 12px 14px; border: 1px solid var(--ink); border-radius: 999px; font-size: 13px; font-weight: 700; }
 .case-links a:hover { background: var(--ink); color: var(--lime); }

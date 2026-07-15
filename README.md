@@ -1,8 +1,8 @@
-# Sean Feng — Portfolio
+# Sean Feng — Customer-Facing Product Engineering Portfolio
 
 Static portfolio for Sean Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
-The site positions Sean around technical operations, AI product delivery, infrastructure, QA, and user-engineering feedback loops. It includes verified experience, selected projects, a downloadable resume, and a purpose-built social preview card.
+The site positions Sean for forward-deployed engineering and adjacent customer-facing AI/product roles. It emphasizes the full loop from user problem and prototype through integrations, infrastructure, production QA, and support. It includes verified experience, selected deployments, a downloadable resume, and a purpose-built social preview card.
 
 ## Stack
 
