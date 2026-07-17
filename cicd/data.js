@@ -412,7 +412,7 @@ const QUIZ_QUESTIONS_ZH = [
     explanation: "Google 的 Monorepo 包含约 20 亿行代码，由 35,000 多名工程师共同使用。"
   },
   {
-    q: ""金丝雀发布"的名称来源于：",
+    q: "“金丝雀发布”的名称来源于：",
     options: ["仪表盘上的黄色警告颜色", "矿工将金丝雀带入煤矿作为早期预警系统", "一位名叫 Canary 的 Google 工程师", "程序启动时发出的鸣叫"],
     answer: 1,
     explanation: "矿工用金丝雀探测有毒气体。同理，金丝雀发布是小范围早期部署，在影响所有用户之前发现问题。"
@@ -424,7 +424,7 @@ const QUIZ_QUESTIONS_ZH = [
     explanation: "提交前钩子在 git 记录提交之前自动运行脚本，尽早发现问题——如代码风格错误或意外提交的密钥。"
   },
   {
-    q: "在 DORA 指标中，"变更失败率"衡量的是：",
+    q: "在 DORA 指标中，“变更失败率”衡量的是：",
     options: ["开发者忘记推送代码的频率", "导致生产事故的部署比例", "被拒绝的代码审查数量", "部署后服务器的 CPU 使用率"],
     answer: 1,
     explanation: "变更失败率 = 导致服务降级或需要补救措施的部署比例。优秀团队的目标是低于 15%。"
@@ -442,7 +442,7 @@ const QUIZ_QUESTIONS_ZH = [
     explanation: "特性开关将部署与发布解耦。代码上线后隐藏在开关后面，可针对特定用户启用，无需重新部署。"
   },
   {
-    q: "Netflix 的"混沌猴"是什么工具？",
+    q: "Netflix 的“混沌猴”是什么工具？",
     options: ["随机更改代码风格", "随机终止生产服务器实例以测试系统弹性", "生成随机测试数据", "监控异常用户行为"],
     answer: 1,
     explanation: "混沌猴随机终止生产 EC2 实例，确保系统能在任意时刻优雅处理故障。"
@@ -454,7 +454,7 @@ const QUIZ_QUESTIONS_ZH = [
     explanation: "静态分析在不执行代码的情况下读取源代码，在开发早期发现 Bug、安全问题和代码异味。"
   },
   {
-    q: "在蓝绿部署中，"回滚"意味着：",
+    q: "在蓝绿部署中，“回滚”意味着：",
     options: ["从头重写新版本", "即时将负载均衡器切换回上一个环境", "删除失败的部署", "永久同时运行新旧两个版本"],
     answer: 1,
     explanation: "蓝绿部署保持两个环境同时运行。回滚只需将负载均衡器切换回之前的（蓝色）环境，非常迅速。"
@@ -466,7 +466,7 @@ const QUIZ_QUESTIONS_ZH = [
     explanation: "主干开发通过频繁合并到主分支来减少集成痛苦。特性开关隐藏未完成的工作，代替长期分支。"
   },
   {
-    q: "Google 的"70/20/10 测试金字塔"意味着：",
+    q: "Google 的“70/20/10 测试金字塔”意味着：",
     options: ["70% 手动，20% 自动，10% 探索性测试", "70% 单元测试，20% 集成测试，10% 端到端测试", "70% 前端，20% 后端，10% 基础设施测试", "70% 通过，20% 不稳定，10% 失败是可接受的"],
     answer: 1,
     explanation: "Google 建议 70% 的测试为快速单元测试，20% 为集成测试，仅 10% 为慢速端到端测试。"
@@ -482,7 +482,7 @@ const CICD_T = {
     'btn-match': 'Play Match Game', 'btn-quiz': 'Take the Quiz',
     'stat-terms': 'Key Terms', 'stat-cats': 'Categories', 'stat-cos': 'Companies Featured', 'stat-qs': 'Quiz Questions',
     'section-title': 'All Terms', 'section-sub': 'Click a card to expand the full explanation + real company examples.',
-    'filter-all': 'All', 'filter-code-quality': 'Code Quality', 'filter-testing': 'Testing',
+    'filter-all': 'All', 'filter-cicd': 'CI/CD', 'filter-code-quality': 'Code Quality', 'filter-testing': 'Testing',
     'filter-deployment': 'Deployment', 'filter-version-control': 'Version Control',
     'filter-infrastructure': 'Infrastructure', 'filter-metrics': 'Metrics',
     'card-tools': 'Tools/Examples:', 'card-used-at': 'Used at:',
@@ -514,7 +514,7 @@ const CICD_T = {
     'btn-match': '玩配对游戏', 'btn-quiz': '参加测验',
     'stat-terms': '核心术语', 'stat-cats': '分类', 'stat-cos': '收录公司', 'stat-qs': '测验题目',
     'section-title': '所有术语', 'section-sub': '点击卡片展开完整解释和真实公司案例。',
-    'filter-all': '全部', 'filter-code-quality': '代码质量', 'filter-testing': '测试',
+    'filter-all': '全部', 'filter-cicd': 'CI/CD', 'filter-code-quality': '代码质量', 'filter-testing': '测试',
     'filter-deployment': '部署', 'filter-version-control': '版本控制',
     'filter-infrastructure': '基础设施', 'filter-metrics': '指标',
     'card-tools': '工具/示例：', 'card-used-at': '使用公司：',
@@ -545,3 +545,11 @@ let cicdLang = (localStorage.getItem('cicd-lang') || 'en');
 function _T(k) { return (CICD_T[cicdLang] || CICD_T.en)[k] || k; }
 function getMatchPairs() { return cicdLang === 'zh' ? MATCH_PAIRS_ZH : MATCH_PAIRS; }
 function getQuizQuestions() { return cicdLang === 'zh' ? QUIZ_QUESTIONS_ZH : QUIZ_QUESTIONS; }
+
+document.addEventListener('keydown', () => {
+  document.documentElement.classList.add('keyboard-input');
+}, { capture: true });
+
+document.addEventListener('pointerdown', () => {
+  document.documentElement.classList.remove('keyboard-input');
+}, { capture: true });

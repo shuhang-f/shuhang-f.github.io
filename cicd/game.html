@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Match Game — DevOps Lingo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
   <style>
     .timer-badge {
       background: var(--surface2);
@@ -65,9 +65,9 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
-    .lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(30,30,40,.85);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
-    .lang-sw button{background:none;border:none;color:rgba(255,255,255,.55);font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s}
-    .lang-sw button.lsw-active{background:rgba(255,255,255,.15);color:#fff}
+    @media (prefers-reduced-motion: reduce) {
+      .timer-badge.urgent { animation: none; opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -76,15 +76,14 @@
   <a class="nav-logo" href="index.html">⚡ DevOps Lingo</a>
   <div class="nav-links">
     <a href="index.html">Terms</a>
-    <a href="game.html" class="active">Match Game</a>
+    <a href="game.html" class="active" aria-current="page">Match Game</a>
     <a href="quiz.html">Quiz</a>
   </div>
+  <div class="lang-sw" id="langSw" role="group" aria-label="Language">
+    <button type="button" id="btn-en" onclick="setCicdLang('en')" class="lsw-active" aria-pressed="true">EN</button>
+    <button type="button" id="btn-zh" onclick="setCicdLang('zh')" aria-pressed="false">中</button>
+  </div>
 </nav>
-
-<div class="lang-sw" id="langSw">
-  <button id="btn-en" onclick="setCicdLang('en')" class="lsw-active">EN</button>
-  <button id="btn-zh" onclick="setCicdLang('zh')">中</button>
-</div>
 
 <div class="game-container">
   <div class="game-header">
@@ -106,7 +105,7 @@
   </div>
 
   <div class="progress-bar-wrap">
-    <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    <div class="progress-bar" id="progress-bar"></div>
   </div>
 
   <div class="instructions">
@@ -146,13 +145,14 @@
 
 <footer>Match the term to its definition before time runs out!</footer>
 
-<script src="data.js"></script>
+<script src="data.js?v=3"></script>
 <script>
 let score = 0, streak = 0, round = 0, totalRounds = 5;
 let selectedTerm = null, selectedDef = null;
 let matchedCount = 0, totalPairs = 0;
 let timerInterval = null, timeLeft = 60;
 let roundPairs = [];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -186,10 +186,10 @@ function nextRound() {
   const defs = shuffle(roundPairs.map(p => p.def));
 
   document.getElementById('terms-col').innerHTML = terms.map(t =>
-    `<div class="match-item" data-type="term" data-val="${encodeURIComponent(t)}">${t}</div>`
+    `<button type="button" class="match-item" data-type="term" data-val="${encodeURIComponent(t)}" aria-pressed="false">${t}</button>`
   ).join('');
   document.getElementById('defs-col').innerHTML = defs.map(d =>
-    `<div class="match-item" data-type="def" data-val="${encodeURIComponent(d)}">${d}</div>`
+    `<button type="button" class="match-item" data-type="def" data-val="${encodeURIComponent(d)}" aria-pressed="false">${d}</button>`
   ).join('');
 
   document.querySelectorAll('.match-item').forEach(item => {
@@ -223,7 +223,7 @@ function updateScore() {
 }
 
 function updateProgress() {
-  document.getElementById('progress-bar').style.width = ((round - 1) / totalRounds * 100) + '%';
+  document.getElementById('progress-bar').style.transform = `scaleX(${(round - 1) / totalRounds})`;
 }
 
 function onItemClick(e) {
@@ -231,12 +231,20 @@ function onItemClick(e) {
   if (item.classList.contains('matched')) return;
   const type = item.dataset.type;
   if (type === 'term') {
-    document.querySelectorAll('[data-type="term"]').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('[data-type="term"]').forEach(i => {
+      i.classList.remove('selected');
+      i.setAttribute('aria-pressed', 'false');
+    });
     item.classList.add('selected');
+    item.setAttribute('aria-pressed', 'true');
     selectedTerm = item;
   } else {
-    document.querySelectorAll('[data-type="def"]').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('[data-type="def"]').forEach(i => {
+      i.classList.remove('selected');
+      i.setAttribute('aria-pressed', 'false');
+    });
     item.classList.add('selected');
+    item.setAttribute('aria-pressed', 'true');
     selectedDef = item;
   }
   if (selectedTerm && selectedDef) checkMatch();
@@ -251,6 +259,8 @@ function checkMatch() {
   if (correct) {
     selectedTerm.classList.remove('selected'); selectedDef.classList.remove('selected');
     selectedTerm.classList.add('matched'); selectedDef.classList.add('matched');
+    selectedTerm.setAttribute('aria-pressed', 'false'); selectedDef.setAttribute('aria-pressed', 'false');
+    selectedTerm.disabled = true; selectedDef.disabled = true;
     score += 10 + Math.max(0, streak) * 2;
     streak++; matchedCount++;
     updateScore(); flashFeedback(true);
@@ -258,18 +268,43 @@ function checkMatch() {
   } else {
     selectedTerm.classList.remove('selected'); selectedDef.classList.remove('selected');
     selectedTerm.classList.add('wrong'); selectedDef.classList.add('wrong');
+    selectedTerm.setAttribute('aria-pressed', 'false'); selectedDef.setAttribute('aria-pressed', 'false');
+    const wrongItems = [selectedTerm, selectedDef];
+    showWrongFeedback(wrongItems);
     score = Math.max(0, score - 3); streak = 0;
     updateScore();
-    setTimeout(() => { selectedTerm?.classList.remove('wrong'); selectedDef?.classList.remove('wrong'); }, 500);
+    setTimeout(() => wrongItems.forEach(item => item.classList.remove('wrong')), 500);
   }
   selectedTerm = null; selectedDef = null;
 }
 
+function showWrongFeedback(items) {
+  if (reduceMotion) return;
+  items.forEach(item => {
+    item.getAnimations().forEach(animation => animation.cancel());
+    item.animate(
+      [
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-6px)' },
+        { transform: 'translateX(6px)' },
+        { transform: 'translateX(0)' }
+      ],
+      { duration: 240, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+    );
+  });
+}
+
 function flashFeedback(correct) {
   const el = document.getElementById('score-display');
-  el.style.transform = 'scale(1.3)';
   el.style.color = correct ? 'var(--accent2)' : 'var(--accent3)';
-  setTimeout(() => { el.style.transform = ''; el.style.color = ''; }, 300);
+  if (!reduceMotion) {
+    el.getAnimations().forEach(animation => animation.cancel());
+    el.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.16)' }, { transform: 'scale(1)' }],
+      { duration: 220, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+    );
+  }
+  setTimeout(() => { el.style.color = ''; }, 220);
 }
 
 function endRound(success) {
@@ -326,8 +361,9 @@ function applyGameI18n() {
   document.querySelector('h2').textContent = _T('game-title');
   document.querySelector('#score-display + .score-label').textContent = _T('score-lbl');
   document.querySelector('#streak-display + .score-label').textContent = _T('streak-lbl');
-  document.querySelector('#game-area h3:first-child').textContent = _T('terms-col');
-  document.querySelector('#game-area h3:last-of-type').textContent = _T('defs-col');
+  const gameHeadings = document.querySelectorAll('#game-area h3');
+  if (gameHeadings[0]) gameHeadings[0].textContent = _T('terms-col');
+  if (gameHeadings[1]) gameHeadings[1].textContent = _T('defs-col');
   const instrSteps = document.querySelectorAll('.instr-step span');
   if(instrSteps[0]) instrSteps[0].innerHTML = _T('instr-1');
   if(instrSteps[1]) instrSteps[1].innerHTML = _T('instr-2');
@@ -339,6 +375,8 @@ function applyGameI18n() {
   document.querySelector('footer').textContent = _T('game-footer');
   document.getElementById('btn-en').classList.toggle('lsw-active', cicdLang === 'en');
   document.getElementById('btn-zh').classList.toggle('lsw-active', cicdLang === 'zh');
+  document.getElementById('btn-en').setAttribute('aria-pressed', String(cicdLang === 'en'));
+  document.getElementById('btn-zh').setAttribute('aria-pressed', String(cicdLang === 'zh'));
 }
 
 function setCicdLang(lang) {
