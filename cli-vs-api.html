@@ -13,6 +13,8 @@
   --api:#4A9EFF;--api-dim:#2060A0;--api-bg:#050810;
   --get:#22C55E;--post:#3B82F6;--put:#F97316;--del:#EF4444;
   --gold:#C89B3C;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
 }
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
 
@@ -91,8 +93,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   color:#FFF;font-size:.88em;font-family:'Courier New',monospace;caret-color:var(--cli);
 }
 .term-hint{padding:8px 16px;background:rgba(0,255,136,.04);border-top:1px solid rgba(0,255,136,.07);font-size:.78em;color:var(--cli-dim);display:flex;gap:16px;flex-wrap:wrap}
-.term-hint span{cursor:pointer;padding:2px 6px;border-radius:4px;border:1px solid rgba(0,255,136,.2);transition:all .15s}
-.term-hint span:hover{background:rgba(0,255,136,.1);color:var(--cli)}
+.term-hint button{cursor:pointer;padding:2px 6px;border-radius:4px;border:1px solid rgba(0,255,136,.2);background:transparent;color:inherit;font:inherit;transition:transform 140ms var(--ease-out),background-color 150ms ease,color 150ms ease}
+.term-hint button:active{transform:scale(.96)}
 
 /* ──────────────────────────────
    API PLAYGROUND
@@ -103,7 +105,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .mission-steps{display:flex;gap:0;padding:16px 20px;border-bottom:1px solid rgba(74,158,255,.1);overflow-x:auto}
 .ms{
   display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;
-  font-size:.8em;cursor:pointer;transition:all .2s;white-space:nowrap;
+  font-size:.8em;transition:color 180ms ease,background-color 180ms ease,border-color 180ms ease;white-space:nowrap;
   border:1px solid var(--border);color:var(--dim);background:var(--panel2);margin-right:6px;
 }
 .ms.active{border-color:var(--api);color:var(--api);background:rgba(74,158,255,.1)}
@@ -130,14 +132,15 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .send-btn{
   padding:8px 20px;background:linear-gradient(135deg,#1A4080,var(--api));
   border:none;border-radius:8px;color:#fff;font-size:.88em;font-weight:700;cursor:pointer;
-  white-space:nowrap;transition:all .2s;
+  white-space:nowrap;transition:transform 140ms var(--ease-out),box-shadow 180ms ease,opacity 160ms ease;
 }
-.send-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(74,158,255,.35)}
+.send-btn:active{transform:scale(.97)}
 .send-btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* tabs */
 .req-tabs{display:flex;gap:4px;margin-bottom:12px}
-.req-tab{padding:5px 12px;border-radius:6px;font-size:.8em;cursor:pointer;color:var(--dim);border:1px solid transparent;transition:all .15s}
+.req-tab{padding:5px 12px;border-radius:6px;font-size:.8em;cursor:pointer;color:var(--dim);border:1px solid transparent;background:transparent;font:inherit;transition:transform 140ms var(--ease-out),color 150ms ease,background-color 150ms ease,border-color 150ms ease}
+.req-tab:active{transform:scale(.96)}
 .req-tab.active{background:rgba(74,158,255,.12);border-color:rgba(74,158,255,.3);color:var(--api)}
 .tab-panel{display:none}.tab-panel.active{display:block}
 .headers-grid{display:flex;flex-direction:column;gap:6px}
@@ -147,8 +150,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   background:var(--panel2);color:var(--text);font-size:.82em;font-family:'Courier New',monospace;outline:none;
 }
 .hdr-key:focus,.hdr-val:focus{border-color:var(--api)}
-.hdr-add{padding:5px 12px;background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.2);border-radius:6px;color:var(--api);font-size:.78em;cursor:pointer;transition:all .15s}
-.hdr-add:hover{background:rgba(74,158,255,.2)}
+.hdr-add{padding:5px 12px;background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.2);border-radius:6px;color:var(--api);font-size:.78em;cursor:pointer;transition:transform 140ms var(--ease-out),background-color 150ms ease,border-color 150ms ease}
+.hdr-add:active{transform:scale(.97)}
 .body-input{
   width:100%;min-height:80px;padding:10px;border-radius:6px;
   border:1px solid var(--border);background:var(--panel2);
@@ -165,14 +168,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .net-server{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.3)}
 .net-line{flex:1;height:4px;background:var(--border);border-radius:2px;position:relative;overflow:hidden}
 .net-packet{
-  position:absolute;top:0;left:-20%;width:20%;height:100%;
+  position:absolute;top:0;left:0;width:20%;height:100%;
   background:linear-gradient(90deg,transparent,var(--api),transparent);
-  border-radius:2px;animation:none;
+  border-radius:2px;transform:translateX(-100%);will-change:transform,opacity;
 }
-.net-packet.go{animation:packetGo .8s ease forwards}
-.net-packet.back{animation:packetBack .8s ease forwards;background:linear-gradient(90deg,transparent,#22C55E,transparent)}
-@keyframes packetGo{from{left:-20%}to{left:100%}}
-@keyframes packetBack{from{left:100%}to{left:-20%}}
 .net-status{font-size:.8em;color:var(--dim);margin-left:auto;min-width:60px;text-align:right}
 
 /* response */
@@ -195,8 +194,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .ep-guide{padding:14px 20px;background:rgba(74,158,255,.03);border-top:1px solid rgba(74,158,255,.08)}
 .ep-guide h4{font-size:.82em;color:var(--dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
 .ep-list{display:flex;flex-direction:column;gap:6px}
-.ep-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;transition:all .15s;border:1px solid transparent}
-.ep-item:hover{background:rgba(74,158,255,.07);border-color:rgba(74,158,255,.15)}
+.ep-item{display:flex;width:100%;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;transition:transform 140ms var(--ease-out),background-color 150ms ease,border-color 150ms ease;border:1px solid transparent;background:transparent;color:inherit;text-align:left;font:inherit}
+.ep-item:active{transform:scale(.99)}
 .ep-item.ep-active{background:rgba(74,158,255,.1);border-color:rgba(74,158,255,.3)}
 .method-pill{font-size:.72em;font-weight:700;padding:2px 7px;border-radius:6px;min-width:42px;text-align:center}
 .m-get{background:rgba(34,197,94,.15);color:var(--get)}.m-post{background:rgba(59,130,246,.15);color:var(--post)}
@@ -229,19 +228,17 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .when-card ul li{margin-bottom:4px}
 
 /* toast */
-.toast{position:fixed;top:18px;right:18px;padding:10px 18px;background:var(--panel);border-radius:8px;font-size:.88em;transform:translateX(220%);transition:transform .3s;z-index:999;border:1px solid var(--border)}
-.toast.show{transform:translateX(0)}
+.toast{position:fixed;top:18px;right:18px;padding:10px 18px;background:var(--panel);border-radius:8px;font-size:.88em;opacity:0;transform:translateX(110%);transition:transform 180ms var(--ease-out),opacity 140ms ease;z-index:999;border:1px solid var(--border);pointer-events:none}
+.toast.show{opacity:1;transform:translateX(0)}
+.toast.is-instant{transition:none}
 .toast.cli-toast{border-color:rgba(0,255,136,.4);color:var(--cli)}
 .toast.api-toast{border-color:rgba(74,158,255,.4);color:var(--api)}
 
 /* misc */
 .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:28px}
-.btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:700;transition:all .2s}
+.btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:700;transition:transform 140ms var(--ease-out),color 160ms ease,background-color 160ms ease,border-color 160ms ease}
+.btn:active{transform:scale(.97)}
 .btn-outline{background:transparent;border:1px solid var(--dim);color:var(--dim)}
-.btn-outline:hover{border-color:var(--text);color:var(--text)}
-
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.fi{animation:fi .25s ease forwards}
 
 @media(max-width:620px){
   .concept-row{grid-template-columns:1fr}
@@ -249,17 +246,51 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   .analogy{flex-direction:column}
   .analogy-vs{width:100%;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 }
-.lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(5,8,20,.75);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
-.lang-sw button{background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;font-weight:700;padding:4px 11px;border-radius:14px;cursor:pointer;transition:all .2s;letter-spacing:.6px}
+.lang-sw{position:fixed;top:14px;right:16px;z-index:9999;display:flex;background:rgba(5,8,20,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.12);padding:3px;gap:2px}
+.lang-sw button{background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;font-weight:700;padding:4px 11px;border-radius:14px;cursor:pointer;transition:transform 140ms var(--ease-out),color 160ms ease,background-color 160ms ease;letter-spacing:.6px}
 .lang-sw button.lsw-active{background:rgba(255,255,255,.12);color:#fff}
+.lang-sw button:active{transform:scale(.96)}
+:focus-visible{outline:3px solid var(--api);outline-offset:3px}
+.keyboard-input .term-hint button,
+.keyboard-input .send-btn,
+.keyboard-input .req-tab,
+.keyboard-input .hdr-add,
+.keyboard-input .ep-item,
+.keyboard-input .btn,
+.keyboard-input .lang-sw button{transition:none}
+.keyboard-input .term-hint button:active,
+.keyboard-input .send-btn:active,
+.keyboard-input .req-tab:active,
+.keyboard-input .hdr-add:active,
+.keyboard-input .ep-item:active,
+.keyboard-input .btn:active,
+.keyboard-input .lang-sw button:active{transform:none}
+@media(hover:hover) and (pointer:fine){
+  .term-hint button:hover{background:rgba(0,255,136,.1);color:var(--cli)}
+  .send-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(74,158,255,.35)}
+  .hdr-add:hover{background:rgba(74,158,255,.2)}
+  .ep-item:hover{background:rgba(74,158,255,.07);border-color:rgba(74,158,255,.15)}
+  .btn-outline:hover{border-color:var(--text);color:var(--text)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .term-hint button,.send-btn,.req-tab,.hdr-add,.ep-item,.toast,.btn,.lang-sw button{transform:none!important}
+  .toast{transition:opacity 140ms ease}
+}
+@media(prefers-reduced-transparency:reduce){
+  .lang-sw{background:var(--panel);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media(prefers-contrast:more){
+  .lang-sw{background:var(--bg);border-color:var(--text);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
-<div class="lang-sw" id="langSw">
-  <button id="btn-en" onclick="setLang('en')" class="lsw-active">EN</button>
-  <button id="btn-zh" onclick="setLang('zh')">中</button>
+<div class="lang-sw" id="langSw" role="group" aria-label="Language">
+  <button type="button" id="btn-en" onclick="setLang('en')" class="lsw-active" aria-pressed="true">EN</button>
+  <button type="button" id="btn-zh" onclick="setLang('zh')" aria-pressed="false">中</button>
 </div>
 
 <!-- HEADER -->
@@ -325,11 +356,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
       <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command and press Enter…">
     </div>
     <div class="term-hint">
-      <span onclick="injectCmd('help')">help</span>
-      <span onclick="injectCmd('ls')">ls</span>
-      <span onclick="injectCmd('pwd')">pwd</span>
-      <span onclick="injectCmd('cd secret')">cd secret</span>
-      <span onclick="injectCmd('cat treasure.txt')">cat treasure.txt</span>
+      <button type="button" onclick="injectCmd('help')">help</button>
+      <button type="button" onclick="injectCmd('ls')">ls</button>
+      <button type="button" onclick="injectCmd('pwd')">pwd</button>
+      <button type="button" onclick="injectCmd('cd secret')">cd secret</button>
+      <button type="button" onclick="injectCmd('cat treasure.txt')">cat treasure.txt</button>
     </div>
   </div>
 </div>
@@ -368,14 +399,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
         <option value="DELETE">DELETE</option>
       </select>
       <input class="url-input" id="api-url" type="text" value="/api/status" placeholder="/api/endpoint">
-      <button class="send-btn" id="send-btn" onclick="sendRequest()" data-i18n="send-btn-txt">Send Request ▶</button>
+      <button class="send-btn" id="send-btn" onclick="sendRequest(event)" data-i18n="send-btn-txt">Send Request ▶</button>
     </div>
 
-    <div class="req-tabs">
-      <div class="req-tab active" onclick="switchTab('headers')" data-i18n="tab-headers">Headers</div>
-      <div class="req-tab" onclick="switchTab('body')" data-i18n="tab-body">Body</div>
+    <div class="req-tabs" role="tablist" aria-label="Request configuration">
+      <button type="button" class="req-tab active" id="tab-trigger-headers" role="tab" aria-selected="true" aria-controls="tab-headers" onclick="switchTab('headers')" data-i18n="tab-headers">Headers</button>
+      <button type="button" class="req-tab" id="tab-trigger-body" role="tab" aria-selected="false" aria-controls="tab-body" tabindex="-1" onclick="switchTab('body')" data-i18n="tab-body">Body</button>
     </div>
-    <div class="tab-panel active" id="tab-headers">
+    <div class="tab-panel active" id="tab-headers" role="tabpanel" aria-labelledby="tab-trigger-headers">
       <div class="headers-grid" id="headers-grid">
         <div class="hdr-row">
           <input class="hdr-key" placeholder="Header Name" value="Content-Type">
@@ -384,7 +415,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
       </div>
       <button class="hdr-add" onclick="addHeaderRow()" style="margin-top:6px" data-i18n="add-header">+ Add Header</button>
     </div>
-    <div class="tab-panel" id="tab-body">
+    <div class="tab-panel" id="tab-body" role="tabpanel" aria-labelledby="tab-trigger-body">
       <textarea class="body-input" id="req-body" placeholder='{"key": "value"}'></textarea>
     </div>
   </div>
@@ -395,14 +426,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
       <div class="net-node net-client" data-i18n="net-client">CLIENT</div>
       <div class="net-line"><div class="net-packet" id="net-packet"></div></div>
       <div class="net-node net-server" data-i18n="net-server">SERVER</div>
-      <div class="net-status" id="net-status" data-i18n="net-idle">Idle…</div>
+      <div class="net-status" id="net-status" data-i18n="net-idle" aria-live="polite">Idle…</div>
     </div>
   </div>
 
   <!-- response -->
   <div class="response-panel">
     <h4 data-i18n="resp-h">Response</h4>
-    <div id="resp-area"><p class="resp-empty" data-i18n="resp-empty">Click "Send Request" to see the response</p></div>
+    <div id="resp-area" aria-live="polite"><p class="resp-empty" data-i18n="resp-empty">Click "Send Request" to see the response</p></div>
   </div>
 </div>
 
@@ -668,7 +699,7 @@ function cmdCat(arg) {
     cliState.done = true
     setTimeout(() => {
       document.getElementById('cli-done').style.display = 'inline-block'
-      showToast(cliT().done_toast, 'cli-toast')
+      showToast(cliT().done_toast, 'cli-toast', true)
     }, 300)
   }
 }
@@ -792,22 +823,34 @@ const API_MISSION_MAP = {
 }
 
 let apiState = { token: null, loggedIn: false, treasureDone: false, completedSteps: new Set(), sending: false }
+let requestRun = 0
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+document.addEventListener('keydown', () => {
+  document.documentElement.classList.add('keyboard-input')
+}, { capture: true })
+
+document.addEventListener('pointerdown', () => {
+  document.documentElement.classList.remove('keyboard-input')
+}, { capture: true })
 
 // Render endpoint list
 function renderEndpoints() {
   const list = document.getElementById('ep-list')
   getEndpoints().forEach((ep, i) => {
-    const div = document.createElement('div')
-    div.className = 'ep-item'
-    div.id = 'ep-' + i
-    div.innerHTML = `
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'ep-item'
+    button.id = 'ep-' + i
+    button.setAttribute('aria-pressed', 'false')
+    button.innerHTML = `
       <span class="method-pill m-${ep.method.toLowerCase()}">${ep.method}</span>
       <span class="ep-path">${ep.path}</span>
       <span class="ep-desc">${ep.desc}</span>
       ${ep.lock ? '<span class="ep-lock">🔒</span>' : ''}
     `
-    div.addEventListener('click', () => fillEndpoint(ep, i))
-    list.appendChild(div)
+    button.addEventListener('click', () => fillEndpoint(ep, i))
+    list.appendChild(button)
   })
 }
 
@@ -827,8 +870,13 @@ function fillEndpoint(ep, idx) {
     autoAddAuthHeader()
   }
   // highlight active
-  document.querySelectorAll('.ep-item').forEach(e => e.classList.remove('ep-active'))
-  document.getElementById('ep-' + idx).classList.add('ep-active')
+  document.querySelectorAll('.ep-item').forEach(e => {
+    e.classList.remove('ep-active')
+    e.setAttribute('aria-pressed', 'false')
+  })
+  const activeEndpoint = document.getElementById('ep-' + idx)
+  activeEndpoint.classList.add('ep-active')
+  activeEndpoint.setAttribute('aria-pressed', 'true')
 }
 
 function autoAddAuthHeader() {
@@ -863,10 +911,21 @@ function addHeaderRow() {
 function switchTab(name) {
   document.querySelectorAll('.req-tab').forEach((t, i) => {
     const n = ['headers','body'][i]
-    t.classList.toggle('active', n === name)
-    document.getElementById('tab-' + n).classList.toggle('active', n === name)
+    const active = n === name
+    t.classList.toggle('active', active)
+    t.setAttribute('aria-selected', String(active))
+    t.tabIndex = active ? 0 : -1
+    document.getElementById('tab-' + n).classList.toggle('active', active)
   })
 }
+
+document.querySelector('.req-tabs').addEventListener('keydown', event => {
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
+  event.preventDefault()
+  const next = event.key === 'ArrowRight' ? 'body' : 'headers'
+  switchTab(next)
+  document.getElementById('tab-trigger-' + next).focus()
+})
 
 function getHeaders() {
   const headers = {}
@@ -878,11 +937,51 @@ function getHeaders() {
   return headers
 }
 
-async function sendRequest() {
-  if (apiState.sending) return
+async function animatePacket(packet, target, color, runId, keyboardInitiated) {
+  const currentTransform = getComputedStyle(packet).transform
+  packet.getAnimations().forEach(animation => animation.cancel())
+  packet.style.background = `linear-gradient(90deg,transparent,${color},transparent)`
+
+  if (keyboardInitiated) {
+    packet.style.opacity = '0'
+    packet.style.transform = target
+    return runId === requestRun
+  }
+
+  if (reduceMotion) {
+    packet.style.opacity = '0'
+    packet.style.transform = target
+    const fade = packet.animate(
+      [{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }],
+      { duration: 140, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'forwards' }
+    )
+    try { await fade.finished } catch { return false }
+    return runId === requestRun
+  }
+
+  packet.style.opacity = '1'
+  const travel = packet.animate(
+    [
+      { transform: currentTransform === 'none' ? 'translateX(-100%)' : currentTransform },
+      { transform: target }
+    ],
+    {
+      duration: 650,
+      easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      fill: 'forwards'
+    }
+  )
+  try { await travel.finished } catch { return false }
+  return runId === requestRun
+}
+
+async function sendRequest(triggerEvent) {
+  const runId = ++requestRun
+  const keyboardInitiated = triggerEvent?.detail === 0
   apiState.sending = true
   const btn = document.getElementById('send-btn')
-  btn.disabled = true; btn.textContent = window._lang==='zh' ? '发送中…' : 'Sending…'
+  btn.setAttribute('aria-busy', 'true')
+  btn.textContent = window._lang==='zh' ? '重新发送 ↻' : 'Restart Request ↻'
 
   const method = document.getElementById('api-method').value
   const url = document.getElementById('api-url').value.trim()
@@ -897,14 +996,11 @@ async function sendRequest() {
   const packet = document.getElementById('net-packet')
   const netStatus = document.getElementById('net-status')
   netDiv.style.display = 'block'
-  packet.className = 'net-packet'
   netStatus.textContent = window._lang==='zh' ? '发送中…' : 'Sending…'
-  void packet.offsetWidth
-  packet.className = 'net-packet go'
-
-  await delay(850)
+  if (!await animatePacket(packet, 'translateX(500%)', 'var(--api)', runId, keyboardInitiated)) return
   netStatus.textContent = window._lang==='zh' ? '处理中…' : 'Processing…'
-  await delay(400)
+  await delay(keyboardInitiated ? 0 : reduceMotion ? 80 : 220)
+  if (runId !== requestRun) return
 
   // get response
   let result
@@ -915,25 +1011,27 @@ async function sendRequest() {
   }
 
   // packet back
-  packet.className = 'net-packet back'
   netStatus.textContent = result.status + ' ' + statusText(result.status)
-  await delay(850)
+  if (!await animatePacket(packet, 'translateX(-100%)', '#22C55E', runId, keyboardInitiated)) return
 
   // show response
-  renderResponse(result)
-  checkMissionProgress(url, result.status)
+  renderResponse(result, keyboardInitiated)
+  checkMissionProgress(url, result.status, keyboardInitiated)
 
-  btn.disabled = false; btn.textContent = _CA('send-btn-txt')
-  apiState.sending = false
+  if (runId === requestRun) {
+    btn.removeAttribute('aria-busy')
+    btn.textContent = _CA('send-btn-txt')
+    apiState.sending = false
+  }
 }
 
-function renderResponse(result) {
+function renderResponse(result, keyboardInitiated = false) {
   const area = document.getElementById('resp-area')
   const sc = result.status
   const cls = sc < 300 ? 's2' : sc < 500 ? 's4' : 's5'
   const json = JSON.stringify(result.body, null, 2)
   area.innerHTML = `
-    <div class="resp-box fi">
+    <div class="resp-box">
       <div class="resp-status-bar">
         <span class="status-badge ${cls}">${sc} ${statusText(sc)}</span>
         <span class="resp-time">${Math.floor(Math.random()*80+40)}ms</span>
@@ -941,6 +1039,15 @@ function renderResponse(result) {
       <div class="resp-body">${syntaxHL(json)}</div>
     </div>
   `
+  if (!keyboardInitiated) {
+    const box = area.querySelector('.resp-box')
+    box.animate(
+      reduceMotion
+        ? [{ opacity: 0 }, { opacity: 1 }]
+        : [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }],
+      { duration: reduceMotion ? 140 : 200, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+    )
+  }
 }
 
 function syntaxHL(json) {
@@ -955,7 +1062,7 @@ function statusText(code) {
   return {200:'OK',201:'Created',400:'Bad Request',401:'Unauthorized',403:'Forbidden',404:'Not Found',500:'Server Error'}[code] || ''
 }
 
-function checkMissionProgress(url, status) {
+function checkMissionProgress(url, status, keyboardInitiated = false) {
   const msId = API_MISSION_MAP[url]
   if (!msId) return
   if (status < 300 || (url === '/api/login' && status === 200)) {
@@ -978,7 +1085,7 @@ function checkMissionProgress(url, status) {
   // hint for treasure step
   if (url === '/api/login' && status === 200 && !apiState.treasureDone) {
     setTimeout(() => {
-      showToast(window._lang==='zh' ? '✅ 已获取 token！点击 /api/treasure 端点并发送' : '✅ Token received! Click /api/treasure endpoint and send', 'api-toast')
+      showToast(window._lang==='zh' ? '✅ 已获取 token！点击 /api/treasure 端点并发送' : '✅ Token received! Click /api/treasure endpoint and send', 'api-toast', keyboardInitiated)
       const treasureEp = getEndpoints().find(e => e.path === '/api/treasure')
       fillEndpoint(treasureEp, 3)
       autoAddAuthHeader()
@@ -987,16 +1094,25 @@ function checkMissionProgress(url, status) {
 
   if (apiState.treasureDone) {
     document.getElementById('api-done').style.display = 'inline-block'
-    showToast(window._lang==='zh' ? '🏆 API 关卡完成！两个关卡都通关了！' : '🏆 API Level complete! Both levels cleared!', 'api-toast')
+    showToast(window._lang==='zh' ? '🏆 API 关卡完成！两个关卡都通关了！' : '🏆 API Level complete! Both levels cleared!', 'api-toast', keyboardInitiated)
   }
 }
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)) }
 
-function showToast(msg, cls='') {
+let toastTimer
+function showToast(msg, cls='', immediate=false) {
   const t = document.getElementById('toast')
-  t.textContent = msg; t.className = 'toast ' + cls + ' show'
-  setTimeout(() => t.classList.remove('show'), 3500)
+  clearTimeout(toastTimer)
+  t.textContent = msg
+  t.className = 'toast ' + cls + (immediate ? ' is-instant' : '') + ' show'
+  toastTimer = setTimeout(() => {
+    t.classList.toggle('is-instant', immediate)
+    t.classList.remove('show')
+    if (immediate) {
+      requestAnimationFrame(() => requestAnimationFrame(() => t.classList.remove('is-instant')))
+    }
+  }, 3500)
 }
 
 /* ═══════════════════════════════════════
@@ -1108,6 +1224,8 @@ function setLang(lang) {
   document.title = lang==='zh' ? 'CLI vs API 开发者冒险' : 'CLI vs API Developer Adventure'
   document.getElementById('btn-en').classList.toggle('lsw-active', lang==='en')
   document.getElementById('btn-zh').classList.toggle('lsw-active', lang==='zh')
+  document.getElementById('btn-en').setAttribute('aria-pressed', String(lang==='en'))
+  document.getElementById('btn-zh').setAttribute('aria-pressed', String(lang==='zh'))
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const k = el.dataset.i18n
     if (CA_T[lang][k] !== undefined) el.innerHTML = CA_T[lang][k]
@@ -1124,7 +1242,7 @@ function setLang(lang) {
   if (rb) rb.placeholder = '{"key": "value"}'
   // update send button
   const sb = document.getElementById('send-btn')
-  if (sb && !sb.disabled) sb.textContent = _CA('send-btn-txt')
+  if (sb && !apiState.sending) sb.textContent = _CA('send-btn-txt')
   // update resp empty if still empty
   const ra = document.getElementById('resp-area')
   if (ra && ra.querySelector('.resp-empty')) ra.innerHTML = `<p class="resp-empty">${_CA('resp-empty')}</p>`
