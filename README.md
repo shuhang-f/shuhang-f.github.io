@@ -1,4 +1,4 @@
-# Shuhang Feng — Customer-Facing Product Engineering Portfolio
+# Shuhang Feng Portfolio
 
 Static portfolio for Shuhang Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
