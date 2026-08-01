@@ -4,33 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.documentElement.classList.add('has-js');</script>
-  <meta name="description" content="Sean Feng is a customer-facing product engineer who turns user problems into AI prototypes, production systems, integrations, infrastructure, and QA workflows.">
+  <meta name="description" content="Shuhang Feng is a customer-facing product engineer who turns user problems into reliable AI products, integrations, infrastructure, and production QA workflows.">
+  <meta name="author" content="Shuhang Feng">
   <meta name="theme-color" content="#f3f0e8">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Sean Feng — Customer-Facing Product Engineer">
-  <meta property="og:description" content="Forward-deployed AI product work across prototyping, integrations, infrastructure, and production QA.">
+  <meta property="og:title" content="Shuhang Feng — Customer-Facing Product Engineer">
+  <meta property="og:description" content="AI product work across rapid prototyping, integrations, infrastructure, and production QA.">
   <meta property="og:url" content="https://shuhang-f.github.io/">
   <meta property="og:image" content="https://shuhang-f.github.io/images/og.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sean Feng — Customer-Facing Product Engineer">
-  <meta name="twitter:description" content="Forward-deployed AI product work across prototyping, integrations, infrastructure, and production QA.">
+  <meta name="twitter:title" content="Shuhang Feng — Customer-Facing Product Engineer">
+  <meta name="twitter:description" content="AI product work across rapid prototyping, integrations, infrastructure, and production QA.">
   <meta name="twitter:image" content="https://shuhang-f.github.io/images/og.png">
-  <title>Sean Feng — Customer-Facing Product Engineer</title>
+  <title>Shuhang Feng — Customer-Facing Product Engineer</title>
   <link rel="canonical" href="https://shuhang-f.github.io/">
   <link rel="icon" href="./favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/style.css?v=2">
+  <link rel="stylesheet" href="./css/style.css?v=3">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="siteHeader">
     <nav class="nav-shell" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Sean Feng, home">
+      <a class="brand" href="#top" aria-label="Shuhang Feng, home">
         <span class="brand-mark">SF</span>
-        <span class="brand-meta">Customer-facing product engineer<br>California · 2026</span>
+        <span class="brand-meta">Shuhang Feng<br>Customer-facing product engineer</span>
       </a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">
         <span>Menu</span>
@@ -69,8 +70,8 @@
             <span>01 / 04</span>
           </div>
           <div class="profile-photo-wrap">
-            <img src="./images/profile.jpg" alt="Sean Feng" class="profile-photo">
-            <span class="photo-label">Sean Feng</span>
+            <img src="./images/profile.jpg" alt="Shuhang Feng" class="profile-photo">
+            <span class="photo-label">Shuhang Feng</span>
           </div>
           <dl class="signal-list">
             <div><dt>Discover</dt><dd>User problems & failure modes</dd></div>
@@ -114,24 +115,25 @@
         <div class="case-body">
           <div class="case-kicker"><span>Ordinal Hive</span><span>AI product MVP · 2026</span></div>
           <h3>Agentic Trading Terminal</h3>
-          <p class="case-summary">A natural-language trading terminal that addresses fragmented workflows by bringing Polymarket, Hyperliquid, and equities into one conversational interface.</p>
+          <p class="case-summary">A natural-language trading terminal that brings Polymarket and Hyperliquid into one conversational interface, with explicit approval before order execution.</p>
           <div class="case-details">
             <div>
               <span class="detail-label">What I built</span>
-              <p>A functional MVP integrating MiniMax tool calling with MCP- and CLI-based market-data workflows.</p>
+              <p>A TypeScript/Next.js MVP that routes MiniMax tool calls across MCP and CLI workflows, then normalizes market data into one response.</p>
             </div>
             <div>
               <span class="detail-label">Why it matters</span>
-              <p>Reached a functional end-to-end prototype in three weeks; current work focuses on reliability and failure handling.</p>
+              <p>Reached a functional prototype in three weeks; current work adds input validation, execution tracing, and failure handling.</p>
             </div>
           </div>
-          <div class="tag-row"><span>Next.js</span><span>MiniMax</span><span>MCP</span><span>Tool calling</span><span>Market data</span></div>
+          <div class="tag-row"><span>TypeScript</span><span>Next.js</span><span>MCP</span><span>Docker</span><span>Sentry</span></div>
         </div>
         <div class="terminal-motif" aria-hidden="true">
           <div class="terminal-bar"><span></span><span></span><span></span></div>
           <p><b>intent</b> “Compare these markets…”</p>
-          <p><b>agent</b> Tools called · context unified</p>
-          <p><b>status</b> Validating failure paths_</p>
+          <p><b>agent</b> Tool routed · data normalized</p>
+          <p><b>approval</b> Required before execution</p>
+          <p><b>status</b> Tracing failure paths_</p>
         </div>
       </article>
 
@@ -160,7 +162,7 @@
             <h3>OpenClaw Agent Hub</h3>
             <p class="case-summary">A self-hosted bilingual AI agent environment used daily through Telegram, operated across DigitalOcean and Hetzner with a hybrid model fallback for cost and reliability.</p>
             <dl class="mini-spec">
-              <div><dt>Primary</dt><dd>Claude Sonnet</dd></div>
+              <div><dt>Primary</dt><dd>Claude Opus</dd></div>
               <div><dt>Fallback</dt><dd>MiniMax</dd></div>
               <div><dt>Surface</dt><dd>Telegram</dd></div>
               <div><dt>Runtime</dt><dd>Hetzner / Linux</dd></div>
@@ -170,11 +172,55 @@
         </article>
       </div>
 
-      <div class="lab-row reveal" aria-label="Interactive learning tools">
-        <div class="lab-intro"><span>Small labs</span><p>Interactive tools I built to understand technical systems by making them visible.</p></div>
-        <a href="./cli-vs-api.html" target="_blank" rel="noopener"><strong>CLI vs API Explorer</strong><span>Developer workflows, authentication, REST ↗</span></a>
-        <a href="./cicd/index.html" target="_blank" rel="noopener"><strong>CI/CD Learning Lab</strong><span>Reference, quiz, and matching game ↗</span></a>
-        <a href="https://tft-damage-lab.vercel.app/" target="_blank" rel="noopener"><strong>TFT Damage Lab</strong><span>Interactive TypeScript model + tests ↗</span></a>
+      <div class="project-heading reveal">
+        <div>
+          <p class="section-index">Recent GitHub work</p>
+          <h3>Selected builds</h3>
+        </div>
+        <p>Modernized products, learning tools, and small systems that make the implementation—not just the idea—inspectable.</p>
+      </div>
+
+      <div class="project-grid reveal" aria-label="Selected GitHub projects">
+        <article class="project-card">
+          <div class="project-topline"><span>01 · Interactive model</span><span>Live</span></div>
+          <h4>TFT Damage Lab</h4>
+          <p>A bilingual, test-backed ability-damage calculator that exposes every input and intermediate result instead of hiding the model.</p>
+          <div class="project-tech"><span>Next.js</span><span>TypeScript</span><span>Vitest</span><span>i18n</span></div>
+          <div class="project-actions">
+            <a class="project-link" href="https://tft-damage-lab.vercel.app/" target="_blank" rel="noopener"><span>Open live</span><span aria-hidden="true">↗</span></a>
+            <a class="project-link project-link-secondary" href="https://github.com/shuhang-f/TFT_Damage_Lab" target="_blank" rel="noopener"><span>Code</span><span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-topline"><span>02 · Full stack</span><span>2026</span></div>
+          <h4>CineSphere v2</h4>
+          <p>Rebuilt a legacy film community as a typed React workspace with a validated Flask API, MongoDB, CSV import, Docker, and automated tests.</p>
+          <div class="project-tech"><span>React 19</span><span>TypeScript</span><span>Flask</span><span>MongoDB</span></div>
+          <a class="project-link" href="https://github.com/shuhang-f/Cinematic_synergy" target="_blank" rel="noopener"><span>View repository</span><span aria-hidden="true">↗</span></a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-topline"><span>03 · Product rebuild</span><span>2026</span></div>
+          <h4>LEAP Career Forum v2</h4>
+          <p>Modernized a community platform on Django 5.2 with corrected email auth, search and discussions, production security settings, and CI.</p>
+          <div class="project-tech"><span>Django REST</span><span>PostgreSQL</span><span>Security</span><span>CI</span></div>
+          <a class="project-link" href="https://github.com/shuhang-f/LEAP-Career-Forum" target="_blank" rel="noopener"><span>View repository</span><span aria-hidden="true">↗</span></a>
+        </article>
+
+        <article class="project-card project-card-dark">
+          <div class="project-topline"><span>04 · Customer engineering</span><span>Lab</span></div>
+          <h4>FDE Career Lab</h4>
+          <p>Hands-on reliability exercises for webhooks, OAuth, tool-call evaluation, observability, and repeatable customer-to-engineering handoff.</p>
+          <div class="project-tech"><span>Webhooks</span><span>OAuth</span><span>AI evals</span><span>Incidents</span></div>
+          <a class="project-link" href="https://github.com/shuhang-f/fde-career-lab" target="_blank" rel="noopener"><span>View repository</span><span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+
+      <div class="small-labs reveal" aria-label="Interactive learning tools">
+        <span>Also explore</span>
+        <a href="./cli-vs-api.html" target="_blank" rel="noopener">CLI vs API Explorer ↗</a>
+        <a href="./cicd/index.html" target="_blank" rel="noopener">CI/CD Learning Lab ↗</a>
       </div>
     </section>
 
@@ -194,7 +240,7 @@
           </div>
           <div class="experience-main">
             <p class="company">Ordinal Hive · Seed-stage Bitcoin / AI startup</p>
-            <h3>Co-Founder & Technical Operations Lead</h3>
+            <h3>Co-Founder</h3>
             <ul>
               <li>Built a functional natural-language trading MVP in three weeks, integrating MiniMax tool calling with MCP/CLI market-data workflows.</li>
               <li>Turned user failures into reproducible tests and introduced a live-transaction QA protocol that became the team standard, helping reduce recurring incidents by an estimated 60%.</li>
@@ -259,7 +305,7 @@
         <article>
           <span class="capability-index">B</span>
           <h3>AI engineering</h3>
-          <p>LLM APIs, tool calling, MCP, agent workflows, fallback routing, prompt evaluation, MiniMax, OpenClaw.</p>
+          <p>LLM APIs, tool calling, MCP, agent workflows, fallback routing, agent evaluation, MiniMax, OpenClaw, AI-assisted development.</p>
         </article>
         <article>
           <span class="capability-index">C</span>
@@ -274,7 +320,7 @@
       </div>
 
       <div class="education-row reveal">
-        <div><span>Education</span><strong>University of Southern California</strong><p>M.S. Data Science · 2022–2025</p></div>
+        <div><span>Education</span><strong>University of Southern California</strong><p>M.S. Data Science · August 2025</p></div>
         <div><span>Foundation</span><strong>Northeastern University</strong><p>B.S. Computer Science · 2018–2022</p></div>
         <div><span>Role fit</span><strong>Forward-deployed, customer-facing</strong><p>Prototype quickly · operate reliably · close the loop</p></div>
       </div>
@@ -288,7 +334,7 @@
         </div>
         <div class="contact-copy">
           <p>I’m exploring forward-deployed engineering, solutions engineering, customer-facing product engineering, and adjacent AI platform roles.</p>
-          <a class="contact-email" href="mailto:shuhangf@usc.edu">shuhangf@usc.edu <span aria-hidden="true">↗</span></a>
+          <a class="contact-email" href="mailto:shuhang.feng@leapcareer.org">shuhang.feng@leapcareer.org <span aria-hidden="true">↗</span></a>
           <div class="contact-links">
             <a href="https://www.linkedin.com/in/shuhangf/" target="_blank" rel="noopener">LinkedIn ↗</a>
             <a href="https://github.com/shuhang-f" target="_blank" rel="noopener">GitHub ↗</a>
@@ -300,10 +346,10 @@
   </main>
 
   <footer class="footer">
-    <p>Sean Feng · Customer-facing product engineer</p>
+    <p>Shuhang Feng · Customer-facing product engineer</p>
     <p>Built as a static site · <span id="year">2026</span></p>
   </footer>
 
-  <script src="./js/main.js?v=2"></script>
+  <script src="./js/main.js?v=3"></script>
 </body>
 </html>
