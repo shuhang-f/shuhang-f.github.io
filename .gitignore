@@ -8,5 +8,10 @@ Thumbs.db
 *.swp
 *.swo
 
+# Python test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
 # Private — do not publish
 Sean_Feng_Master_Experience_Bank.md
