@@ -2,8 +2,6 @@
 
 Static portfolio for Shuhang Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
-The site positions Shuhang for forward-deployed engineering and adjacent customer-facing AI/product roles. It emphasizes the full loop from user problem and prototype through integrations, infrastructure, production QA, and support. It includes verified experience, selected deployments, recent public builds, a downloadable resume, and a purpose-built social preview card.
-
 ## Stack
 
 Vanilla HTML, CSS, and JavaScript. No frameworks, no build step. Deployed via GitHub Pages.
