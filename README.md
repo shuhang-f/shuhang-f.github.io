@@ -1,8 +1,8 @@
-# Sean Feng — Customer-Facing Product Engineering Portfolio
+# Shuhang Feng — Customer-Facing Product Engineering Portfolio
 
-Static portfolio for Sean Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
+Static portfolio for Shuhang Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
-The site positions Sean for forward-deployed engineering and adjacent customer-facing AI/product roles. It emphasizes the full loop from user problem and prototype through integrations, infrastructure, production QA, and support. It includes verified experience, selected deployments, a downloadable resume, and a purpose-built social preview card.
+The site positions Shuhang for forward-deployed engineering and adjacent customer-facing AI/product roles. It emphasizes the full loop from user problem and prototype through integrations, infrastructure, production QA, and support. It includes verified experience, selected deployments, recent public builds, a downloadable resume, and a purpose-built social preview card.
 
 ## Stack
 
@@ -29,3 +29,13 @@ npx serve .
 ```
 
 There is no compile step. Changes pushed to `main` are published by GitHub Pages.
+
+## Validation
+
+Run the dependency-free portfolio checks before publishing:
+
+```bash
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+GitHub Actions runs the same checks on every push and pull request.
