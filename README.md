@@ -1,39 +1,38 @@
 # Shuhang Feng Portfolio
 
-Static portfolio for Shuhang Feng, live at [shuhang-f.github.io](https://shuhang-f.github.io).
+Personal portfolio for Shuhang Feng, a product engineer who builds and supports AI, fintech, and data products.
+
+Live at [shuhang-f.github.io](https://shuhang-f.github.io).
+
+## Site structure
+
+- Recruiter-focused homepage with selected evidence, work, experience, and contact
+- Three detailed case files covering a trading workspace, production reliability, and a self-hosted AI assistant
+- Static output, responsive layout, keyboard navigation, and reduced-motion support
+- Site-specific metadata and social preview card
 
 ## Stack
 
-Vanilla HTML, CSS, and JavaScript. No frameworks, no build step. Deployed via GitHub Pages.
+- Astro
+- TypeScript
+- Plain CSS
+- GitHub Pages via GitHub Actions
 
-## Structure
-
-```
-index.html        # single-page portfolio
-css/style.css     # responsive visual system
-js/main.js        # navigation and progressive reveal behavior
-images/profile.jpg
-images/og.png     # social preview card
-resume.pdf        # downloadable current resume
-favicon.ico
-```
-
-## Local dev
-
-Use any static file server:
+## Local development
 
 ```bash
-npx serve .
+npm install
+npm run dev
 ```
-
-There is no compile step. Changes pushed to `main` are published by GitHub Pages.
 
 ## Validation
 
-Run the dependency-free portfolio checks before publishing:
-
 ```bash
-python -m unittest discover -s tests -p "test_*.py" -v
+npm run build
 ```
 
-GitHub Actions runs the same checks on every push and pull request.
+The build performs Astro type and content checks before generating the static site. Pushes to `main` publish the generated site to GitHub Pages.
+
+## Content sources
+
+The public résumé is intentionally carried forward unchanged. Portfolio copy is maintained separately in `src/data/site.ts` so case-study framing and claim boundaries stay explicit.

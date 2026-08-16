@@ -1,0 +1,51 @@
+---
+import type { CaseStudy } from "../data/site";
+
+interface Props {
+  type: CaseStudy["visual"];
+  compact?: boolean;
+}
+
+const { type, compact = false } = Astro.props;
+---
+
+<div class:list={["case-visual", `case-visual-${type}`, { "case-visual-compact": compact }]} aria-hidden="true">
+  {type === "terminal" && (
+    <>
+      <div class="visual-toolbar"><span></span><span></span><span></span><b>INTENT / AUTHORIZATION</b></div>
+      <div class="terminal-flow">
+        <div class="terminal-prompt"><small>User intent</small><p>“Compare these markets and prepare the safer route.”</p></div>
+        <div class="terminal-router">
+          <span>Model interprets</span><i>→</i><span>Router validates</span><i>→</i><span>Wallet authorizes</span>
+        </div>
+        <div class="terminal-status"><span>TOOL / RESEARCH_MARKETS</span><b>READY FOR REVIEW</b></div>
+      </div>
+    </>
+  )}
+
+  {type === "reliability" && (
+    <>
+      <div class="visual-toolbar"><b>USER → ENGINEERING LOOP</b><span>PROTOCOL / 04</span></div>
+      <div class="reliability-flow">
+        <div><span>01</span><strong>Report</strong><small>Actual production symptom</small></div>
+        <div><span>02</span><strong>Reproduce</strong><small>Controlled test case</small></div>
+        <div><span>03</span><strong>Validate</strong><small>Bounded live transaction</small></div>
+        <div><span>04</span><strong>Return</strong><small>Evidence + verified fix</small></div>
+      </div>
+    </>
+  )}
+
+  {type === "agent" && (
+    <>
+      <div class="visual-toolbar"><b>SELF-HOSTED AGENT / LIVE</b><span>EN / 中文</span></div>
+      <div class="agent-map">
+        <div class="agent-surface"><small>Surface</small><strong>Telegram</strong><span>Daily use</span></div>
+        <div class="agent-core"><small>OpenClaw</small><strong>暴躁大龙虾</strong><span>Hetzner / Linux</span></div>
+        <div class="agent-models">
+          <div><small>Primary</small><strong>Claude Opus</strong></div>
+          <div><small>Fallback</small><strong>MiniMax</strong></div>
+        </div>
+      </div>
+    </>
+  )}
+</div>

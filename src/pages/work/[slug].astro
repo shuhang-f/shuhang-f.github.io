@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseVisual from "../../components/CaseVisual.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { caseStudies, type CaseStudy } from "../../data/site";
+
+export function getStaticPaths() {
+  return caseStudies.map((caseStudy) => ({
+    params: { slug: caseStudy.slug },
+    props: { caseStudy },
+  }));
+}
+
+interface Props {
+  caseStudy: CaseStudy;
+}
+
+const { caseStudy } = Astro.props;
+const currentIndex = caseStudies.findIndex((item) => item.slug === caseStudy.slug);
+const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
+---
+
+<BaseLayout
+  title={`${caseStudy.shortTitle} — Shuhang Feng`}
+  description={caseStudy.summary}
+  canonicalPath={`/work/${caseStudy.slug}/`}
+  socialImage={null}
+>
+  <SiteHeader compact />
+
+  <main id="main" class="case-page">
+    <div class="case-breadcrumb">
+      <a href="/#work">← Selected work</a>
+      <span>Case study / {caseStudy.index}</span>
+    </div>
+
+    <section class="case-hero" aria-labelledby="case-title">
+      <div class="case-hero-index">{caseStudy.index}</div>
+      <div class="case-hero-copy">
+        <p class="eyebrow">{caseStudy.kicker}</p>
+        <p class="case-hero-name">{caseStudy.shortTitle}</p>
+        <h1 id="case-title">{caseStudy.title}</h1>
+        <p class="case-hero-summary">{caseStudy.summary}</p>
+      </div>
+      <aside class="case-hero-rail">
+        <p><span>Status</span><strong>{caseStudy.timeframe}</strong></p>
+        <p><span>Role</span><strong>Product and operations</strong></p>
+        <div>
+          <span>Disciplines</span>
+          <ul>{caseStudy.disciplines.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="case-proof" aria-label="Case evidence">
+      {caseStudy.proof.map((item, index) => (
+        <article>
+          <span>0{index + 1}</span>
+          <strong>{item.value}</strong>
+          <p>{item.label}</p>
+        </article>
+      ))}
+    </section>
+
+    <section class="case-visual-section" data-reveal>
+      <div class="case-section-label"><span>Diagram</span><span>Not to scale</span></div>
+      <CaseVisual type={caseStudy.visual} />
+    </section>
+
+    <section class="case-narrative case-problem" aria-labelledby="problem-title" data-reveal>
+      <div class="case-section-label"><span>01 / Context</span><span>The problem</span></div>
+      <h2 id="problem-title">The problem behind the build.</h2>
+      <div class="case-prose">
+        {caseStudy.problem.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <section class="case-response" aria-labelledby="response-title">
+      <div class="case-section-label"><span>02 / Response</span><span>What I did</span></div>
+      <h2 id="response-title">How I built it.</h2>
+      <div class="response-grid">
+        {caseStudy.response.map((item) => (
+          <article data-reveal>
+            <p>{item.label}</p>
+            <h3>{item.title}</h3>
+            <span>{item.body}</span>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="case-results" aria-labelledby="results-title">
+      <div class="case-section-label"><span>03 / Results</span><span>Results and limits</span></div>
+      <div class="results-grid">
+        <div data-reveal>
+          <p class="eyebrow">What changed</p>
+          <h2 id="results-title">What changed.</h2>
+          <ol>
+            {caseStudy.outcome.map((item, index) => (
+              <li><span>0{index + 1}</span><p>{item}</p></li>
+            ))}
+          </ol>
+        </div>
+        <aside data-reveal>
+          <p class="eyebrow">Limits</p>
+          <h3>What this case does not claim.</h3>
+          <ul>{caseStudy.boundaries.map((item) => <li>{item}</li>)}</ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="next-case" aria-label="Next case study" data-reveal>
+      <p>Next case / {nextCase.index}</p>
+      <a href={`/work/${nextCase.slug}/`}>
+        <span>{nextCase.shortTitle}</span>
+        <strong>{nextCase.title}</strong>
+        <i aria-hidden="true">↗</i>
+      </a>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

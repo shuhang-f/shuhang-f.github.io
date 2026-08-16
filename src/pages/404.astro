@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout
+  title="Page not found — Shuhang Feng"
+  description="The requested case file could not be found."
+  canonicalPath="/404.html"
+  socialImage={null}
+>
+  <SiteHeader compact />
+  <main id="main" class="not-found">
+    <p class="eyebrow">404 / Missing field note</p>
+    <h1>This path<br /><em>ends here.</em></h1>
+    <p>The page may have moved during the portfolio rebuild.</p>
+    <a class="button button-primary" href="/">Return to the field desk <span>↗</span></a>
+  </main>
+</BaseLayout>
