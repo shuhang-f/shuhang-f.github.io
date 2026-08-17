@@ -18,9 +18,9 @@ export type CaseStudy = {
 export const featuredProjects = [
   {
     index: "01",
-    kind: "Private product / founder-tested",
+    kind: "Private product",
     name: "Trading Workspace",
-    title: "Research live markets in plain English. Keep the wallet in control.",
+    title: "A workspace for researching live markets, with order approval kept with the user.",
     description:
       "I helped turn a rough trading-terminal idea into a working product: one place to research Polymarket and Hyperliquid, test the model's first decision, and keep approval with the person using it.",
     facts: ["~3 weeks to working MVP", "11-case model test set", "Polymarket + Hyperliquid"],
@@ -29,11 +29,11 @@ export const featuredProjects = [
   },
   {
     index: "02",
-    kind: "Public build / live + source",
+    kind: "Public project",
     name: "TFT Damage Lab",
-    title: "A game calculator that shows its work.",
+    title: "A bilingual TFT calculator with visible calculations.",
     description:
-      "I built the tool I wanted while learning Teamfight Tactics: a bilingual calculator that exposes every input, formula step, and final result instead of hiding the math behind one number.",
+      "I built this while learning Teamfight Tactics. It keeps the inputs, formulas, and results visible so the calculation is easier to follow.",
     facts: ["Live Next.js app", "English + 中文", "Test-backed calculations"],
     links: [
       { label: "Try the live app", href: "https://tft-damage-lab.vercel.app/", external: true },
@@ -43,11 +43,11 @@ export const featuredProjects = [
   },
   {
     index: "03",
-    kind: "Personal infrastructure / daily use",
+    kind: "Personal infrastructure",
     name: "OpenClaw at Home",
-    title: "An AI assistant I use enough to notice when it breaks.",
+    title: "A self-hosted AI assistant for everyday use.",
     description:
-      "I run a bilingual assistant through Telegram on my own server. Depending on it every day makes model quality, outages, updates, secrets, and recovery concrete—not diagram-level concerns.",
+      "I run a bilingual assistant through Telegram on my own server. Using it day to day has taught me about model quality, updates, credentials, outages, and recovery.",
     facts: ["Daily Telegram use", "English + 中文", "Self-hosted on Hetzner"],
     links: [{ label: "Read the operating story", href: "/work/openclaw-agent-hub/", external: false }],
     visual: "openclaw" as const,

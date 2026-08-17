@@ -81,7 +81,7 @@ for (const file of htmlFiles) {
 
 const home = readFileSync(join(dist, "index.html"), "utf8");
 assert.match(home, /https:\/\/shuhang-f\.github\.io\/og\.png/, "Homepage must reference the absolute social card URL");
-assert.match(home, /I build useful software for <span>messy, real-world problems\.<\/span>/, "Homepage must lead with the project-first introduction");
+assert.match(home, /<h1>Hi, I’m Shuhang\.<\/h1>/, "Homepage must lead with the personal introduction");
 
 let previousFeaturedProject = -1;
 for (const project of ["Trading Workspace", "TFT Damage Lab", "OpenClaw at Home"]) {
