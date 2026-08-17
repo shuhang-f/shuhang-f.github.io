@@ -8,7 +8,7 @@ const { compact = false } = Astro.props;
 
 <header class:list={["site-header", { "site-header-compact": compact }]}>
   <a class="wordmark" href="/" aria-label="Shuhang Feng, home">
-    <span class="wordmark-index">SF / 26</span>
+    <span class="wordmark-index">SF</span>
     <span>Shuhang Feng</span>
   </a>
 
@@ -18,10 +18,8 @@ const { compact = false } = Astro.props;
 
   <nav id="primary-nav" aria-label="Primary navigation">
     <a href="/#work">Work</a>
-    <a href="/#experience">Experience</a>
-    <a href="/resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
-    <a href="/#contact">Contact</a>
+    <a href="/#more-work">Projects</a>
+    <a href="/#about">About</a>
+    <a href="/resume.pdf" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span></a>
   </nav>
-
-  <a class="availability" href="/#contact"><span aria-hidden="true"></span> Open to FDE roles</a>
 </header>

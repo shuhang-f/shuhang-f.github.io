@@ -15,6 +15,63 @@ export type CaseStudy = {
   visual: "terminal" | "reliability" | "agent";
 };
 
+export const featuredProjects = [
+  {
+    index: "01",
+    kind: "Private product / founder-tested",
+    name: "Trading Workspace",
+    title: "Research live markets in plain English. Keep the wallet in control.",
+    description:
+      "I helped turn a rough trading-terminal idea into a working product: one place to research Polymarket and Hyperliquid, test the model's first decision, and keep approval with the person using it.",
+    facts: ["~3 weeks to working MVP", "11-case model test set", "Polymarket + Hyperliquid"],
+    links: [{ label: "Read the product case", href: "/work/trading-terminal/", external: false }],
+    visual: "trading" as const,
+  },
+  {
+    index: "02",
+    kind: "Public build / live + source",
+    name: "TFT Damage Lab",
+    title: "A game calculator that shows its work.",
+    description:
+      "I built the tool I wanted while learning Teamfight Tactics: a bilingual calculator that exposes every input, formula step, and final result instead of hiding the math behind one number.",
+    facts: ["Live Next.js app", "English + 中文", "Test-backed calculations"],
+    links: [
+      { label: "Try the live app", href: "https://tft-damage-lab.vercel.app/", external: true },
+      { label: "View the code", href: "https://github.com/shuhang-f/TFT_Damage_Lab", external: true },
+    ],
+    visual: "tft" as const,
+  },
+  {
+    index: "03",
+    kind: "Personal infrastructure / daily use",
+    name: "OpenClaw at Home",
+    title: "An AI assistant I use enough to notice when it breaks.",
+    description:
+      "I run a bilingual assistant through Telegram on my own server. Depending on it every day makes model quality, outages, updates, secrets, and recovery concrete—not diagram-level concerns.",
+    facts: ["Daily Telegram use", "English + 中文", "Self-hosted on Hetzner"],
+    links: [{ label: "Read the operating story", href: "/work/openclaw-agent-hub/", external: false }],
+    visual: "openclaw" as const,
+  },
+];
+
+export const otherProjects = [
+  {
+    index: "04", name: "Production Reliability", type: "QA + infrastructure",
+    description: "Turning user-reported production failures into tests engineers could reproduce, then verifying the fix.",
+    href: "/work/production-reliability/", label: "Read case study", external: false,
+  },
+  {
+    index: "05", name: "CineSphere v2", type: "Full-stack rebuild",
+    description: "A React and Flask movie platform with typed interfaces, CSV import, MongoDB, and automated tests.",
+    href: "https://github.com/shuhang-f/Cinematic_synergy", label: "View code", external: true,
+  },
+  {
+    index: "06", name: "LEAP Career Forum v2", type: "Community product",
+    description: "A Django rebuild for a nonprofit community, covering authentication, search, discussions, and deployment settings.",
+    href: "https://github.com/shuhang-f/LEAP-Career-Forum", label: "View code", external: true,
+  },
+];
+
 export const caseStudies: CaseStudy[] = [
   {
     slug: "trading-terminal",
@@ -198,80 +255,26 @@ export const caseStudies: CaseStudy[] = [
   },
 ];
 
-export const selectedBuilds = [
-  {
-    index: "A",
-    name: "TFT Damage Lab",
-    type: "Live interactive model",
-    description:
-      "A bilingual, test-backed ability-damage calculator that exposes every input and intermediate result instead of hiding the model.",
-    tags: ["Next.js", "TypeScript", "Vitest", "i18n"],
-    live: "https://tft-damage-lab.vercel.app/",
-    code: "https://github.com/shuhang-f/TFT_Damage_Lab",
-  },
-  {
-    index: "B",
-    name: "CineSphere v2",
-    type: "Full-stack rebuild",
-    description:
-      "A typed React and Flask modernization with MongoDB, CSV import, Docker, and automated tests.",
-    tags: ["React 19", "TypeScript", "Flask", "MongoDB"],
-    code: "https://github.com/shuhang-f/Cinematic_synergy",
-  },
-  {
-    index: "C",
-    name: "LEAP Career Forum v2",
-    type: "Community product",
-    description:
-      "A Django 5.2 rebuild with corrected email authentication, search, discussions, production security settings, and CI.",
-    tags: ["Django REST", "PostgreSQL", "Security", "CI"],
-    code: "https://github.com/shuhang-f/LEAP-Career-Forum",
-  },
-];
-
 export const experience = [
   {
     dates: "2023 — Now",
     role: "Co-Founder",
     company: "Ordinal Hive",
     description:
-      "AI product delivery, agent evaluation, production QA, infrastructure operations, and customer/community systems at a seed-stage AI and Bitcoin startup.",
+      "Started with community and product work, then moved deeper into AI delivery, production QA, and keeping a small startup's systems running.",
   },
   {
     dates: "2024 — 2025",
     role: "Technical Sales & Product Operations Associate",
     company: "Advance Int’l Trading",
     description:
-      "Ran a one-person e-commerce operation across sourcing, hardware diagnostics, pricing, fulfillment, and customer support; grew peak monthly revenue from $1K to $6K on roughly ten hours per week.",
+      "Ran a part-time e-commerce operation end to end, from sourcing and hardware diagnostics to pricing, fulfillment, and customer support.",
   },
   {
     dates: "2023 — 2024",
     role: "IT Specialist & Team Lead",
     company: "LEAP Career Forum",
     description:
-      "Led four developers across React, Django REST, infrastructure, Figma collaboration, and user/event operations for a nonprofit career community.",
-  },
-];
-
-export const capabilityGroups = [
-  {
-    index: "01",
-    title: "Customer & delivery",
-    items: ["Problem discovery", "Requirements translation", "Failure reproduction", "Technical walkthroughs", "Cross-functional handoff"],
-  },
-  {
-    index: "02",
-    title: "AI systems",
-    items: ["LLM tool calling", "Deterministic routing", "Agent evaluation", "Human-in-the-loop flows", "Provider fallbacks"],
-  },
-  {
-    index: "03",
-    title: "Product engineering",
-    items: ["TypeScript", "Python", "React / Next.js", "Node / NestJS", "Django REST", "PostgreSQL / Redis"],
-  },
-  {
-    index: "04",
-    title: "Production operations",
-    items: ["GitHub Actions", "Docker", "AWS EC2", "Render", "Linux", "Sentry", "Access control"],
+      "Led four developers building and supporting a nonprofit career community while learning how product, events, and infrastructure meet.",
   },
 ];

@@ -1,0 +1,49 @@
+---
+interface Props {
+  type: "trading" | "tft" | "openclaw";
+}
+
+const { type } = Astro.props;
+---
+
+<div class:list={["project-visual", `project-visual-${type}`]} aria-hidden="true">
+  {type === "trading" && (
+    <>
+      <div class="project-window-bar"><span>MARKET WORKSPACE</span><span>LIVE / WALLET DISCONNECTED</span></div>
+      <div class="trading-preview">
+        <div class="trading-query"><span>QUERY</span><p>Compare the active markets and prepare the lower-risk route.</p></div>
+        <div class="trading-markets">
+          <div><span>POLYMARKET</span><p>Ceasefire before Sep 1?</p><i>64¢</i></div>
+          <div><span>HYPERLIQUID</span><p>BTC perpetual</p><i>$118.4K</i></div>
+        </div>
+        <div class="trading-review"><span>MODEL / RESEARCH</span><span>CODE / VALIDATE</span><span>USER / SIGN</span></div>
+      </div>
+    </>
+  )}
+
+  {type === "tft" && (
+    <>
+      <div class="project-window-bar"><span>TFT DAMAGE LAB</span><span>SET 17 / EN</span></div>
+      <div class="tft-preview">
+        <div class="tft-unit"><span>CHAMPION</span><div class="tft-avatar">V</div><p>Veigar</p><small>Ability power / 182</small></div>
+        <div class="tft-formula">
+          <span>CALCULATION TRACE</span>
+          <p><i>420</i> base damage</p><p><i>× 1.82</i> ability power</p><p><i>× 0.74</i> resistance</p>
+          <div><span>FINAL DAMAGE</span><b>565</b></div>
+        </div>
+      </div>
+    </>
+  )}
+
+  {type === "openclaw" && (
+    <>
+      <div class="project-window-bar"><span>OPENCLAW / TELEGRAM</span><span>ONLINE</span></div>
+      <div class="openclaw-preview">
+        <div class="openclaw-chat"><p class="chat-user">把今天的重要事项整理一下。</p><p class="chat-agent">先处理部署检查，然后整理三项待办。需要我继续吗？</p><p class="chat-user">Yes—keep it concise.</p></div>
+        <div class="openclaw-route">
+          <span>ROUTE</span><p><i></i> Claude Opus <small>primary</small></p><p><i></i> MiniMax <small>fallback</small></p><div>Hetzner · Linux · Daily use</div>
+        </div>
+      </div>
+    </>
+  )}
+</div>

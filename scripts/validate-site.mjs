@@ -50,6 +50,8 @@ const prohibited = [
   /ambiguous user problems/i,
   /dependable AI systems/i,
   /evidence over theater/i,
+  /open to FDE roles/i,
+  /customer-facing product engineer/i,
 ];
 
 for (const file of htmlFiles) {
@@ -79,6 +81,14 @@ for (const file of htmlFiles) {
 
 const home = readFileSync(join(dist, "index.html"), "utf8");
 assert.match(home, /https:\/\/shuhang-f\.github\.io\/og\.png/, "Homepage must reference the absolute social card URL");
+assert.match(home, /I build useful software for <span>messy, real-world problems\.<\/span>/, "Homepage must lead with the project-first introduction");
+
+let previousFeaturedProject = -1;
+for (const project of ["Trading Workspace", "TFT Damage Lab", "OpenClaw at Home"]) {
+  const currentFeaturedProject = home.indexOf(project);
+  assert.ok(currentFeaturedProject > previousFeaturedProject, `Homepage must feature ${project} in the selected order`);
+  previousFeaturedProject = currentFeaturedProject;
+}
 
 for (const slug of ["trading-terminal", "production-reliability", "openclaw-agent-hub"]) {
   const html = readFileSync(join(dist, "work", slug, "index.html"), "utf8");

@@ -6,8 +6,9 @@ Live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
 ## Site structure
 
-- Recruiter-focused homepage with selected evidence, work, experience, and contact
+- Project-first homepage led by the Trading Workspace, TFT Damage Lab, and OpenClaw at Home
 - Three detailed case files covering a trading workspace, production reliability, and a self-hosted AI assistant
+- Compact career timeline, personal context, and direct contact links
 - Static output, responsive layout, keyboard navigation, and reduced-motion support
 - Site-specific metadata and social preview card
 
@@ -35,4 +36,4 @@ The build performs Astro type and content checks before generating the static si
 
 ## Content sources
 
-The public résumé is intentionally carried forward unchanged. Portfolio copy is maintained separately in `src/data/site.ts` so case-study framing and claim boundaries stay explicit.
+The public résumé is synced to the latest FDE résumé in the career bank. Portfolio copy is maintained separately in `src/data/site.ts` so the site can tell a broader, project-led story while keeping claim boundaries explicit.
