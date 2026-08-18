@@ -2098,6 +2098,17 @@ body {
   gap: 1.6rem;
 }
 
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.brand-icon {
+  display: block;
+  flex: 0 0 auto;
+}
+
 .primary-link,
 .quiet-link,
 .project-links a,

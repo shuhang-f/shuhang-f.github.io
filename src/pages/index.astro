@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import BrandIcon from "../components/BrandIcon.astro";
 import ProjectVisual from "../components/ProjectVisual.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -40,7 +41,10 @@ const personSchema = {
         </p>
         <div class="portfolio-actions">
           <a class="primary-link" href="#work">View selected work <span>↓</span></a>
-          <a class="quiet-link" href="https://github.com/shuhang-f" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="quiet-link icon-link" href="https://github.com/shuhang-f" target="_blank" rel="noopener">
+            <BrandIcon brand="github" />
+            <span>GitHub</span>
+          </a>
         </div>
       </div>
 
@@ -78,8 +82,10 @@ const personSchema = {
               </ul>
               <div class="project-links">
                 {project.links.map((link) => (
-                  <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener" : undefined}>
-                    {link.label} <span>↗</span>
+                  <a class:list={{ "icon-link": link.href.startsWith("https://github.com/") }} href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener" : undefined}>
+                    {link.href.startsWith("https://github.com/") && <BrandIcon brand="github" />}
+                    <span>{link.label}</span>
+                    {!link.href.startsWith("https://github.com/") && <span aria-hidden="true">↗</span>}
                   </a>
                 ))}
               </div>
@@ -101,8 +107,10 @@ const personSchema = {
             <div class="project-kicker"><span>{project.index}</span><span>{project.type}</span></div>
             <h3>{project.name}</h3>
             <p>{project.description}</p>
-            <a href={project.href} target={project.external ? "_blank" : undefined} rel={project.external ? "noopener" : undefined}>
-              {project.label} <span>↗</span>
+            <a class:list={{ "icon-link": project.href.startsWith("https://github.com/") }} href={project.href} target={project.external ? "_blank" : undefined} rel={project.external ? "noopener" : undefined}>
+              {project.href.startsWith("https://github.com/") && <BrandIcon brand="github" />}
+              <span>{project.label}</span>
+              {!project.href.startsWith("https://github.com/") && <span aria-hidden="true">↗</span>}
             </a>
           </article>
         ))}

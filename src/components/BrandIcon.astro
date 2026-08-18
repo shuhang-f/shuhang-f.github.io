@@ -1,0 +1,22 @@
+---
+import { mdiGithub, mdiLinkedin } from "@mdi/js";
+
+interface Props {
+  brand: "github" | "linkedin";
+  size?: number;
+}
+
+const { brand, size = 16 } = Astro.props;
+const path = brand === "github" ? mdiGithub : mdiLinkedin;
+---
+
+<svg
+  class="brand-icon"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={path} fill="currentColor"></path>
+</svg>

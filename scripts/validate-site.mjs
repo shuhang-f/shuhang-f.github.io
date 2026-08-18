@@ -82,6 +82,7 @@ for (const file of htmlFiles) {
 const home = readFileSync(join(dist, "index.html"), "utf8");
 assert.match(home, /https:\/\/shuhang-f\.github\.io\/og\.png/, "Homepage must reference the absolute social card URL");
 assert.match(home, /<h1>Hi, I’m Shuhang\.<\/h1>/, "Homepage must lead with the personal introduction");
+assert.ok((home.match(/class="brand-icon"/g) ?? []).length >= 5, "Homepage must render GitHub and LinkedIn brand icons at social and repository links");
 
 let previousFeaturedProject = -1;
 for (const project of ["Trading Workspace", "TFT Damage Lab", "OpenClaw at Home"]) {
