@@ -63,6 +63,51 @@ const personSchema = {
       </aside>
     </section>
 
+    <section class="experiments-section" aria-labelledby="experiments-title">
+      <header class="compact-section-head" data-reveal>
+        <p class="tech-label">Off the clock</p>
+        <h2 id="experiments-title">A little room to play.</h2>
+      </header>
+      <p class="experiments-intro">
+        I also use AI tools to explore things I’m curious about. These Blender
+        experiments turned photos into slightly awkward, very memorable 3D scenes.
+      </p>
+      <div class="experiments-grid">
+        <figure data-reveal>
+          <Image
+            src={groupPortrait}
+            alt="A playful 3D group portrait with oversized glasses, expressive faces, and peace signs."
+            widths={[480, 800, 1200, 1400]}
+            sizes="(max-width: 680px) 100vw, 50vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <span>01 / Blender experiment</span>
+            <h3>A group photo, rebuilt in 3D.</h3>
+            <p>Exploring faces, materials, and warm lighting. The oversized glasses have a personality of their own.</p>
+          </figcaption>
+        </figure>
+        <figure data-reveal>
+          <Image
+            src={graduationWalk}
+            alt="Four stylized graduates in black gowns walking in bright sunlight beside a brick wall and green shutter."
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 680px) 100vw, 50vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <span>02 / Blender experiment</span>
+            <h3>Graduation in the afternoon sun.</h3>
+            <p>Working through poses, gown shapes, and sunlight to bring a moment back as an editable scene.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
     <section class="featured-work" id="work" aria-labelledby="featured-title">
       <header class="portfolio-section-head" data-reveal>
         <p class="tech-label">Featured work</p>
@@ -160,51 +205,6 @@ const personSchema = {
           something self-hosted, or rebuilding an older project to understand
           how I would approach it now.
         </p>
-      </div>
-    </section>
-
-    <section class="experiments-section" aria-labelledby="experiments-title">
-      <header class="compact-section-head" data-reveal>
-        <p class="tech-label">Off the clock</p>
-        <h2 id="experiments-title">A little room to play.</h2>
-      </header>
-      <p class="experiments-intro">
-        I also use AI tools to explore things I’m curious about. These Blender
-        experiments turned photos into slightly awkward, very memorable 3D scenes.
-      </p>
-      <div class="experiments-grid">
-        <figure data-reveal>
-          <Image
-            src={groupPortrait}
-            alt="A playful 3D group portrait with oversized glasses, expressive faces, and peace signs."
-            widths={[480, 800, 1200, 1400]}
-            sizes="(max-width: 680px) 100vw, 50vw"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>
-            <span>01 / Blender experiment</span>
-            <h3>A group photo, rebuilt in 3D.</h3>
-            <p>Exploring faces, materials, and warm lighting. The oversized glasses have a personality of their own.</p>
-          </figcaption>
-        </figure>
-        <figure data-reveal>
-          <Image
-            src={graduationWalk}
-            alt="Four stylized graduates in black gowns walking in bright sunlight beside a brick wall and green shutter."
-            widths={[480, 800, 1200, 1600]}
-            sizes="(max-width: 680px) 100vw, 50vw"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>
-            <span>02 / Blender experiment</span>
-            <h3>Graduation in the afternoon sun.</h3>
-            <p>Working through poses, gown shapes, and sunlight to bring a moment back as an editable scene.</p>
-          </figcaption>
-        </figure>
       </div>
     </section>
 
