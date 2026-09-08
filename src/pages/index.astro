@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import groupPortrait from "../assets/group-portrait.jpg";
+import graduationWalk from "../assets/graduation-walk.png";
+import assistedWorkflows from "../assets/assisted-workflows.jpg";
 import BrandIcon from "../components/BrandIcon.astro";
 import ProjectVisual from "../components/ProjectVisual.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -22,7 +26,7 @@ const personSchema = {
 
 <BaseLayout
   title="Shuhang Feng — Selected Work"
-  description="Selected projects by Shuhang Feng across AI, markets, and community tools."
+  description="Shuhang Feng builds AI, market, and community tools with clear user control and business rules enforced in code."
   canonicalPath="/"
   socialImage="/og.png"
 >
@@ -35,9 +39,10 @@ const personSchema = {
         <p class="tech-label">Product work · California · English + 中文</p>
         <h1>Hi, I’m Shuhang.</h1>
         <p class="portfolio-hero-lede">
-          I’m a product engineer interested in AI, markets, and community tools.
-          This site collects a few projects I’ve worked on and what I learned
-          from building them.
+          I’m a product engineer building AI, market, and community tools.
+          I care about making complex workflows easier to use, with clear user
+          control and business rules enforced in code. These projects show what
+          I’ve built and what I’m learning through use.
         </p>
         <div class="portfolio-actions">
           <a class="primary-link" href="#work">View selected work <span>↓</span></a>
@@ -121,24 +126,85 @@ const personSchema = {
       <div>
         <p class="tech-label">About</p>
         <h2 id="about-title">A little about how I work.</h2>
+        <figure class="about-illustration" data-reveal>
+          <Image
+            src={assistedWorkflows}
+            alt="A hand-drawn illustration of an overwhelmed phone operator and a robot coordinating calls with human support, review, and scheduling."
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 680px) 100vw, 40vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>Exploring how AI can handle routine coordination while people stay involved.</figcaption>
+        </figure>
       </div>
       <div class="about-copy" data-reveal>
         <p>
           My work has moved between product engineering, customer support,
-          infrastructure, QA, community tools, and the occasional game
-          calculator. That mix suits me: I enjoy understanding the context,
-          building something useful, and learning from how it is used.
+          infrastructure, QA, and community tools. I enjoy understanding the
+          context, building something useful, and learning from how people use it.
         </p>
         <p>
-          Outside the polished case study, I’m usually testing a new tool,
-          maintaining something self-hosted, or rebuilding an older project to
-          understand how I would approach it now.
+          Building and exploring AI tools has sharpened how I think about the
+          products I want to make:
         </p>
         <ul>
-          <li>AI products with visible decisions</li>
-          <li>Tools that explain their output</li>
-          <li>Small systems I can understand and maintain</li>
+          <li>Design for gradual adoption, and describe capabilities precisely.</li>
+          <li>Offer structured choices, room for a different answer, and an explicit option to let the AI choose.</li>
+          <li>Make intermediate results easy to inspect, with opportunities to edit, approve, or stop the work.</li>
+          <li>Use AI for language and flexible interaction while code enforces business rules, permissions, and sensitive boundaries.</li>
         </ul>
+        <p>
+          Outside these projects, I’m usually testing a new tool, maintaining
+          something self-hosted, or rebuilding an older project to understand
+          how I would approach it now.
+        </p>
+      </div>
+    </section>
+
+    <section class="experiments-section" aria-labelledby="experiments-title">
+      <header class="compact-section-head" data-reveal>
+        <p class="tech-label">Off the clock</p>
+        <h2 id="experiments-title">A little room to play.</h2>
+      </header>
+      <p class="experiments-intro">
+        I also use AI tools to explore things I’m curious about. These Blender
+        experiments turned photos into slightly awkward, very memorable 3D scenes.
+      </p>
+      <div class="experiments-grid">
+        <figure data-reveal>
+          <Image
+            src={groupPortrait}
+            alt="A playful 3D group portrait with oversized glasses, expressive faces, and peace signs."
+            widths={[480, 800, 1200, 1400]}
+            sizes="(max-width: 680px) 100vw, 50vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <span>01 / Blender experiment</span>
+            <h3>A group photo, rebuilt in 3D.</h3>
+            <p>Exploring faces, materials, and warm lighting. The oversized glasses have a personality of their own.</p>
+          </figcaption>
+        </figure>
+        <figure data-reveal>
+          <Image
+            src={graduationWalk}
+            alt="Four stylized graduates in black gowns walking in bright sunlight beside a brick wall and green shutter."
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 680px) 100vw, 50vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <span>02 / Blender experiment</span>
+            <h3>Graduation in the afternoon sun.</h3>
+            <p>Working through poses, gown shapes, and sunlight to bring a moment back as an editable scene.</p>
+          </figcaption>
+        </figure>
       </div>
     </section>
 

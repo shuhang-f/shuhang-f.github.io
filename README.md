@@ -9,6 +9,8 @@ Live at [shuhang-f.github.io](https://shuhang-f.github.io).
 - Project-first homepage led by the Trading Workspace, TFT Damage Lab, and OpenClaw at Home
 - Three detailed case files covering a trading workspace, production reliability, and a self-hosted AI assistant
 - Compact career timeline, personal context, and direct contact links
+- AI product principles, a reflection on explicit delegation, and original demo artwork
+- A small gallery of Blender experiments with responsive, optimized images
 - Static output, responsive layout, keyboard navigation, and reduced-motion support
 - Site-specific metadata and social preview card
 

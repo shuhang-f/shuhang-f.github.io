@@ -110,6 +110,16 @@ const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
       </div>
     </section>
 
+    {caseStudy.reflection && (
+      <section class="case-narrative" aria-labelledby="reflection-title" data-reveal>
+        <div class="case-section-label"><span>04 / Reflection</span><span>What I learned</span></div>
+        <h2 id="reflection-title">{caseStudy.reflection.title}</h2>
+        <div class="case-prose">
+          {caseStudy.reflection.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </section>
+    )}
+
     <section class="next-case" aria-label="Next case study" data-reveal>
       <p>Next case / {nextCase.index}</p>
       <a href={`/work/${nextCase.slug}/`}>

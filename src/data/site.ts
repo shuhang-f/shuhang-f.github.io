@@ -12,6 +12,7 @@ export type CaseStudy = {
   response: Array<{ label: string; title: string; body: string }>;
   outcome: string[];
   boundaries: string[];
+  reflection?: { title: string; paragraphs: string[] };
   visual: "terminal" | "reliability" | "agent";
 };
 
@@ -131,6 +132,13 @@ export const caseStudies: CaseStudy[] = [
       "Manual trades require wallet confirmation. Separately authorized scheduled automations can execute later within configured policy limits.",
       "PostgreSQL, BullMQ, and Redis are part of the team stack; this case covers Shuhang's product, safety, and evaluation work.",
     ],
+    reflection: {
+      title: "What this changed in how I build.",
+      paragraphs: [
+        "Building this workspace made me more precise about what it means to give an agent control. Researching a market, preparing an order, approving it, and executing it carry different responsibilities. The interface needs to make those stages understandable, and application code needs to enforce the transition between them.",
+        "For manual orders, the user reviews and confirms before the connected wallet signs. Separately enabled scheduled automations follow configured policy limits and can be paused or revoked. This has shaped a broader design principle for me: make delegation explicit, expose the result at the point where someone can usefully intervene, and describe the product in terms that match its actual behavior.",
+      ],
+    },
     visual: "terminal",
   },
   {
