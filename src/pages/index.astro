@@ -108,6 +108,47 @@ const personSchema = {
       </div>
     </section>
 
+    <section class="about-section" id="about" aria-labelledby="about-title">
+      <div>
+        <p class="tech-label">About</p>
+        <h2 id="about-title">A little about how I work.</h2>
+        <figure class="about-illustration" data-reveal>
+          <Image
+            src={assistedWorkflows}
+            alt="A hand-drawn illustration of an overwhelmed phone operator and a robot coordinating calls with human support, review, and scheduling."
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 680px) 100vw, 40vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>Exploring how AI can handle routine coordination while people stay involved.</figcaption>
+        </figure>
+      </div>
+      <div class="about-copy" data-reveal>
+        <p>
+          My work has moved between product engineering, customer support,
+          infrastructure, QA, and community tools. I enjoy understanding the
+          context, building something useful, and learning from how people use it.
+        </p>
+        <p>
+          Building and exploring AI tools has sharpened how I think about the
+          products I want to make:
+        </p>
+        <ul>
+          <li>Design for gradual adoption, and describe capabilities precisely.</li>
+          <li>Offer structured choices, room for a different answer, and an explicit option to let the AI choose.</li>
+          <li>Make intermediate results easy to inspect, with opportunities to edit, approve, or stop the work.</li>
+          <li>Use AI for language and flexible interaction while code enforces business rules, permissions, and sensitive boundaries.</li>
+        </ul>
+        <p>
+          Outside these projects, I’m usually testing a new tool, maintaining
+          something self-hosted, or rebuilding an older project to understand
+          how I would approach it now.
+        </p>
+      </div>
+    </section>
+
     <section class="featured-work" id="work" aria-labelledby="featured-title">
       <header class="portfolio-section-head" data-reveal>
         <p class="tech-label">Featured work</p>
@@ -164,47 +205,6 @@ const personSchema = {
             </a>
           </article>
         ))}
-      </div>
-    </section>
-
-    <section class="about-section" id="about" aria-labelledby="about-title">
-      <div>
-        <p class="tech-label">About</p>
-        <h2 id="about-title">A little about how I work.</h2>
-        <figure class="about-illustration" data-reveal>
-          <Image
-            src={assistedWorkflows}
-            alt="A hand-drawn illustration of an overwhelmed phone operator and a robot coordinating calls with human support, review, and scheduling."
-            widths={[480, 800, 1200]}
-            sizes="(max-width: 680px) 100vw, 40vw"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>Exploring how AI can handle routine coordination while people stay involved.</figcaption>
-        </figure>
-      </div>
-      <div class="about-copy" data-reveal>
-        <p>
-          My work has moved between product engineering, customer support,
-          infrastructure, QA, and community tools. I enjoy understanding the
-          context, building something useful, and learning from how people use it.
-        </p>
-        <p>
-          Building and exploring AI tools has sharpened how I think about the
-          products I want to make:
-        </p>
-        <ul>
-          <li>Design for gradual adoption, and describe capabilities precisely.</li>
-          <li>Offer structured choices, room for a different answer, and an explicit option to let the AI choose.</li>
-          <li>Make intermediate results easy to inspect, with opportunities to edit, approve, or stop the work.</li>
-          <li>Use AI for language and flexible interaction while code enforces business rules, permissions, and sensitive boundaries.</li>
-        </ul>
-        <p>
-          Outside these projects, I’m usually testing a new tool, maintaining
-          something self-hosted, or rebuilding an older project to understand
-          how I would approach it now.
-        </p>
       </div>
     </section>
 
