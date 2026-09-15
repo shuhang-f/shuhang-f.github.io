@@ -70,7 +70,7 @@ const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
 
     <section class="case-narrative case-problem" aria-labelledby="problem-title" data-reveal>
       <div class="case-section-label"><span>01 / Context</span><span>The problem</span></div>
-      <h2 id="problem-title">The problem behind the build.</h2>
+      <h2 id="problem-title">Where I started.</h2>
       <div class="case-prose">
         {caseStudy.problem.map((paragraph) => <p>{paragraph}</p>)}
       </div>
@@ -78,7 +78,7 @@ const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
 
     <section class="case-response" aria-labelledby="response-title">
       <div class="case-section-label"><span>02 / Response</span><span>What I did</span></div>
-      <h2 id="response-title">How I built it.</h2>
+      <h2 id="response-title">My approach.</h2>
       <div class="response-grid">
         {caseStudy.response.map((item) => (
           <article data-reveal>
@@ -94,7 +94,7 @@ const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
       <div class="case-section-label"><span>03 / Results</span><span>Results and limits</span></div>
       <div class="results-grid">
         <div data-reveal>
-          <p class="eyebrow">What changed</p>
+          <p class="eyebrow">Outcomes</p>
           <h2 id="results-title">What changed.</h2>
           <ol>
             {caseStudy.outcome.map((item, index) => (
@@ -103,8 +103,8 @@ const nextCase = caseStudies[(currentIndex + 1) % caseStudies.length];
           </ol>
         </div>
         <aside data-reveal>
-          <p class="eyebrow">Limits</p>
-          <h3>What this case does not claim.</h3>
+          <p class="eyebrow">Scope</p>
+          <h3>Details and limits.</h3>
           <ul>{caseStudy.boundaries.map((item) => <li>{item}</li>)}</ul>
         </aside>
       </div>

@@ -21,9 +21,9 @@ export const featuredProjects = [
     index: "01",
     kind: "Private product",
     name: "Trading Workspace",
-    title: "A workspace for researching live markets, with order approval kept with the user.",
+    title: "Research markets and review orders in one place.",
     description:
-      "I helped turn a rough trading-terminal idea into a working product: one place to research Polymarket and Hyperliquid, test the model's first decision, and keep approval with the person using it.",
+      "I helped build a workspace for Polymarket and Hyperliquid in about three weeks. Users can research markets in plain English, then review and sign manual orders with their wallet. I also built tests for the model's first decision.",
     facts: ["~3 weeks to working MVP", "11-case model test set", "Polymarket + Hyperliquid"],
     links: [{ label: "Read the product case", href: "/work/trading-terminal/", external: false }],
     visual: "trading" as const,
@@ -32,10 +32,10 @@ export const featuredProjects = [
     index: "02",
     kind: "Public project",
     name: "TFT Damage Lab",
-    title: "A bilingual TFT calculator with visible calculations.",
+    title: "See how a TFT damage calculation works.",
     description:
-      "I built this while learning Teamfight Tactics. It keeps the inputs, formulas, and results visible so the calculation is easier to follow.",
-    facts: ["Live Next.js app", "English + 中文", "Test-backed calculations"],
+      "I built this while learning Teamfight Tactics. You can follow the damage calculation from inputs to formulas to results, in English or Chinese.",
+    facts: ["Live Next.js app", "English + 中文", "Automated calculation tests"],
     links: [
       { label: "Try the live app", href: "https://tft-damage-lab.vercel.app/", external: true },
       { label: "View the code", href: "https://github.com/shuhang-f/TFT_Damage_Lab", external: true },
@@ -58,7 +58,7 @@ export const featuredProjects = [
 export const otherProjects = [
   {
     index: "04", name: "Production Reliability", type: "QA + infrastructure",
-    description: "Turning user-reported production failures into tests engineers could reproduce, then verifying the fix.",
+    description: "I turned user-reported production failures into reproducible test cases and verified the fixes.",
     href: "/work/production-reliability/", label: "Read case study", external: false,
   },
   {
@@ -78,15 +78,15 @@ export const caseStudies: CaseStudy[] = [
     slug: "trading-terminal",
     index: "01",
     kicker: "AI product · Fintech · 2026",
-    title: "From a plain-English request to a wallet-reviewed order.",
+    title: "Researching markets and preparing orders in plain English.",
     shortTitle: "AI Trading Workspace",
     summary:
-      "A workspace for researching live Polymarket and Hyperliquid markets and preparing orders while keeping approval and signing with the user.",
+      "Users research live Polymarket and Hyperliquid markets in one workspace. The model prepares manual orders; the user reviews and signs them with a connected wallet.",
     timeframe: "About three weeks to a working MVP",
     proof: [
       { value: "~3 weeks", label: "Functional MVP for founder testing" },
       { value: "11 cases", label: "Tests for the model's first decision" },
-      { value: "2 venues", label: "One normalized research surface" },
+      { value: "2 venues", label: "Polymarket and Hyperliquid in one workspace" },
     ],
     disciplines: [
       "TypeScript",
@@ -97,29 +97,29 @@ export const caseStudies: CaseStudy[] = [
       "Wallet signing",
     ],
     problem: [
-      "Trading research was spread across separate dashboards, data formats, and order flows. A conversational interface could make that easier, but letting a model approve a financial action would be unsafe.",
-      "The product needed to understand plain-English requests while leaving preparation, confirmation, and signing under code-based checks and user control.",
+      "Traders had to move between dashboards, interpret different market-data formats, and turn an idea into order parameters. We wanted them to do that work in one conversation.",
+      "That required a clear division of responsibility: the model could interpret requests, while application code validated the steps and users authorized financial actions.",
     ],
     response: [
       {
         label: "01 / Interpret",
-        title: "Use the model only where rules are not enough.",
+        title: "Let the model interpret the request.",
         body: "MiniMax reads the request and chooses from an allowed set of tools. TypeScript code handles navigation, market data, and trade steps when rules are safer than inference.",
       },
       {
         label: "02 / Normalize",
         title: "Translate each provider into one shared format.",
-        body: "Typed adapters turn different API and SDK responses into shared market, chart, and order formats so the interface behaves consistently across venues.",
+        body: "I used typed adapters to convert API and SDK responses into shared market, chart, and order formats. The interface can then handle both venues consistently.",
       },
       {
         label: "03 / Authorize",
         title: "Keep trade approval outside the model.",
-        body: "Manual actions pass through typed validation and explicit confirmation before the connected browser wallet signs. The server prepares intent; it does not hold the user's private key.",
+        body: "Manual orders pass through typed validation and user confirmation before the connected browser wallet signs. The server prepares the order without holding the user's private key for that flow.",
       },
       {
         label: "04 / Evaluate",
         title: "Test the model's first choice.",
-        body: "An 11-case test set works across providers and checks tool choice, argument extraction, clarification behavior, and false claims about completed actions. GitHub Actions validates the dataset offline.",
+        body: "I built an 11-case test set that works across providers. It checks tool choice, extracted arguments, requests for clarification, and false claims that an action completed. GitHub Actions validates the dataset offline.",
       },
     ],
     outcome: [
@@ -130,13 +130,13 @@ export const caseStudies: CaseStudy[] = [
     boundaries: [
       "The tests score only the model's first decision. They do not run tools or test a trade from start to finish.",
       "Manual trades require wallet confirmation. Separately authorized scheduled automations can execute later within configured policy limits.",
-      "PostgreSQL, BullMQ, and Redis are part of the team stack; this case covers Shuhang's product, safety, and evaluation work.",
+      "The team built the PostgreSQL, BullMQ, and Redis worker infrastructure. My work here covered the product, authorization checks, and model evaluation.",
     ],
     reflection: {
-      title: "What this changed in how I build.",
+      title: "Making delegation explicit.",
       paragraphs: [
-        "Building this workspace made me more precise about what it means to give an agent control. Researching a market, preparing an order, approving it, and executing it carry different responsibilities. The interface needs to make those stages understandable, and application code needs to enforce the transition between them.",
-        "For manual orders, the user reviews and confirms before the connected wallet signs. Separately enabled scheduled automations follow configured policy limits and can be paused or revoked. This has shaped a broader design principle for me: make delegation explicit, expose the result at the point where someone can usefully intervene, and describe the product in terms that match its actual behavior.",
+        "Working on orders made me more careful about the word 'control.' Researching a market and approving a trade give an agent different responsibilities. People need to see which stage they are in, and the code needs to enforce what can happen next.",
+        "Manual orders wait for the user to review and confirm before the wallet signs. Scheduled automations have separate authorization and policy limits, with controls to pause or revoke them. I now try to make that choice explicit in the interface: what someone is handing over, when they can intervene, and what the product will do.",
       ],
     },
     visual: "terminal",
@@ -148,7 +148,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Finding failures that testnet missed.",
     shortTitle: "Production Reliability",
     summary:
-      "A repeatable process for turning user-reported failures into tests engineers could reproduce, alongside production operations and a zero-data-loss migration.",
+      "I developed a process for reproducing user-reported failures and checking fixes. I also operated the production systems and carried out a migration with zero data loss.",
     timeframe: "Used since 2024",
     proof: [
       { value: "Adopted", label: "Live-transaction protocol became team standard" },
@@ -164,29 +164,29 @@ export const caseStudies: CaseStudy[] = [
       "Access control",
     ],
     problem: [
-      "Some user-reported failures could not be recreated through testnet alone. The resulting gap made incidents harder to explain, slower to hand off, and easier to see again.",
-      "The team needed a repeatable way to turn an unclear user report into a test engineering could act on, without using production as an uncontrolled test environment.",
+      "Some failures reported by users did not occur on testnet. Engineers needed a reproducible case to investigate, and a passing testnet check did not always tell us whether a production fix worked.",
+      "We needed a repeatable way to investigate those reports, with controlled live checks for the cases testnet could not reproduce.",
     ],
     response: [
       {
         label: "01 / Capture",
         title: "Start with the user's actual failure.",
-        body: "Translate reports into a specific sequence, expected behavior, observed behavior, and environmental context instead of forwarding a vague symptom.",
+        body: "I recorded the steps a user took, what they expected, what happened, and the environment they were using.",
       },
       {
         label: "02 / Reproduce",
         title: "Turn the report into a test case.",
-        body: "Recreate the workflow in lower-risk environments first, isolate the failure boundary, and identify where testnet behavior stops matching production reality.",
+        body: "I reproduced the workflow in lower-risk environments first, narrowed down where it failed, and checked where testnet behaved differently from production.",
       },
       {
         label: "03 / Validate",
         title: "Run a small live transaction only when testnet falls short.",
-        body: "Use a controlled production check for cases testnet cannot reproduce. The protocol became the team's standard for testnet-to-production gaps.",
+        body: "For cases testnet could not reproduce, I introduced a controlled live-transaction check. The team adopted the protocol as its standard for these gaps.",
       },
       {
         label: "04 / Return",
         title: "Give engineering a reproducible case and verify the fix.",
-        body: "Hand off the test steps, confirm the fix, and keep the relevant Sentry and cloud context attached.",
+        body: "I handed engineering the test steps and relevant Sentry and cloud context, then checked the fix against the reported failure.",
       },
     ],
     outcome: [
@@ -195,9 +195,9 @@ export const caseStudies: CaseStudy[] = [
       "Executed backups, Docker-volume transfer, wallet and critical-data migration, verification, and secure decommissioning with zero data loss.",
     ],
     boundaries: [
-      "Protocol adoption is the supported QA outcome; no measured incident-reduction percentage is claimed.",
-      "The team selected the new provider and migration direction. Shuhang executed the migration tasks described here.",
-      "A teammate configured Headscale; Shuhang operated remote systems over the resulting mesh.",
+      "The team adopted the QA protocol. I do not have a measured incident-reduction figure.",
+      "The team chose the new provider and migration plan. I carried out the backups, transfers, verification, and decommissioning.",
+      "A teammate configured Headscale. I used that mesh network to operate remote systems.",
     ],
     visual: "reliability",
   },
@@ -212,7 +212,7 @@ export const caseStudies: CaseStudy[] = [
     timeframe: "Used daily on my own server",
     proof: [
       { value: "Daily", label: "Used through a Telegram interface" },
-      { value: "2 models", label: "Quality-first provider fallback" },
+      { value: "2 models", label: "Claude Opus with MiniMax as backup" },
       { value: "EN / 中文", label: "Custom bilingual persona" },
     ],
     disciplines: [
@@ -224,40 +224,40 @@ export const caseStudies: CaseStudy[] = [
       "Security operations",
     ],
     problem: [
-      "The fastest way to understand an AI assistant's limits was to depend on one. Provider limits, updates, credentials, networking, and failures show up in daily use instead of a staged demo.",
-      "The goal is not maximum autonomy. It is a useful daily assistant whose quality, cost, availability, and security can be judged through use.",
+      "I wanted to understand what an AI assistant could do by using one every day. Running it myself also meant dealing with provider limits, updates, credentials, networking, and outages.",
+      "I use this setup to judge whether the assistant is useful enough to justify its cost and maintenance, and to learn what it takes to keep it available and secure.",
     ],
     response: [
       {
         label: "01 / Host",
         title: "Run and maintain it myself.",
-        body: "Operate OpenClaw on Hetzner after migrating from DigitalOcean, including Linux maintenance, updates, DNS, OAuth, and continuous troubleshooting.",
+        body: "I run OpenClaw on Hetzner after moving it from DigitalOcean. I handle Linux maintenance, updates, DNS, OAuth, and troubleshooting.",
       },
       {
         label: "02 / Interface",
-        title: "Put the agent where daily work already happens.",
-        body: "A Telegram surface and custom English/Mandarin persona make the system useful enough to expose real interaction patterns instead of staged demo prompts.",
+        title: "Use it through Telegram.",
+        body: "I set up a custom English/Mandarin persona and a Telegram interface, so I can use the assistant in daily conversations.",
       },
       {
         label: "03 / Route",
-        title: "Use the best model first, with a cheaper fallback.",
-        body: "Claude Opus is the primary model. MiniMax acts as a lower-cost fallback during provider limits or outages, keeping degradation explicit rather than invisible.",
+        title: "Keep a backup model available.",
+        body: "Claude Opus is the primary model. When provider limits or outages make it unavailable, MiniMax is the lower-cost backup. That switch also changes the quality and behavior of the responses.",
       },
       {
         label: "04 / Harden",
         title: "Fix security mistakes and improve the process.",
-        body: "After discovering an API key exposed in shell history, rotate and remove the credential, then tighten the operating practice around secret handling.",
+        body: "I found an API key in shell history, rotated it, and removed the exposed value. I also tightened how I handle credentials on the server.",
       },
     ],
     outcome: [
-      "Uses and maintains a bilingual AI assistant every day instead of treating it as a one-time demo.",
+      "Use and maintain a bilingual AI assistant every day.",
       "Completed a cloud migration while preserving the Telegram-facing workflow.",
       "Built firsthand experience with provider fallback, updates, DNS, OAuth, incident response, and the ongoing cost of self-hosting.",
     ],
     boundaries: [
-      "Self-hosting provides control and direct learning, but it also makes patching, secrets, and uptime an operator responsibility.",
-      "Fallback improves availability and cost control while accepting a change in model behavior and output quality.",
-      "This is a personal setup, not a product used by customers.",
+      "I am responsible for patching the server, protecting credentials, and keeping the assistant available.",
+      "The backup model costs less, but its responses can differ in quality and behavior.",
+      "This setup is for my own daily use and has no customers.",
     ],
     visual: "agent",
   },
@@ -269,7 +269,7 @@ export const experience = [
     role: "Co-Founder",
     company: "Ordinal Hive",
     description:
-      "Started with community and product work, then moved deeper into AI delivery, production QA, and keeping a small startup's systems running.",
+      "Started with community and product work, then built AI features, led production QA, and maintained the startup's systems.",
   },
   {
     dates: "2024 — 2025",
@@ -283,6 +283,6 @@ export const experience = [
     role: "IT Specialist & Team Lead",
     company: "LEAP Career Forum",
     description:
-      "Led four developers building and supporting a nonprofit career community while learning how product, events, and infrastructure meet.",
+      "Led four developers building a nonprofit career platform with React and Django. Also managed hosting and supported community events.",
   },
 ];
