@@ -3,13 +3,12 @@ import type { CaseStudy } from "../data/site";
 
 interface Props {
   type: CaseStudy["visual"];
-  compact?: boolean;
 }
 
-const { type, compact = false } = Astro.props;
+const { type } = Astro.props;
 ---
 
-<div class:list={["case-visual", `case-visual-${type}`, { "case-visual-compact": compact }]} aria-hidden="true">
+<div class:list={["case-visual", `case-visual-${type}`]} aria-hidden="true">
   {type === "terminal" && (
     <>
       <div class="visual-toolbar"><span></span><span></span><span></span><b>INTENT / AUTHORIZATION</b></div>

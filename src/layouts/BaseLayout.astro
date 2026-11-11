@@ -28,7 +28,9 @@ const socialImageUrl = socialImage ? new URL(socialImage, site).href : null;
     <script is:inline>document.documentElement.classList.add("has-js");</script>
     <meta name="description" content={description} />
     <meta name="author" content="Shuhang Feng" />
-    <meta name="theme-color" content="#f2eee5" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#11151c" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -82,16 +84,18 @@ const socialImageUrl = socialImage ? new URL(socialImage, site).href : null;
       if (reducedMotion || !("IntersectionObserver" in window)) {
         revealItems.forEach((item) => item.classList.add("is-visible"));
       } else {
+        // Reveal slightly before an element scrolls in, and immediately for anything
+        // already scrolled past (e.g. after an anchor jump), so content is never left hidden.
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
+              if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
                 entry.target.classList.add("is-visible");
                 observer.unobserve(entry.target);
               }
             });
           },
-          { threshold: 0.12 },
+          { rootMargin: "0px 0px 15% 0px" },
         );
         revealItems.forEach((item) => observer.observe(item));
       }
