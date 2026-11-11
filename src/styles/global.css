@@ -1568,113 +1568,25 @@ body {
   background: white;
 }
 
-.trading-preview,
 .tft-preview,
+
+
 .openclaw-preview {
   min-height: calc(100% - 42px);
   padding: clamp(1.5rem, 3.5vw, 4rem);
 }
 
-.project-visual-trading {
-  color: var(--ink);
-  background: #edf1f5;
-}
-
-.project-visual-trading .project-window-bar {
-  border-color: var(--line);
-  color: var(--muted);
-  background: white;
-}
-
-.trading-preview {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-  background: #edf1f5;
-}
-
-.trading-query {
-  max-width: 560px;
-  padding: 1.2rem;
-  border: 1px solid var(--line-dark);
-  border-radius: 12px;
-  background: white;
-}
-
-.trading-query span,
-.trading-markets span,
 .tft-unit > span,
+
+
 .tft-formula > span,
+
+
 .openclaw-route > span {
   color: var(--muted);
   font-family: var(--mono);
   font-size: 0.58rem;
   letter-spacing: 0.05em;
-}
-
-.trading-query p {
-  margin: 0.75rem 0 0;
-  font-family: var(--mono);
-  font-size: clamp(0.78rem, 1.1vw, 0.96rem);
-  line-height: 1.6;
-}
-
-.trading-markets {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.trading-markets > div {
-  position: relative;
-  min-height: 140px;
-  padding: 1.2rem;
-  border: 1px solid var(--line-dark);
-  border-radius: 12px;
-  background: white;
-}
-
-.trading-markets p {
-  max-width: 180px;
-  margin: 2rem 0 0;
-  font-size: 0.8rem;
-}
-
-.trading-markets i {
-  position: absolute;
-  right: 1.2rem;
-  bottom: 1.2rem;
-  color: var(--blue);
-  font-family: var(--mono);
-  font-size: 1.35rem;
-  font-style: normal;
-}
-
-.trading-review {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  overflow: hidden;
-  border: 1px solid var(--line-dark);
-  border-radius: 12px;
-  background: white;
-}
-
-.trading-review span {
-  padding: 0.85rem;
-  border-right: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 0.55rem;
-  text-align: center;
-}
-
-.trading-review span:nth-child(2) {
-  color: var(--blue-dark);
-  background: #e8edf6;
-}
-
-.trading-review span:last-child {
-  border-right: 0;
 }
 
 .project-visual-tft {
@@ -2239,37 +2151,18 @@ body {
     min-height: 430px;
   }
 
-  .trading-preview,
   .tft-preview,
+
+
   .openclaw-preview {
     padding: 1rem;
   }
 
-  .trading-markets,
   .tft-preview,
+
+
   .openclaw-preview {
     grid-template-columns: 1fr;
-  }
-
-  .trading-markets > div {
-    min-height: 100px;
-  }
-
-  .trading-markets p {
-    margin-top: 1rem;
-  }
-
-  .trading-review {
-    grid-template-columns: 1fr;
-  }
-
-  .trading-review span {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .trading-review span:last-child {
-    border-bottom: 0;
   }
 
   .tft-unit {
@@ -2628,5 +2521,28 @@ body {
     letter-spacing: 0.04em;
     text-transform: uppercase;
     content: attr(data-label);
+  }
+}
+
+/* Real product screenshot on a featured project card */
+.project-shot {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: clamp(1.25rem, 3vw, 3rem);
+  background: #edf1f5;
+}
+
+.project-shot img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 18px 40px -24px rgba(20, 32, 31, 0.4);
+}
+
+@media (max-width: 680px) {
+  .project-shot {
+    padding: 1rem;
   }
 }

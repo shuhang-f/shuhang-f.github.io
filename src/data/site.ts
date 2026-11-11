@@ -39,7 +39,10 @@ export const featuredProjects = [
       "A non-custodial AI trading terminal for Hyperliquid and Robinhood Chain, now in an invite-only pilot. The agent researches markets with live data and drafts trades. Typed code, not the model, authorizes every action. I built most of the agent's grounding and evals, the autonomous execution layer, and the Robinhood Chain trading stack.",
     facts: ["Invite-only pilot", "47 of 48 eval samples pass", "TLA+ model of the order relay"],
     links: [{ label: "Read the case study", href: "/work/trading-terminal/", external: false }],
-    visual: "trading" as const,
+    screenshot: {
+      image: hiveRobinhoodDiscover,
+      alt: "Hive Terminal with the Discover panel ranking Robinhood Chain NFT collections, beside an agent answer that compares the NVDA and AMD stock tokens using live market data.",
+    },
   },
   {
     index: "02",

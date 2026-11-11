@@ -181,7 +181,21 @@ const personSchema = {
                 ))}
               </div>
             </div>
-            <ProjectVisual type={project.visual} />
+            {project.screenshot ? (
+              <figure class="project-shot">
+                <Image
+                  src={project.screenshot.image}
+                  alt={project.screenshot.alt}
+                  widths={[640, 960, 1440]}
+                  sizes="(max-width: 900px) 100vw, 60vw"
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ) : (
+              <ProjectVisual type={project.visual} />
+            )}
           </article>
         ))}
       </div>
