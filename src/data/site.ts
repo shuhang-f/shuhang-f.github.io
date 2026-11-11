@@ -1,3 +1,9 @@
+import type { ImageMetadata } from "astro";
+import hiveLimitTicket from "../assets/hive-terminal/limit-order-ticket.png";
+import hiveMarketAnswer from "../assets/hive-terminal/market-answer.png";
+import hiveRecurringDraft from "../assets/hive-terminal/recurring-buy-draft.png";
+import hiveRobinhoodDiscover from "../assets/hive-terminal/robinhood-discover.png";
+
 export type CaseStudy = {
   slug: string;
   index: string;
@@ -6,10 +12,17 @@ export type CaseStudy = {
   shortTitle: string;
   summary: string;
   timeframe: string;
+  role: string;
   proof: Array<{ value: string; label: string }>;
   disciplines: string[];
   problem: string[];
   response: Array<{ label: string; title: string; body: string }>;
+  screens?: Array<{ image: ImageMetadata; alt: string; title: string; caption: string }>;
+  comparison?: {
+    title: string;
+    intro: string;
+    rows: Array<{ request: string; before: string; after: string }>;
+  };
   outcome: string[];
   boundaries: string[];
   reflection?: { title: string; paragraphs: string[] };
@@ -19,13 +32,13 @@ export type CaseStudy = {
 export const featuredProjects = [
   {
     index: "01",
-    kind: "Private product",
-    name: "Trading Workspace",
-    title: "Research markets and review orders in one place.",
+    kind: "Startup product",
+    name: "Hive Terminal",
+    title: "An AI trading agent with guarded autonomous execution.",
     description:
-      "I helped build a workspace for Polymarket and Hyperliquid in about three weeks. Users can research markets in plain English, then review and sign manual orders with their wallet. I also built tests for the model's first decision.",
-    facts: ["~3 weeks to working MVP", "11-case model test set", "Polymarket + Hyperliquid"],
-    links: [{ label: "Read the product case", href: "/work/trading-terminal/", external: false }],
+      "A non-custodial AI trading terminal for Hyperliquid and Robinhood Chain, now in an invite-only pilot. The agent researches markets with live data and drafts trades. Typed code, not the model, authorizes every action. I built most of the agent's grounding and evals, the autonomous execution layer, and the Robinhood Chain trading stack.",
+    facts: ["Invite-only pilot", "47 of 48 eval samples pass", "TLA+ model of the order relay"],
+    links: [{ label: "Read the case study", href: "/work/trading-terminal/", external: false }],
     visual: "trading" as const,
   },
   {
@@ -77,66 +90,141 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "trading-terminal",
     index: "01",
-    kicker: "AI product · Fintech · 2026",
-    title: "Researching markets and preparing orders in plain English.",
-    shortTitle: "AI Trading Workspace",
+    kicker: "AI agent · Fintech · 2026–Now",
+    title: "An AI trading agent where code, not the model, authorizes every trade.",
+    shortTitle: "Hive Terminal",
     summary:
-      "Users research live Polymarket and Hyperliquid markets in one workspace. The model prepares manual orders; the user reviews and signs them with a connected wallet.",
-    timeframe: "About three weeks to a working MVP",
+      "A non-custodial AI trading terminal in an invite-only pilot. An agent researches Hyperliquid and Robinhood Chain markets with live data and drafts trades. A separate execution layer runs the orders and automations users authorize, without them present.",
+    timeframe: "Invite-only pilot",
+    role: "Engineer on a team of three",
     proof: [
-      { value: "~3 weeks", label: "Functional MVP for founder testing" },
-      { value: "11 cases", label: "Tests for the model's first decision" },
-      { value: "2 venues", label: "Polymarket and Hyperliquid in one workspace" },
+      { value: "47 / 48", label: "Live eval samples pass (16 cases, 3 runs each)" },
+      { value: "3.4M", label: "States checked in a TLA+ model of the order relay" },
+      { value: "~130 / 192", label: "Merged backend and frontend PRs that I wrote" },
     ],
     disciplines: [
+      "LLM tool calling",
+      "Agent evaluation",
       "TypeScript",
       "Next.js",
       "NestJS",
-      "LLM tool calling",
-      "Agent evaluation",
+      "TLA+",
       "Wallet signing",
     ],
     problem: [
-      "Traders had to move between dashboards, interpret different market-data formats, and turn an idea into order parameters. We wanted them to do that work in one conversation.",
-      "That required a clear division of responsibility: the model could interpret requests, while application code validated the steps and users authorized financial actions.",
+      "Traders move between venue dashboards, read different data formats, and turn an idea into order parameters by hand. Hive Terminal brings research and order preparation into one conversation across two venues: Hyperliquid and Robinhood Chain, an Ethereum L2 with tokens, NFTs and tokenized stocks.",
+      "It began in February 2026 as an MVP built in about three weeks for founder testing. Since then it has added autonomous execution: recurring, timed and price-triggered trades, plus limit and stop orders that fill while the user is away.",
+      "That made one rule central to the design: the model interprets and explains, and typed code authorizes every action. Model output never moves funds by itself.",
     ],
     response: [
       {
-        label: "01 / Interpret",
-        title: "Let the model interpret the request.",
-        body: "MiniMax reads the request and chooses from an allowed set of tools. TypeScript code handles navigation, market data, and trade steps when rules are safer than inference.",
+        label: "01 / Route",
+        title: "Deterministic routing first, the LLM second.",
+        body: "Known commands like “limit buy $25 of ETH at 2000” go to typed parsers and open the same ticket every time. Questions go to the agent. When the agent can't do something, it answers with the exact command to type instead of pretending to act.",
       },
       {
-        label: "02 / Normalize",
-        title: "Translate each provider into one shared format.",
-        body: "I used typed adapters to convert API and SDK responses into shared market, chart, and order formats. The interface can then handle both venues consistently.",
+        label: "02 / Draft",
+        title: "Drafts, never actions.",
+        body: "Agent tools return quotes and drafts that the user signs in their wallet. The prompt forbids claiming that an order exists unless a tool result confirms it, and a cleanup pass strips offers the agent can't fulfil.",
       },
       {
-        label: "03 / Authorize",
-        title: "Keep trade approval outside the model.",
-        body: "Manual orders pass through typed validation and user confirmation before the connected browser wallet signs. The server prepares the order without holding the user's private key for that flow.",
+        label: "03 / Ground",
+        title: "Prefetch context, because the model skipped its tools.",
+        body: "In pilot QA the model reused old numbers on follow-ups, once quoting SOL at $204 when it traded at $108, and ignored instructions to call a tool. The backend now detects the coins, categories and portfolio questions in each message and attaches fresh data before the model runs. It skips this for direct trade instructions, where I measured that injected data made the model describe drafts it never created.",
       },
       {
-        label: "04 / Evaluate",
-        title: "Test the model's first choice.",
-        body: "I built an 11-case test set that works across providers. It checks tool choice, extracted arguments, requests for clarification, and false claims that an action completed. GitHub Actions validates the dataset offline.",
+        label: "04 / Bound",
+        title: "A bounded loop that always answers.",
+        body: "Each request gets at most three tool rounds, then a final round with no tools, so it always ends in an answer. Tool failures go back to the model as errors instead of failing the request.",
+      },
+      {
+        label: "05 / Guard",
+        title: "Autonomy behind server-side policy.",
+        body: "Automations sign with a scoped agent wallet whose key is encrypted at rest and revocable by the user. Each run re-checks trade size, balance, slippage, daily limits, pending jobs and an emergency pause, then fetches a fresh quote. If any check fails, nothing is sent.",
+      },
+      {
+        label: "06 / Split",
+        title: "Split trust for onchain orders.",
+        body: "Hive's relay decides when a stop order fires, after the price holds past the trigger. An onchain contract enforces the user's signed worst price, so the relay can't fill below it. The relay journals each transaction before sending and fails over to a second RPC provider.",
       },
     ],
+    screens: [
+      {
+        image: hiveMarketAnswer,
+        alt: "Hive Terminal chat answering “sol vs hype this week, which looks stronger?” with a table of 7-day and 30-day changes, ranges and funding, followed by a written read and suggested commands.",
+        title: "A grounded research answer",
+        caption: "The backend attaches a 7-day and 30-day snapshot before the model runs. The answer matches the question's timeframe, converts funding into a yearly rate and a daily cost, gives a lean, and ends with commands the user can type.",
+      },
+      {
+        image: hiveRecurringDraft,
+        alt: "A recurring-buy draft listing eight Monday purchases of $20 of ETH, with a review card and a Connect to automate button.",
+        title: "A recurring buy from plain English",
+        caption: "“buy $20 of eth every monday for 2 months starting next week” becomes a validated schedule of 8 buys with resolved dates. Nothing runs until the user authorizes the delegated wallet.",
+      },
+      {
+        image: hiveLimitTicket,
+        alt: "A limit-order ticket for $25 of ETH at a 2000 USDC limit, prefilled with a live reference price and a Connect wallet button.",
+        title: "Deterministic routing",
+        caption: "A typed “limit buy $25 of ETH at 2000” skips the model and opens the limit-order ticket, prefilled with a live reference price. The user signs it in their wallet.",
+      },
+      {
+        image: hiveRobinhoodDiscover,
+        alt: "The Discover panel ranking Robinhood Chain NFT collections beside an agent answer that compares the NVDA and AMD stock tokens.",
+        title: "The Robinhood Chain agent",
+        caption: "Comparing two tokenized stocks with live data, beside the Discover rankings that ground it. The answer names the liquidity risk and what would change its read.",
+      },
+    ],
+    comparison: {
+      title: "Before and after, on real failures.",
+      intro: "Same model, live data. Each row is a real failure from the pilot or founder QA, now a case in the multi-turn eval harness.",
+      rows: [
+        {
+          request: "why is hype dumping today",
+          before: "“I can't tell without live data… want me to run the scanner?”",
+          after: "Day and week change, position in the 24h range, funding, and the next level to watch.",
+        },
+        {
+          request: "sol vs hype this week",
+          before: "24h numbers presented as weekly.",
+          after: "7-day changes and ranges, a funding read, and a lean plus what would change it.",
+        },
+        {
+          request: "if eth dips under 2400 buy me $25 worth",
+          before: "“Conditional buys aren't supported.”",
+          after: "Checks the price and gives the exact command: limit buy $25 of ETH at 2400.",
+        },
+        {
+          request: "buy $20 of eth every monday for 2 months starting next week",
+          before: "Asks for an ISO timestamp.",
+          after: "A weekly draft of 8 buys with resolved start and end dates.",
+        },
+        {
+          request: "The founder's 8-question Robinhood Chain chat",
+          before: "0 of 8 turns fetched data. Invented token tables.",
+          after: "Every turn grounded in Discover, project data or the wallet.",
+        },
+      ],
+    },
     outcome: [
-      "Delivered a functional MVP in roughly three calendar weeks for founder testing.",
-      "Shipped and maintained the production Next.js application on Render.",
-      "Replaced informal prompt checks with a versioned 11-case test set.",
+      "Wrote about 50 of 72 merged backend PRs and 79 of 120 frontend PRs. My areas: agent quality, autonomous execution on Hyperliquid, and nearly all of the Robinhood Chain trading stack.",
+      "Built the agent's first eval harness: 16 versioned first-decision cases with deterministic scoring (47 of 48 live samples pass), plus a multi-turn harness I grew from 31 to 46 scripted conversations, including replays of real failing pilot chats.",
+      "Wrote a TLA+ model of the relay's transaction journal. It checked 3.4M states, caught 5 deliberately broken variants, and found a nonce-reuse race under RPC lag that a follow-up PR fixed.",
+      "Verified the order path in production with a real wallet: a live fill, a fee that matched the onchain receipt, an automatic refund of the unused fee, and notifications in the app and on Telegram.",
+      "Built tooling so AI coding agents can check their own work: a skill that runs the full local stack and drives the real UI in a headless browser, and one that maps the TLA+ model to code and flags drift. The screenshots above came from the first.",
     ],
     boundaries: [
-      "The tests score only the model's first decision. They do not run tools or test a trade from start to finish.",
-      "Manual trades require wallet confirmation. Separately authorized scheduled automations can execute later within configured policy limits.",
-      "The team built the PostgreSQL, BullMQ, and Redis worker infrastructure. My work here covered the product, authorization checks, and model evaluation.",
+      "My teammate built the original agent scaffold and first Hyperliquid tool clients, durable automation persistence and the job queue, notifications and Telegram delivery, and beta access, service auth, rate limits and health monitoring.",
+      "The founder set product direction, designed the UI in a prototype that I ported to production, and ran the production QA that drove my bug list.",
+      "Agent tools only return quotes and drafts. Automations run without per-order approval, but only after the user authorizes a scoped agent wallet, and only within server-side policy limits.",
+      "It is an invite-only pilot. The evidence here is evals, tests and production checks, not adoption numbers.",
+      "Screenshots come from a local build with no wallet connected, using live market data from November 11, 2026.",
     ],
     reflection: {
       title: "Making delegation explicit.",
       paragraphs: [
         "Working on orders made me more careful about the word 'control.' Researching a market and approving a trade give an agent different responsibilities. People need to see which stage they are in, and the code needs to enforce what can happen next.",
-        "Manual orders wait for the user to review and confirm before the wallet signs. Scheduled automations have separate authorization and policy limits, with controls to pause or revoke them. I now try to make that choice explicit in the interface: what someone is handing over, when they can intervene, and what the product will do.",
+        "Manual orders wait for the user to review and sign. Automations have their own authorization and policy limits, with controls to pause or revoke them. I try to make that choice explicit in the interface: what someone is handing over, when they can intervene, and what the product will do.",
+        "Grounding taught me the same lesson. Telling the model to use its tools did not make it use them reliably, so I moved that guarantee into the backend. When a behavior matters, I would rather enforce it in code than ask for it in a prompt.",
       ],
     },
     visual: "terminal",
@@ -150,6 +238,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "I developed a process for reproducing user-reported failures and checking fixes. I also operated the production systems and carried out a migration with zero data loss.",
     timeframe: "Used since 2024",
+    role: "QA and operations",
     proof: [
       { value: "Adopted", label: "Live-transaction protocol became team standard" },
       { value: "0 loss", label: "Critical data preserved during migration" },
@@ -210,6 +299,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "A bilingual AI assistant that runs on my own server and works through Telegram, with a backup model when the main one is unavailable.",
     timeframe: "Used daily on my own server",
+    role: "Owner and operator",
     proof: [
       { value: "Daily", label: "Used through a Telegram interface" },
       { value: "2 models", label: "Claude Opus with MiniMax as backup" },
@@ -266,10 +356,10 @@ export const caseStudies: CaseStudy[] = [
 export const experience = [
   {
     dates: "2023 — Now",
-    role: "Co-Founder",
+    role: "Co-Founder, Engineering",
     company: "Ordinal Hive",
     description:
-      "Started with community and product work, then built AI features, led production QA, and maintained the startup's systems.",
+      "Started with community and product work, then built much of Hive Terminal, an AI trading agent, while leading production QA and maintaining the startup's systems.",
   },
   {
     dates: "2024 — 2025",
@@ -280,7 +370,7 @@ export const experience = [
   },
   {
     dates: "2023 — 2024",
-    role: "IT Specialist & Team Lead",
+    role: "Engineering Lead",
     company: "LEAP Career Forum",
     description:
       "Led four developers building a nonprofit career platform with React and Django. Also managed hosting and supported community events.",

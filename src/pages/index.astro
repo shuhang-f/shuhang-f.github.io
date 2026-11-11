@@ -26,7 +26,7 @@ const personSchema = {
 
 <BaseLayout
   title="Shuhang Feng — Selected Work"
-  description="Shuhang Feng is a product engineer in California. Explore his trading workspace, TFT calculator, self-hosted AI assistant, and community projects."
+  description="Shuhang Feng is a product engineer in California. Explore his AI trading agent, TFT calculator, self-hosted AI assistant, and community projects."
   canonicalPath="/"
   socialImage="/og.png"
 >
@@ -54,7 +54,7 @@ const personSchema = {
       </div>
 
       <aside class="project-index" aria-label="Featured project index">
-        <div class="project-index-head"><span>Selected work</span><span>01—03</span></div>
+        <div class="project-index-head"><span>Selected work</span><span>01—{featuredProjects.at(-1)?.index}</span></div>
         <ol>
           {featuredProjects.map((project) => (
             <li><span>{project.index}</span><p>{project.name}</p><small>{project.kind}</small></li>
@@ -129,7 +129,7 @@ const personSchema = {
         <p>
           My work has moved between product engineering, customer support,
           infrastructure, QA, and community tools. At Ordinal Hive, that has meant
-          building a trading workspace, turning user reports into reproducible
+          building an AI trading agent, turning user reports into reproducible
           bugs, and keeping production systems running.
         </p>
         <p>
@@ -155,7 +155,7 @@ const personSchema = {
         <p class="tech-label">Featured work</p>
         <h2 id="featured-title">Projects I build and use.</h2>
         <p>
-          The trading workspace began at Ordinal Hive. The calculator came from
+          Hive Terminal is what I build at Ordinal Hive. The calculator came from
           learning TFT, and the assistant runs on my own server.
         </p>
       </header>

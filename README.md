@@ -6,8 +6,9 @@ Live at [shuhang-f.github.io](https://shuhang-f.github.io).
 
 ## Site structure
 
-- Project-first homepage led by the Trading Workspace, TFT Damage Lab, and OpenClaw at Home
-- Three detailed case files covering a trading workspace, production reliability, and a self-hosted AI assistant
+- Project-first homepage led by Hive Terminal, TFT Damage Lab, and OpenClaw at Home
+- Three detailed case files covering an AI trading agent, production reliability, and a self-hosted AI assistant
+- Product screenshots and a before/after evaluation table on the Hive Terminal case
 - Compact career timeline, personal context, and direct contact links
 - AI product principles, a reflection on explicit delegation, and original demo artwork
 - A small gallery of Blender experiments with responsive, optimized images
@@ -38,4 +39,4 @@ The build performs Astro type and content checks before generating the static si
 
 ## Content sources
 
-The public résumé is synced to the latest FDE résumé in the career bank. Portfolio copy is maintained separately in `src/data/site.ts` so the site can tell a broader, project-led story while keeping claim boundaries explicit.
+The public résumé lives at `public/resume.pdf` and is replaced with each new FDE résumé. Portfolio copy is maintained separately in `src/data/site.ts` so the site can tell a broader, project-led story while keeping claim boundaries explicit.

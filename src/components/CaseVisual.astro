@@ -14,11 +14,11 @@ const { type, compact = false } = Astro.props;
     <>
       <div class="visual-toolbar"><span></span><span></span><span></span><b>INTENT / AUTHORIZATION</b></div>
       <div class="terminal-flow">
-        <div class="terminal-prompt"><small>User intent</small><p>“Compare these markets and prepare the safer route.”</p></div>
+        <div class="terminal-prompt"><small>User intent</small><p>“buy $20 of eth every monday for 2 months”</p></div>
         <div class="terminal-router">
-          <span>Model interprets</span><i>→</i><span>Router validates</span><i>→</i><span>Wallet authorizes</span>
+          <span>Model drafts</span><i>→</i><span>Policy checks</span><i>→</i><span>Wallet authorizes</span>
         </div>
-        <div class="terminal-status"><span>TOOL / RESEARCH_MARKETS</span><b>READY FOR REVIEW</b></div>
+        <div class="terminal-status"><span>DRAFT / RECURRING_BUY × 8</span><b>READY FOR REVIEW</b></div>
       </div>
     </>
   )}

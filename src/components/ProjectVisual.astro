@@ -9,14 +9,14 @@ const { type } = Astro.props;
 <div class:list={["project-visual", `project-visual-${type}`]} aria-hidden="true">
   {type === "trading" && (
     <>
-      <div class="project-window-bar"><span>MARKET WORKSPACE</span><span>LIVE / WALLET DISCONNECTED</span></div>
+      <div class="project-window-bar"><span>HIVE TERMINAL</span><span>PILOT / NON-CUSTODIAL</span></div>
       <div class="trading-preview">
-        <div class="trading-query"><span>QUERY</span><p>Compare the active markets and prepare the lower-risk route.</p></div>
+        <div class="trading-query"><span>QUERY</span><p>nvda vs amd stock tokens today, which has more momentum?</p></div>
         <div class="trading-markets">
-          <div><span>POLYMARKET</span><p>Ceasefire before Sep 1?</p><i>64¢</i></div>
-          <div><span>HYPERLIQUID</span><p>BTC perpetual</p><i>$118.4K</i></div>
+          <div><span>ROBINHOOD CHAIN</span><p>AMD stock token, 24h</p><i>+10.9%</i></div>
+          <div><span>HYPERLIQUID</span><p>HYPE perpetual, 7d</p><i>−12.0%</i></div>
         </div>
-        <div class="trading-review"><span>MODEL / RESEARCH</span><span>CODE / VALIDATE</span><span>USER / SIGN</span></div>
+        <div class="trading-review"><span>MODEL / DRAFT</span><span>CODE / AUTHORIZE</span><span>USER / SIGN</span></div>
       </div>
     </>
   )}
